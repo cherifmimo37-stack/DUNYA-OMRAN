@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>دنيا العمران والترقية</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --petroleum: #123B4A;
+            --petroleum-dark: #0B2934;
+            --green: #3F6B63;
+            --copper: #C47735;
+            --ivory: #F5F3EE;
+            --stone: #68757A;
+            --white: #FFFFFF;
+            --border: #E1E2DE;
+            --danger: #B94A48;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Cairo", sans-serif;
+            background: var(--ivory);
+            color: #263238;
+            min-height: 100vh;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* HEADER */
+
+        .topbar {
+            background: linear-gradient(
+                135deg,
+                var(--petroleum-dark),
+                var(--petroleum)
+            );
+            color: white;
+            padding: 18px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 18px rgba(0,0,0,.12);
+        }
+
+        .topbar-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--copper);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,.18);
+        }
+
+        .brand h1 {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .brand p {
+            font-size: 11px;
+            color: #D8E2E4;
+            margin-top: 2px;
+        }
+
+        .user-button {
+            border: 1px solid rgba(255,255,255,.18);
+            background: rgba(255,255,255,.08);
+            color: white;
+            border-radius: 10px;
+            padding: 8px 13px;
+            cursor: pointer;
+        }
+
+        /* MAIN */
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 25px 18px 100px;
+        }
+
+        .welcome {
+            margin-bottom: 22px;
+        }
+
+        .welcome h2 {
+            font-size: 25px;
+            color: var(--petroleum);
+            font-weight: 800;
+        }
+
+        .welcome p {
+            color: var(--stone);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* STATS */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            min-height: 125px;
+            box-shadow: 0 5px 18px rgba(18,59,74,.05);
+            transition: .2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .icon-blue {
+            background: #E7F0F3;
+            color: var(--petroleum);
+        }
+
+        .icon-green {
+            background: #E8F1EF;
+            color: var(--green);
+        }
+
+        .icon-copper {
+            background: #F7EBDD;
+            color: var(--copper);
+        }
+
+        .icon-gray {
+            background: #EEF0F0;
+            color: var(--stone);
+        }
+
+        .stat-title {
+            font-size: 13px;
+            color: var(--stone);
+            margin-top: 12px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--petroleum-dark);
+            margin-top: 2px;
+        }
+
+        /* SECTION */
+
+        .section {
+            margin-top: 25px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-header h3 {
+            color: var(--petroleum);
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .section-link {
+            color: var(--copper);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* ACTIVITY */
+
+        .activity {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .empty {
+            padding: 35px 20px;
+            text-align: center;
+            color: var(--stone);
+        }
+
+        .empty-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .empty p {
+            font-size: 14px;
+        }
+
+        /* QUICK ACTIONS */
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .quick {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .quick:hover {
+            border-color: var(--copper);
+            transform: translateY(-2px);
+        }
+
+        .quick-icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .quick span {
+            display: block;
+            color: var(--petroleum);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* BOTTOM NAV */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background: rgba(255,255,255,.97);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            z-index: 200;
+            box-shadow: 0 -4px 15px rgba(0,0,0,.06);
+        }
+
+        .nav-inner {
+            width: 100%;
+            max-width: 700px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .nav-item {
+            border: 0;
+            background: transparent;
+            color: var(--stone);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .nav-item div {
+            font-size: 20px;
+            margin-bottom: 1px;
+        }
+
+        .nav-item.active {
+            color: var(--petroleum);
+        }
+
+        .nav-item.active div {
+            color: var(--copper);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .topbar {
+                padding: 14px;
+            }
+
+            .brand h1 {
+                font-size: 16px;
+            }
+
+            .brand p {
+                font-size: 9px;
+            }
+
+            .logo {
+                width: 42px;
+                height: 42px;
+                font-size: 21px;
+            }
+
+            main {
+                padding: 20px 13px 95px;
+            }
+
+            .welcome h2 {
+                font-size: 21px;
+            }
+
+            .stats-grid {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+                min-height: 115px;
+            }
+
+            .stat-value {
+                font-size: 21px;
+            }
+
+            .quick-grid {
+                gap: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="topbar-inner">
+
+        <div class="brand">
+
+            <div class="logo">
+                🏗️
+            </div>
+
+            <div>
+                <h1>دنيا العمران والترقية</h1>
+                <p>نظام تسيير مشاريع البناء والمقاولات</p>
+            </div>
+
+        </div>
+
+        <button class="user-button">
+            👤 الإدارة
+        </button>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="welcome">
+
+        <h2>لوحة التحكم</h2>
+
+        <p>
+            مرحبًا بك 👋 تابع مشاريعك وعمليات التسيير من مكان واحد.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon icon-blue">
+                    🏗️
+                </div>
+
+            </div>
+
+            <div class="stat-title">
+                المشاريع
+            </div>
+
+            <div class="stat-value" id="projects">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon icon-green">
+                    👷
+                </div>
+
+            </div>
+
+            <div class="stat-title">
+                العمال
+            </div>
+
+            <div class="stat-value" id="workers">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon icon-copper">
+                    📦
+                </div>
+
+            </div>
+
+            <div class="stat-title">
+                المواد
+            </div>
+
+            <div class="stat-value" id="materials">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon icon-blue">
+                    📅
+                </div>
+
+            </div>
+
+            <div class="stat-title">
+                مواعيد اليوم
+            </div>
+
+            <div class="stat-value" id="appointments">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon icon-copper">
+                    💰
+                </div>
+
+            </div>
+
+            <div class="stat-title">
+                مصاريف اليوم
+            </div>
+
+            <div class="stat-value">
+                <span id="expenses">0</span>
+                دج
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon icon-green">
+                    🏪
+                </div>
+
+            </div>
+
+            <div class="stat-title">
+                قيمة المخزون
+            </div>
+
+            <div class="stat-value">
+                <span id="stock">0</span>
+                دج
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h3>
+                الوصول السريع
+            </h3>
+
+        </div>
+
+        <div class="quick-grid">
+
+            <div class="quick" onclick="showMessage('المشاريع')">
+                <div class="quick-icon">🏗️</div>
+                <span>مشروع جديد</span>
+            </div>
+
+            <div class="quick" onclick="showMessage('العمال')">
+                <div class="quick-icon">👷</div>
+                <span>إضافة عامل</span>
+            </div>
+
+            <div class="quick" onclick="showMessage('المخزن')">
+                <div class="quick-icon">📦</div>
+                <span>دخول مواد</span>
+            </div>
+
+            <div class="quick" onclick="showMessage('المصاريف')">
+                <div class="quick-icon">💰</div>
+                <span>إضافة مصروف</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACTIVITY -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h3>
+                آخر العمليات
+            </h3>
+
+            <span class="section-link">
+                عرض الكل
+            </span>
+
+        </div>
+
+        <div class="activity">
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📋
+                </div>
+
+                <p>
+                    لا توجد عمليات مسجلة حاليًا
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <div class="nav-inner">
+
+        <button class="nav-item active">
+            <div>⌂</div>
+            الرئيسية
+        </button>
+
+        <button class="nav-item" onclick="showMessage('المشاريع')">
+            <div>🏗️</div>
+            المشاريع
+        </button>
+
+        <button class="nav-item" onclick="showMessage('العمال')">
+            <div>👷</div>
+            العمال
+        </button>
+
+        <button class="nav-item" onclick="showMessage('المخزن')">
+            <div>📦</div>
+            المخزن
+        </button>
+
+        <button class="nav-item" onclick="showMessage('الإعدادات')">
+            <div>⚙️</div>
+            الإعدادات
+        </button>
+
+    </div>
+
+</nav>
+
+
+<script>
+
+async function loadDashboard() {
+
+    try {
+
+        const response =
+            await fetch("/api/dashboard");
+
+        const data =
+            await response.json();
+
+        if (!data.success) return;
+
+        const stats = data.stats;
+
+        document.getElementById("projects").textContent =
+            stats.projects ?? 0;
+
+        document.getElementById("workers").textContent =
+            stats.workers ?? 0;
+
+        document.getElementById("materials").textContent =
+            stats.materials ?? 0;
+
+        document.getElementById("appointments").textContent =
+            stats.todayAppointments ?? 0;
+
+        document.getElementById("expenses").textContent =
+            stats.todayExpenses ?? 0;
+
+        document.getElementById("stock").textContent =
+            stats.stockValue ?? 0;
+
+    } catch (error) {
+
+        console.log("Dashboard error:", error);
+
+    }
+
+}
+
+
+function showMessage(section) {
+
+    alert(
+        "قسم " +
+        section +
+        " سيتم تفعيله في المرحلة القادمة 🚧"
+    );
+
+}
+
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>
