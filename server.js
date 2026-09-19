@@ -868,6 +868,241 @@ app.get("/api/projects/:id", async (req, res) => {
 /* =========================================================
    404 / FRONTEND
 ========================================================= */
+// ============================================================
+// PROJECT FULL DETAILS
+// ============================================================
+
+app.get("/api/projects/:id/full", async (req, res) => {
+
+    try {
+
+        const projectId = Number(req.params.id);
+
+        if (!Number.isInteger(projectId)) {
+
+            return res.status(400).json({
+                success: false,
+                message: "رقم المشروع غير صحيح"
+            });
+
+        }
+
+        const projectResult = await pool.query(
+            `
+            SELECT *
+            FROM projects
+            WHERE id = $1
+            `,
+            [projectId]
+        );
+
+        if (!projectResult.rows.length) {
+
+            return res.status(404).json({
+                success: false,
+                message: "المشروع غير موجود"
+            });
+
+        }
+
+
+        const workersResult = await pool.query(
+            `
+            SELECT
+                w.id,
+                w.name,
+                w.phone,
+                w.job,
+                w.salary,
+                w.active,
+                pw.role,
+                pw.joined_at
+            FROM project_workers pw
+            JOIN workers w
+                ON w.id = pw.worker_id
+            WHERE pw.project_id = $1
+            ORDER BY w.name
+            `,
+            [projectId]
+        );
+
+
+        const materialsResult = await pool.query(
+            `
+            SELECT
+                pm.id,
+                pm.quantity,
+                pm.used_quantity,
+                pm.unit_price,
+                pm.supplier,
+                m.id AS material_id,
+                m.name,
+                m.unit,
+                m.description
+            FROM project_materials pm
+            JOIN materials m
+                ON m.id = pm.material_id
+            WHERE pm.project_id = $1
+            ORDER BY m.name
+            `,
+            [projectId]
+        );
+
+
+        const expensesResult = await pool.query(
+            `
+            SELECT *
+            FROM expenses
+            WHERE project_id = $1
+            ORDER BY expense_date DESC, created_at DESC
+            `,
+            [projectId]
+        );
+
+
+        const reportsResult = await pool.query(
+            `
+            SELECT
+                dr.*,
+                w.name AS worker_name
+            FROM daily_reports dr
+            LEFT JOIN workers w
+                ON w.id = dr.worker_id
+            WHERE dr.project_id = $1
+            ORDER BY dr.report_date DESC, dr.created_at DESC
+            `,
+            [projectId]
+        );
+
+
+        const appointmentsResult = await pool.query(
+            `
+            SELECT *
+            FROM appointments
+            WHERE project_id = $1
+            ORDER BY
+                appointment_date ASC,
+                appointment_time ASC
+            `,
+            [projectId]
+        );
+
+
+        const meetingsResult = await pool.query(
+            `
+            SELECT *
+            FROM meetings
+            WHERE project_id = $1
+            ORDER BY meeting_date DESC
+            `,
+            [projectId]
+        );
+
+
+        const messagesResult = await pool.query(
+            `
+            SELECT *
+            FROM messages
+            WHERE project_id = $1
+            ORDER BY created_at ASC
+            `,
+            [projectId]
+        );
+
+
+        const notificationsResult = await pool.query(
+            `
+            SELECT *
+            FROM notifications
+            WHERE project_id = $1
+            ORDER BY created_at DESC
+            `,
+            [projectId]
+        );
+
+
+        const attendanceResult = await pool.query(
+            `
+            SELECT
+                a.*,
+                w.name AS worker_name,
+                w.job
+            FROM attendance a
+            JOIN workers w
+                ON w.id = a.worker_id
+            WHERE a.project_id = $1
+            ORDER BY
+                a.attendance_date DESC,
+                w.name ASC
+            `,
+            [projectId]
+        );
+
+
+        const stockResult = await pool.query(
+            `
+            SELECT
+                sm.*,
+                m.name AS material_name,
+                m.unit
+            FROM stock_movements sm
+            JOIN materials m
+                ON m.id = sm.material_id
+            WHERE sm.project_id = $1
+            ORDER BY sm.movement_date DESC
+            `,
+            [projectId]
+        );
+
+
+        res.json({
+
+            success: true,
+
+            project: projectResult.rows[0],
+
+            workers: workersResult.rows,
+
+            materials: materialsResult.rows,
+
+            expenses: expensesResult.rows,
+
+            reports: reportsResult.rows,
+
+            appointments: appointmentsResult.rows,
+
+            meetings: meetingsResult.rows,
+
+            messages: messagesResult.rows,
+
+            notifications: notificationsResult.rows,
+
+            attendance: attendanceResult.rows,
+
+            stockMovements: stockResult.rows
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "PROJECT FULL DETAILS ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر تحميل بيانات المشروع"
+
+        });
+
+    }
+
+});
 
 app.get("*", (req, res) => {
 
