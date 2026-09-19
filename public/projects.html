@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>المشاريع | دنيا العمران والترقية</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        :root {
+
+            --petroleum: #123B4A;
+            --petroleum-dark: #0B2934;
+            --green: #3F6B63;
+            --copper: #C47735;
+            --ivory: #F5F3EE;
+            --stone: #68757A;
+            --white: #FFFFFF;
+            --border: #E1E2DE;
+            --danger: #B94A48;
+
+        }
+
+
+        * {
+
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+
+        }
+
+
+        body {
+
+            font-family: "Cairo", sans-serif;
+
+            background: var(--ivory);
+
+            color: #263238;
+
+            min-height: 100vh;
+
+        }
+
+
+        button,
+        input,
+        select,
+        textarea {
+
+            font-family: inherit;
+
+        }
+
+
+        /* HEADER */
+
+        .topbar {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--petroleum-dark),
+                    var(--petroleum)
+                );
+
+            color: white;
+
+            padding: 17px 18px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+            box-shadow:
+                0 4px 18px
+                rgba(0,0,0,.12);
+
+        }
+
+
+        .topbar-inner {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+
+        .back-btn {
+
+            width: 42px;
+
+            height: 42px;
+
+            border: 1px solid
+                rgba(255,255,255,.18);
+
+            background:
+                rgba(255,255,255,.08);
+
+            color: white;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            font-size: 20px;
+
+        }
+
+
+        .title-area h1 {
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+        }
+
+
+        .title-area p {
+
+            color: #D8E2E4;
+
+            font-size: 11px;
+
+        }
+
+
+        /* MAIN */
+
+        main {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 25px 18px 90px;
+
+        }
+
+
+        .page-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .page-header h2 {
+
+            color: var(--petroleum);
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+        }
+
+
+        .page-header p {
+
+            color: var(--stone);
+
+            font-size: 13px;
+
+            margin-top: 3px;
+
+        }
+
+
+        .add-btn {
+
+            border: 0;
+
+            background: var(--copper);
+
+            color: white;
+
+            padding: 11px 17px;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 5px 14px
+                rgba(196,119,53,.22);
+
+        }
+
+
+        /* PROJECT GRID */
+
+        .projects-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
+
+        }
+
+
+        .project-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(18,59,74,.05);
+
+            cursor: pointer;
+
+            transition: .2s;
+
+        }
+
+
+        .project-card:hover {
+
+            transform: translateY(-3px);
+
+            border-color: var(--copper);
+
+        }
+
+
+        .project-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+        }
+
+
+        .project-icon {
+
+            width: 46px;
+
+            height: 46px;
+
+            border-radius: 12px;
+
+            background: #E7F0F3;
+
+            color: var(--petroleum);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+
+        }
+
+
+        .status {
+
+            font-size: 11px;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-weight: 700;
+
+        }
+
+
+        .status-active {
+
+            background: #E5F1ED;
+
+            color: var(--green);
+
+        }
+
+
+        .status-paused {
+
+            background: #F8E9D8;
+
+            color: var(--copper);
+
+        }
+
+
+        .status-done {
+
+            background: #E9ECEC;
+
+            color: var(--stone);
+
+        }
+
+
+        .project-name {
+
+            color: var(--petroleum-dark);
+
+            font-size: 17px;
+
+            font-weight: 800;
+
+            margin-top: 15px;
+
+        }
+
+
+        .project-location {
+
+            color: var(--stone);
+
+            font-size: 12px;
+
+            margin-top: 3px;
+
+        }
+
+
+        .progress-area {
+
+            margin-top: 17px;
+
+        }
+
+
+        .progress-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            font-size: 11px;
+
+            color: var(--stone);
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .progress {
+
+            height: 8px;
+
+            background: #E8E9E6;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+        }
+
+
+        .progress-bar {
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--green),
+                    var(--copper)
+                );
+
+            border-radius: 20px;
+
+        }
+
+
+        .project-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 8px;
+
+            margin-top: 16px;
+
+        }
+
+
+        .info-box {
+
+            background: #F7F7F4;
+
+            border-radius: 10px;
+
+            padding: 9px;
+
+        }
+
+
+        .info-label {
+
+            color: var(--stone);
+
+            font-size: 10px;
+
+        }
+
+
+        .info-value {
+
+            color: var(--petroleum);
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            margin-top: 2px;
+
+        }
+
+
+        /* EMPTY */
+
+        .empty {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: var(--stone);
+
+        }
+
+
+        .empty-icon {
+
+            font-size: 48px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .empty h3 {
+
+            color: var(--petroleum);
+
+            font-size: 18px;
+
+        }
+
+
+        .empty p {
+
+            font-size: 13px;
+
+            margin-top: 5px;
+
+        }
+
+
+        /* MODAL */
+
+        .modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(11,41,52,.58);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 15px;
+
+            z-index: 500;
+
+        }
+
+
+        .modal.show {
+
+            display: flex;
+
+        }
+
+
+        .modal-box {
+
+            width: 100%;
+
+            max-width: 620px;
+
+            max-height: 92vh;
+
+            overflow-y: auto;
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+        }
+
+
+        .modal-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .modal-header h3 {
+
+            color: var(--petroleum);
+
+            font-size: 19px;
+
+        }
+
+
+        .close-btn {
+
+            width: 35px;
+
+            height: 35px;
+
+            border: 0;
+
+            border-radius: 9px;
+
+            background: #F0F1EF;
+
+            color: var(--stone);
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+        }
+
+
+        .field {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+
+        }
+
+
+        .field.full {
+
+            grid-column: 1 / -1;
+
+        }
+
+
+        .field label {
+
+            color: var(--petroleum);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .field input,
+        .field select,
+        .field textarea {
+
+            width: 100%;
+
+            border: 1px solid var(--border);
+
+            background: #FAFAF8;
+
+            border-radius: 10px;
+
+            padding: 11px;
+
+            outline: none;
+
+            color: #263238;
+
+        }
+
+
+        .field textarea {
+
+            min-height: 90px;
+
+            resize: vertical;
+
+        }
+
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+
+            border-color: var(--copper);
+
+            background: white;
+
+        }
+
+
+        .save-btn {
+
+            width: 100%;
+
+            border: 0;
+
+            background: var(--petroleum);
+
+            color: white;
+
+            padding: 13px;
+
+            border-radius: 11px;
+
+            margin-top: 18px;
+
+            cursor: pointer;
+
+            font-weight: 800;
+
+        }
+
+
+        .save-btn:disabled {
+
+            opacity: .6;
+
+            cursor: wait;
+
+        }
+
+
+        .message {
+
+            display: none;
+
+            margin-top: 12px;
+
+            padding: 10px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+        }
+
+
+        .message.error {
+
+            display: block;
+
+            background: #F9E8E7;
+
+            color: var(--danger);
+
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 900px) {
+
+            .projects-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            main {
+
+                padding:
+                    20px 13px 80px;
+
+            }
+
+
+            .page-header {
+
+                align-items: flex-start;
+
+            }
+
+
+            .page-header h2 {
+
+                font-size: 21px;
+
+            }
+
+
+            .add-btn {
+
+                padding:
+                    10px 12px;
+
+                font-size: 12px;
+
+            }
+
+
+            .projects-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .field.full {
+
+                grid-column: auto;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="topbar-inner">
+
+        <button
+            class="back-btn"
+            onclick="goHome()"
+        >
+            ←
+        </button>
+
+        <div class="title-area">
+
+            <h1>
+                دنيا العمران والترقية
+            </h1>
+
+            <p>
+                إدارة المشاريع
+            </p>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+                المشاريع
+            </h2>
+
+            <p>
+                جميع مشاريع الشركة وبياناتها
+            </p>
+
+        </div>
+
+
+        <button
+            class="add-btn"
+            onclick="openModal()"
+        >
+            ＋ مشروع جديد
+        </button>
+
+    </div>
+
+
+    <div
+        id="projectsGrid"
+        class="projects-grid"
+    >
+
+    </div>
+
+
+</main>
+
+
+<!-- ADD PROJECT MODAL -->
+
+<div
+    id="projectModal"
+    class="modal"
+>
+
+    <div class="modal-box">
+
+
+        <div class="modal-header">
+
+            <h3>
+                إضافة مشروع جديد
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="projectForm">
+
+
+            <div class="form-grid">
+
+
+                <div class="field full">
+
+                    <label>
+                        اسم المشروع *
+                    </label>
+
+                    <input
+                        id="name"
+                        required
+                        placeholder="مثال: بناء عمارة سكنية"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        الموقع
+                    </label>
+
+                    <input
+                        id="location"
+                        placeholder="البلدية / العنوان"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        صاحب المشروع
+                    </label>
+
+                    <input
+                        id="client_name"
+                        placeholder="اسم صاحب المشروع"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        المهندس المسؤول
+                    </label>
+
+                    <input
+                        id="engineer_name"
+                        placeholder="اسم المهندس"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        الميزانية بالدج
+                    </label>
+
+                    <input
+                        id="budget"
+                        type="number"
+                        min="0"
+                        placeholder="0"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        تاريخ البداية
+                    </label>
+
+                    <input
+                        id="start_date"
+                        type="date"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        تاريخ النهاية
+                    </label>
+
+                    <input
+                        id="end_date"
+                        type="date"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        نسبة الإنجاز %
+                    </label>
+
+                    <input
+                        id="progress"
+                        type="number"
+                        min="0"
+                        max="100"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        حالة المشروع
+                    </label>
+
+                    <select id="status">
+
+                        <option value="جاري">
+                            جاري
+                        </option>
+
+                        <option value="متوقف">
+                            متوقف
+                        </option>
+
+                        <option value="مكتمل">
+                            مكتمل
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>
+                        ملاحظات
+                    </label>
+
+                    <textarea
+                        id="notes"
+                        placeholder="ملاحظات حول المشروع..."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+
+            <button
+                id="saveBtn"
+                class="save-btn"
+                type="submit"
+            >
+                حفظ المشروع
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+function goHome() {
+
+    window.location.href = "/";
+
+}
+
+
+function openModal() {
+
+    document
+        .getElementById("projectModal")
+        .classList.add("show");
+
+}
+
+
+function closeModal() {
+
+    document
+        .getElementById("projectModal")
+        .classList.remove("show");
+
+    document
+        .getElementById("projectForm")
+        .reset();
+
+    document
+        .getElementById("progress")
+        .value = 0;
+
+    hideMessage();
+
+}
+
+
+function showError(message) {
+
+    const box =
+        document.getElementById("message");
+
+    box.textContent = message;
+
+    box.className =
+        "message error";
+
+}
+
+
+function hideMessage() {
+
+    const box =
+        document.getElementById("message");
+
+    box.textContent = "";
+
+    box.className =
+        "message";
+
+}
+
+
+function formatMoney(value) {
+
+    return Number(value || 0)
+        .toLocaleString("ar-DZ");
+
+}
+
+
+function statusClass(status) {
+
+    if (status === "مكتمل") {
+
+        return "status-done";
+
+    }
+
+    if (status === "متوقف") {
+
+        return "status-paused";
+
+    }
+
+    return "status-active";
+
+}
+
+
+function openProject(id) {
+
+    window.location.href =
+        "/project.html?id=" + id;
+
+}
+
+
+function renderProjects(projects) {
+
+    const grid =
+        document.getElementById(
+            "projectsGrid"
+        );
+
+
+    if (!projects.length) {
+
+        grid.innerHTML = `
+
+            <div class="empty"
+                 style="grid-column:1/-1">
+
+                <div class="empty-icon">
+                    🏗️
+                </div>
+
+                <h3>
+                    لا توجد مشاريع بعد
+                </h3>
+
+                <p>
+                    أضف أول مشروع للشركة للبدء.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    grid.innerHTML =
+        projects.map(project => {
+
+            const progress =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        Number(project.progress || 0)
+                    )
+                );
+
+
+            return `
+
+                <div
+                    class="project-card"
+                    onclick="openProject(${project.id})"
+                >
+
+                    <div class="project-top">
+
+                        <div class="project-icon">
+                            🏗️
+                        </div>
+
+                        <span
+                            class="status
+                            ${statusClass(project.status)}"
+                        >
+                            ${project.status || "جاري"}
+                        </span>
+
+                    </div>
+
+
+                    <div class="project-name">
+
+                        ${escapeHtml(project.name)}
+
+                    </div>
+
+
+                    <div class="project-location">
+
+                        📍
+                        ${escapeHtml(
+                            project.location || "الموقع غير محدد"
+                        )}
+
+                    </div>
+
+
+                    <div class="progress-area">
+
+                        <div class="progress-header">
+
+                            <span>
+                                نسبة الإنجاز
+                            </span>
+
+                            <strong>
+                                ${progress}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:${progress}%"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="project-info">
+
+                        <div class="info-box">
+
+                            <div class="info-label">
+                                الميزانية
+                            </div>
+
+                            <div class="info-value">
+                                ${formatMoney(project.budget)}
+                                دج
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <div class="info-label">
+                                المهندس
+                            </div>
+
+                            <div class="info-value">
+
+                                ${escapeHtml(
+                                    project.engineer_name || "-"
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+async function loadProjects() {
+
+    const grid =
+        document.getElementById(
+            "projectsGrid"
+        );
+
+
+    grid.innerHTML = `
+
+        <div class="empty"
+             style="grid-column:1/-1">
+
+            <div class="empty-icon">
+                ⏳
+            </div>
+
+            <p>
+                جاري تحميل المشاريع...
+            </p>
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch("/api/projects");
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "تعذر تحميل المشاريع"
+            );
+
+        }
+
+
+        renderProjects(
+            data.projects || []
+        );
+
+
+    } catch (error) {
+
+        grid.innerHTML = `
+
+            <div class="empty"
+                 style="grid-column:1/-1">
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    حدث خطأ
+                </h3>
+
+                <p>
+                    ${escapeHtml(error.message)}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+document
+    .getElementById("projectForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            hideMessage();
+
+
+            const saveBtn =
+                document.getElementById(
+                    "saveBtn"
+                );
+
+
+            saveBtn.disabled = true;
+
+            saveBtn.textContent =
+                "جاري الحفظ...";
+
+
+            const payload = {
+
+                name:
+                    document
+                    .getElementById("name")
+                    .value
+                    .trim(),
+
+                location:
+                    document
+                    .getElementById("location")
+                    .value
+                    .trim(),
+
+                client_name:
+                    document
+                    .getElementById("client_name")
+                    .value
+                    .trim(),
+
+                engineer_name:
+                    document
+                    .getElementById("engineer_name")
+                    .value
+                    .trim(),
+
+                start_date:
+                    document
+                    .getElementById("start_date")
+                    .value || null,
+
+                end_date:
+                    document
+                    .getElementById("end_date")
+                    .value || null,
+
+                budget:
+                    Number(
+                        document
+                        .getElementById("budget")
+                        .value
+                    ) || 0,
+
+                progress:
+                    Number(
+                        document
+                        .getElementById("progress")
+                        .value
+                    ) || 0,
+
+                status:
+                    document
+                    .getElementById("status")
+                    .value,
+
+                notes:
+                    document
+                    .getElementById("notes")
+                    .value
+                    .trim()
+
+            };
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/projects",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    payload
+                                )
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok ||
+                    !data.success) {
+
+                    throw new Error(
+                        data.message ||
+                        "تعذر حفظ المشروع"
+                    );
+
+                }
+
+
+                closeModal();
+
+                await loadProjects();
+
+
+            } catch (error) {
+
+                showError(
+                    error.message
+                );
+
+
+            } finally {
+
+                saveBtn.disabled = false;
+
+                saveBtn.textContent =
+                    "حفظ المشروع";
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("projectModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+loadProjects();
+
+
+</script>
+
+</body>
+
+</html>
