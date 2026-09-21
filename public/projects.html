@@ -6,10 +6,11 @@
 
 <title>المشاريع | دنيا العمران والترقية</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
     --petroleum:#123B4A;
     --dark:#0B2934;
@@ -17,9 +18,10 @@
     --copper:#C47735;
     --ivory:#F5F3EE;
     --gray:#68757A;
-    --white:#ffffff;
-    --danger:#B84040;
+    --white:#fff;
+    --red:#B94A48;
     --shadow:0 10px 30px rgba(11,41,52,.10);
+    --radius:18px;
 }
 
 *{
@@ -35,72 +37,69 @@ body{
     min-height:100vh;
 }
 
+button,
+input,
+textarea,
+select{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
 /* =========================
-   HEADER
+   TOPBAR
 ========================= */
 
-.header{
-    background:linear-gradient(135deg,var(--dark),var(--petroleum));
+.topbar{
+    background:linear-gradient(
+        135deg,
+        var(--dark),
+        var(--petroleum)
+    );
     color:white;
-    padding:18px 20px;
+    padding:15px 20px;
     position:sticky;
     top:0;
     z-index:100;
     box-shadow:0 5px 20px rgba(0,0,0,.15);
 }
 
-.header-inner{
-    max-width:1200px;
+.topbar-inner{
+    width:min(1200px,94%);
     margin:auto;
     display:flex;
     align-items:center;
-    justify-content:space-between;
-    gap:15px;
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.logo{
-    width:48px;
-    height:48px;
-    border-radius:14px;
-    background:linear-gradient(135deg,var(--copper),#e0a260);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-size:24px;
-    box-shadow:0 5px 15px rgba(196,119,53,.3);
-}
-
-.brand-text h1{
-    font-size:18px;
-    font-weight:900;
-}
-
-.brand-text span{
-    font-size:11px;
-    opacity:.75;
+    gap:14px;
 }
 
 .back-btn{
-    border:1px solid rgba(255,255,255,.18);
-    background:rgba(255,255,255,.08);
-    color:white;
-    border-radius:12px;
-    padding:10px 15px;
-    cursor:pointer;
-    font-family:inherit;
-    font-weight:700;
-    transition:.2s;
+    width:44px;
+    height:44px;
+    border:0;
+    border-radius:13px;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    font-size:22px;
 }
 
 .back-btn:hover{
-    background:rgba(255,255,255,.15);
+    background:rgba(255,255,255,.20);
+}
+
+.brand{
+    flex:1;
+}
+
+.brand h1{
+    font-size:19px;
+    font-weight:900;
+}
+
+.brand p{
+    font-size:11px;
+    opacity:.75;
 }
 
 /* =========================
@@ -108,46 +107,100 @@ body{
 ========================= */
 
 .container{
-    max-width:1200px;
-    margin:auto;
-    padding:25px 18px 50px;
+    width:min(1200px,94%);
+    margin:25px auto 50px;
 }
 
-.page-top{
+/* =========================
+   PAGE HEADER
+========================= */
+
+.page-header{
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     gap:15px;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
 .page-title h2{
-    font-size:28px;
+    font-size:27px;
     font-weight:900;
-    color:var(--dark);
+    color:var(--petroleum);
 }
 
 .page-title p{
     color:var(--gray);
-    font-size:13px;
+    font-size:12px;
     margin-top:3px;
 }
 
-.add-btn{
-    background:linear-gradient(135deg,var(--copper),#d89250);
+.primary-btn{
+    border:0;
+    background:linear-gradient(
+        135deg,
+        var(--copper),
+        #a95e25
+    );
     color:white;
-    border:none;
-    border-radius:14px;
-    padding:13px 20px;
-    font-family:inherit;
-    font-weight:800;
-    cursor:pointer;
-    box-shadow:0 8px 20px rgba(196,119,53,.22);
-    transition:.2s;
+    padding:12px 18px;
+    border-radius:13px;
+    font-size:13px;
+    font-weight:900;
+    box-shadow:0 7px 18px rgba(196,119,53,.25);
 }
 
-.add-btn:hover{
-    transform:translateY(-2px);
+.primary-btn:hover{
+    transform:translateY(-1px);
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar{
+    background:white;
+    border-radius:17px;
+    padding:15px;
+    box-shadow:var(--shadow);
+    display:grid;
+    grid-template-columns:1fr 180px;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.search-box{
+    position:relative;
+}
+
+.search-box span{
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--gray);
+}
+
+.search-box input,
+.toolbar select{
+    width:100%;
+    border:1px solid #e0e4e3;
+    background:#fafafa;
+    border-radius:12px;
+    padding:12px 40px 12px 12px;
+    outline:none;
+    font-size:12px;
+    color:var(--dark);
+}
+
+.toolbar select{
+    padding:12px;
+}
+
+.search-box input:focus,
+.toolbar select:focus{
+    border-color:var(--copper);
+    background:white;
 }
 
 /* =========================
@@ -157,139 +210,216 @@ body{
 .projects-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:20px;
+    gap:18px;
 }
+
+/* =========================
+   PROJECT CARD
+========================= */
 
 .project-card{
     background:white;
     border-radius:20px;
-    padding:20px;
     box-shadow:var(--shadow);
-    border:1px solid rgba(18,59,74,.06);
-    transition:.25s;
-    cursor:pointer;
-    position:relative;
     overflow:hidden;
-}
-
-.project-card::before{
-    content:"";
-    position:absolute;
-    top:0;
-    right:0;
-    left:0;
-    height:5px;
-    background:linear-gradient(90deg,var(--copper),var(--green));
+    border:1px solid rgba(18,59,74,.06);
+    cursor:pointer;
+    transition:.25s ease;
 }
 
 .project-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 18px 40px rgba(11,41,52,.15);
+    transform:translateY(-4px);
+    box-shadow:0 15px 35px rgba(11,41,52,.15);
 }
 
-.project-icon{
-    width:52px;
-    height:52px;
-    border-radius:15px;
-    background:#edf3f2;
-    color:var(--petroleum);
+.card-top{
+    background:linear-gradient(
+        135deg,
+        var(--petroleum),
+        var(--dark)
+    );
+    color:white;
+    padding:19px;
+    position:relative;
+}
+
+.card-top::after{
+    content:"";
+    position:absolute;
+    width:100px;
+    height:100px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+    left:-30px;
+    top:-35px;
+}
+
+.card-top-content{
+    position:relative;
+    z-index:2;
+}
+
+.project-name-row{
     display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:25px;
-    margin-bottom:15px;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
 }
 
 .project-name{
-    font-size:19px;
+    font-size:17px;
     font-weight:900;
-    color:var(--dark);
-    margin-bottom:6px;
-}
-
-.project-location{
-    font-size:12px;
-    color:var(--gray);
-    margin-bottom:15px;
-}
-
-.status-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
+    line-height:1.5;
 }
 
 .status{
-    padding:5px 10px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:800;
-}
-
-.status-active{
-    background:#e7f3ef;
-    color:#276b59;
-}
-
-.status-finished{
-    background:#e8edf0;
-    color:#50616a;
-}
-
-.status-paused{
-    background:#fff0df;
-    color:#a85d20;
-}
-
-.status-cancelled{
-    background:#f8e4e4;
-    color:#a33b3b;
-}
-
-.progress-value{
-    font-size:12px;
+    padding:5px 9px;
+    border-radius:30px;
+    font-size:9px;
     font-weight:900;
-    color:var(--petroleum);
+    white-space:nowrap;
+}
+
+.status.active{
+    background:#d9f0e9;
+    color:#236052;
+}
+
+.status.pending{
+    background:#fff0d8;
+    color:#946020;
+}
+
+.status.completed{
+    background:#dce8ed;
+    color:#285261;
+}
+
+.status.cancelled{
+    background:#f6dede;
+    color:#9b3838;
+}
+
+.location{
+    margin-top:8px;
+    color:rgba(255,255,255,.75);
+    font-size:11px;
+}
+
+.card-body{
+    padding:17px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:7px 0;
+    font-size:11px;
+    border-bottom:1px solid #f0f0ee;
+}
+
+.info-row:last-child{
+    border-bottom:0;
+}
+
+.info-label{
+    color:var(--gray);
+}
+
+.info-value{
+    color:var(--dark);
+    font-weight:800;
+    text-align:left;
+}
+
+.progress-wrap{
+    margin-top:12px;
+}
+
+.progress-head{
+    display:flex;
+    justify-content:space-between;
+    font-size:10px;
+    margin-bottom:5px;
+}
+
+.progress-percent{
+    color:var(--copper);
+    font-weight:900;
 }
 
 .progress{
-    width:100%;
     height:8px;
-    background:#e8ecec;
+    background:#edf0ef;
     border-radius:20px;
     overflow:hidden;
-    margin-bottom:17px;
 }
 
 .progress-bar{
     height:100%;
+    background:linear-gradient(
+        90deg,
+        var(--copper),
+        #e3a366
+    );
     border-radius:20px;
-    background:linear-gradient(90deg,var(--green),var(--copper));
 }
 
-.info-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:9px;
+.card-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:15px;
+    padding-top:12px;
+    border-top:1px solid #eee;
 }
 
-.info-box{
-    background:#f7f8f7;
-    border-radius:12px;
-    padding:10px;
-}
-
-.info-label{
+.view-btn{
+    border:0;
+    background:#edf3f2;
+    color:var(--petroleum);
+    border-radius:10px;
+    padding:8px 12px;
     font-size:10px;
-    color:var(--gray);
-    margin-bottom:2px;
+    font-weight:900;
 }
 
-.info-value{
+.view-btn:hover{
+    background:#dfe9e7;
+}
+
+.project-id{
+    color:#9aa3a6;
+    font-size:9px;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+    background:white;
+    border-radius:20px;
+    padding:55px 20px;
+    text-align:center;
+    box-shadow:var(--shadow);
+    grid-column:1/-1;
+}
+
+.empty-icon{
+    font-size:48px;
+    margin-bottom:10px;
+}
+
+.empty h3{
+    color:var(--petroleum);
+    margin-bottom:6px;
+}
+
+.empty p{
+    color:var(--gray);
     font-size:12px;
-    font-weight:800;
-    color:var(--dark);
 }
 
 /* =========================
@@ -297,19 +427,23 @@ body{
 ========================= */
 
 .loading{
+    background:white;
+    border-radius:20px;
+    padding:55px 20px;
     text-align:center;
-    padding:70px 20px;
+    box-shadow:var(--shadow);
+    grid-column:1/-1;
     color:var(--gray);
 }
 
-.loader{
-    width:45px;
-    height:45px;
-    border:4px solid #dfe5e5;
+.spinner{
+    width:42px;
+    height:42px;
+    border:4px solid #e5e7e7;
     border-top-color:var(--copper);
     border-radius:50%;
     animation:spin 1s linear infinite;
-    margin:0 auto 15px;
+    margin:0 auto 13px;
 }
 
 @keyframes spin{
@@ -319,47 +453,19 @@ body{
 }
 
 /* =========================
-   EMPTY / ERROR
-========================= */
-
-.empty{
-    grid-column:1/-1;
-    background:white;
-    border-radius:20px;
-    padding:60px 20px;
-    text-align:center;
-    box-shadow:var(--shadow);
-}
-
-.empty-icon{
-    font-size:55px;
-    margin-bottom:15px;
-}
-
-.empty h3{
-    font-size:20px;
-    margin-bottom:7px;
-}
-
-.empty p{
-    color:var(--gray);
-    font-size:13px;
-}
-
-/* =========================
    MODAL
 ========================= */
 
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(5,20,25,.65);
+    background:rgba(5,25,32,.65);
     backdrop-filter:blur(5px);
     display:none;
     align-items:center;
     justify-content:center;
-    padding:20px;
-    z-index:500;
+    padding:15px;
+    z-index:1000;
 }
 
 .modal.show{
@@ -367,43 +473,50 @@ body{
 }
 
 .modal-box{
-    width:100%;
-    max-width:650px;
-    max-height:90vh;
-    overflow-y:auto;
     background:white;
-    border-radius:24px;
-    box-shadow:0 30px 80px rgba(0,0,0,.25);
-    padding:25px;
+    width:min(650px,100%);
+    max-height:92vh;
+    overflow-y:auto;
+    border-radius:22px;
+    box-shadow:0 25px 70px rgba(0,0,0,.25);
 }
 
 .modal-header{
+    background:linear-gradient(
+        135deg,
+        var(--dark),
+        var(--petroleum)
+    );
+    color:white;
+    padding:19px 20px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    margin-bottom:22px;
+    justify-content:space-between;
 }
 
 .modal-header h3{
-    font-size:21px;
+    font-size:18px;
     font-weight:900;
 }
 
 .close-btn{
     width:38px;
     height:38px;
-    border:none;
-    border-radius:12px;
-    background:#f0f2f2;
-    color:var(--dark);
+    border:0;
+    border-radius:11px;
+    background:rgba(255,255,255,.12);
+    color:white;
     font-size:20px;
-    cursor:pointer;
+}
+
+.modal-body{
+    padding:20px;
 }
 
 .form-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
+    grid-template-columns:repeat(2,1fr);
+    gap:13px;
 }
 
 .form-group{
@@ -417,64 +530,59 @@ body{
 }
 
 .form-group label{
-    font-size:12px;
+    font-size:11px;
     font-weight:800;
-    color:var(--dark);
+    color:var(--petroleum);
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea{
     width:100%;
-    border:1px solid #dce2e2;
-    background:#fafbfb;
-    border-radius:12px;
-    padding:12px;
-    font-family:inherit;
-    font-size:13px;
-    color:var(--dark);
+    border:1px solid #dfe4e3;
+    background:#fafafa;
+    border-radius:11px;
+    padding:11px;
     outline:none;
-    transition:.2s;
+    font-size:12px;
+    color:var(--dark);
+}
+
+.form-group textarea{
+    resize:vertical;
+    min-height:90px;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus{
     border-color:var(--copper);
-    box-shadow:0 0 0 3px rgba(196,119,53,.10);
     background:white;
 }
 
-.form-group textarea{
-    min-height:100px;
-    resize:vertical;
-}
-
-.modal-actions{
+.modal-footer{
+    padding:15px 20px 20px;
     display:flex;
+    justify-content:flex-start;
     gap:10px;
-    margin-top:22px;
 }
 
-.save-btn,
 .cancel-btn{
-    flex:1;
-    padding:13px;
-    border:none;
-    border-radius:13px;
-    font-family:inherit;
+    border:0;
+    background:#edf0ef;
+    color:var(--dark);
+    padding:11px 18px;
+    border-radius:11px;
     font-weight:800;
-    cursor:pointer;
 }
 
 .save-btn{
+    border:0;
     background:var(--petroleum);
     color:white;
-}
-
-.cancel-btn{
-    background:#edf0f0;
-    color:var(--dark);
+    padding:11px 20px;
+    border-radius:11px;
+    font-weight:900;
 }
 
 /* =========================
@@ -483,85 +591,63 @@ body{
 
 .toast{
     position:fixed;
-    bottom:25px;
     left:50%;
+    bottom:25px;
     transform:translateX(-50%) translateY(100px);
     background:var(--dark);
     color:white;
-    padding:13px 20px;
-    border-radius:14px;
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
-    font-size:13px;
+    padding:12px 20px;
+    border-radius:13px;
+    font-size:12px;
     font-weight:700;
-    z-index:1000;
     opacity:0;
     transition:.3s;
+    z-index:2000;
 }
 
 .toast.show{
-    transform:translateX(-50%) translateY(0);
     opacity:1;
+    transform:translateX(-50%) translateY(0);
 }
 
 /* =========================
-   RESPONSIVE
+   MOBILE
 ========================= */
 
 @media(max-width:950px){
+
     .projects-grid{
         grid-template-columns:repeat(2,1fr);
     }
+
 }
 
 @media(max-width:650px){
 
-    .header{
-        padding:14px;
-    }
-
-    .brand-text h1{
-        font-size:15px;
-    }
-
-    .brand-text span{
-        display:none;
-    }
-
-    .logo{
-        width:42px;
-        height:42px;
-        font-size:20px;
-    }
-
     .container{
-        padding:20px 12px 40px;
+        width:94%;
+        margin-top:17px;
     }
 
-    .page-top{
+    .page-header{
         align-items:flex-start;
     }
 
     .page-title h2{
-        font-size:23px;
+        font-size:22px;
     }
 
-    .page-title p{
+    .primary-btn{
+        padding:10px 12px;
         font-size:11px;
     }
 
-    .add-btn{
-        padding:11px 13px;
-        font-size:12px;
-        white-space:nowrap;
+    .toolbar{
+        grid-template-columns:1fr;
     }
 
     .projects-grid{
         grid-template-columns:1fr;
-        gap:15px;
-    }
-
-    .project-card{
-        padding:17px;
     }
 
     .form-grid{
@@ -572,49 +658,37 @@ body{
         grid-column:auto;
     }
 
-    .modal{
-        padding:10px;
+    .modal-header h3{
+        font-size:16px;
     }
 
-    .modal-box{
-        padding:18px;
-        border-radius:20px;
-    }
-
-    .back-btn{
-        padding:8px 11px;
-        font-size:11px;
-    }
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+<header class="topbar">
 
-<header class="header">
+    <div class="topbar-inner">
 
-    <div class="header-inner">
+        <button
+            class="back-btn"
+            onclick="goHome()"
+            title="الرئيسية">
+            ←
+        </button>
 
         <div class="brand">
-
-            <div class="logo">
-                🏗️
-            </div>
-
-            <div class="brand-text">
-                <h1>دنيا العمران والترقية</h1>
-                <span>نظام تسيير مشاريع البناء والمقاولات</span>
-            </div>
-
+            <h1>دنيا العمران والترقية</h1>
+            <p>نظام تسيير مشاريع البناء والمقاولات</p>
         </div>
 
-        <button class="back-btn" onclick="goHome()">
-            ← الرئيسية
+        <button
+            class="back-btn"
+            onclick="loadProjects()"
+            title="تحديث المشاريع">
+            ↻
         </button>
 
     </div>
@@ -622,31 +696,86 @@ body{
 </header>
 
 
-<!-- =========================
-     MAIN
-========================= -->
-
 <main class="container">
 
-    <div class="page-top">
+    <!-- HEADER -->
+
+    <section class="page-header">
 
         <div class="page-title">
+
             <h2>المشاريع</h2>
-            <p>إدارة ومتابعة جميع مشاريع المؤسسة</p>
+
+            <p>
+                جميع مشاريع الشركة ومتابعة تقدمها
+            </p>
+
         </div>
 
-        <button class="add-btn" onclick="openModal()">
+        <button
+            class="primary-btn"
+            onclick="openModal()">
             ＋ مشروع جديد
         </button>
 
-    </div>
+    </section>
 
 
-    <div id="projectsGrid" class="projects-grid">
+    <!-- SEARCH -->
+
+    <section class="toolbar">
+
+        <div class="search-box">
+
+            <span>🔎</span>
+
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="ابحث عن مشروع، موقع أو عميل..."
+                oninput="filterProjects()">
+
+        </div>
+
+
+        <select
+            id="statusFilter"
+            onchange="filterProjects()">
+
+            <option value="all">
+                كل الحالات
+            </option>
+
+            <option value="active">
+                نشط
+            </option>
+
+            <option value="pending">
+                قيد الانتظار
+            </option>
+
+            <option value="completed">
+                مكتمل
+            </option>
+
+            <option value="cancelled">
+                ملغى
+            </option>
+
+        </select>
+
+    </section>
+
+
+    <!-- PROJECTS -->
+
+    <section
+        id="projectsGrid"
+        class="projects-grid">
 
         <div class="loading">
 
-            <div class="loader"></div>
+            <div class="spinner"></div>
 
             <div>
                 جاري تحميل المشاريع...
@@ -654,217 +783,225 @@ body{
 
         </div>
 
-    </div>
+    </section>
 
 </main>
 
 
 <!-- =========================
-     ADD PROJECT MODAL
+     NEW PROJECT MODAL
 ========================= -->
 
-<div id="projectModal" class="modal">
+<div
+    id="projectModal"
+    class="modal">
 
     <div class="modal-box">
 
         <div class="modal-header">
 
-            <h3>🏗️ إضافة مشروع جديد</h3>
+            <h3>
+                🏗️ إنشاء مشروع جديد
+            </h3>
 
-            <button class="close-btn" onclick="closeModal()">
+            <button
+                class="close-btn"
+                onclick="closeModal()">
                 ×
             </button>
 
         </div>
 
 
-        <form id="projectForm">
+        <form
+            id="projectForm"
+            onsubmit="createProject(event)">
 
-            <div class="form-grid">
+            <div class="modal-body">
 
-                <div class="form-group full">
+                <div class="form-grid">
 
-                    <label>
-                        اسم المشروع *
-                    </label>
+                    <div class="form-group full">
 
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="مثال: مشروع بناء 50 مسكن"
-                        required
-                    >
+                        <label>
+                            اسم المشروع *
+                        </label>
 
-                </div>
+                        <input
+                            id="name"
+                            name="name"
+                            required
+                            placeholder="مثال: مشروع بناء 40 مسكن">
 
-
-                <div class="form-group">
-
-                    <label>
-                        الموقع
-                    </label>
-
-                    <input
-                        type="text"
-                        id="location"
-                        placeholder="مثال: غليزان"
-                    >
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        اسم العميل
-                    </label>
+                        <label>
+                            الموقع
+                        </label>
 
-                    <input
-                        type="text"
-                        id="client_name"
-                        placeholder="اسم العميل أو صاحب المشروع"
-                    >
+                        <input
+                            id="location"
+                            name="location"
+                            placeholder="المدينة / البلدية">
 
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        المهندس المسؤول
-                    </label>
-
-                    <input
-                        type="text"
-                        id="engineer_name"
-                        placeholder="اسم المهندس"
-                    >
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        الميزانية
-                    </label>
+                        <label>
+                            صاحب المشروع
+                        </label>
 
-                    <input
-                        type="number"
-                        id="budget"
-                        placeholder="0"
-                        min="0"
-                    >
+                        <input
+                            id="client_name"
+                            name="client_name"
+                            placeholder="اسم العميل">
 
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        تاريخ البداية
-                    </label>
+                        <label>
+                            المهندس
+                        </label>
 
-                    <input
-                        type="date"
-                        id="start_date"
-                    >
+                        <input
+                            id="engineer_name"
+                            name="engineer_name"
+                            placeholder="اسم المهندس">
 
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        تاريخ النهاية
-                    </label>
-
-                    <input
-                        type="date"
-                        id="end_date"
-                    >
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        نسبة الإنجاز %
-                    </label>
+                        <label>
+                            الميزانية
+                        </label>
 
-                    <input
-                        type="number"
-                        id="progress"
-                        placeholder="0"
-                        min="0"
-                        max="100"
-                        value="0"
-                    >
+                        <input
+                            id="budget"
+                            name="budget"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            placeholder="0">
 
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        حالة المشروع
-                    </label>
-
-                    <select id="status">
-
-                        <option value="active">
-                            قيد الإنجاز
-                        </option>
-
-                        <option value="finished">
-                            مكتمل
-                        </option>
-
-                        <option value="paused">
-                            متوقف
-                        </option>
-
-                        <option value="cancelled">
-                            ملغى
-                        </option>
-
-                    </select>
-
-                </div>
+                    </div>
 
 
-                <div class="form-group full">
+                    <div class="form-group">
 
-                    <label>
-                        ملاحظات
-                    </label>
+                        <label>
+                            تاريخ البداية
+                        </label>
 
-                    <textarea
-                        id="notes"
-                        placeholder="أدخل أي معلومات أو ملاحظات إضافية..."
-                    ></textarea>
+                        <input
+                            id="start_date"
+                            name="start_date"
+                            type="date">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            تاريخ النهاية
+                        </label>
+
+                        <input
+                            id="end_date"
+                            name="end_date"
+                            type="date">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            نسبة الإنجاز %
+                        </label>
+
+                        <input
+                            id="progress"
+                            name="progress"
+                            type="number"
+                            min="0"
+                            max="100"
+                            value="0">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            الحالة
+                        </label>
+
+                        <select
+                            id="status"
+                            name="status">
+
+                            <option value="active">
+                                نشط
+                            </option>
+
+                            <option value="pending">
+                                قيد الانتظار
+                            </option>
+
+                            <option value="completed">
+                                مكتمل
+                            </option>
+
+                            <option value="cancelled">
+                                ملغى
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            ملاحظات
+                        </label>
+
+                        <textarea
+                            id="notes"
+                            name="notes"
+                            placeholder="اكتب أي ملاحظات خاصة بالمشروع..."></textarea>
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <div class="modal-actions">
+            <div class="modal-footer">
 
                 <button
                     type="button"
                     class="cancel-btn"
-                    onclick="closeModal()"
-                >
+                    onclick="closeModal()">
                     إلغاء
                 </button>
 
                 <button
-                    type="submit"
-                    class="save-btn"
                     id="saveBtn"
-                >
+                    type="submit"
+                    class="save-btn">
                     حفظ المشروع
                 </button>
 
@@ -877,264 +1014,219 @@ body{
 </div>
 
 
-<div id="toast" class="toast"></div>
+<div
+    id="toast"
+    class="toast">
+</div>
 
 
 <script>
 
-/* =========================
-   VARIABLES
-========================= */
+/* =========================================================
+   DATA
+========================================================= */
 
-const projectsGrid =
-    document.getElementById("projectsGrid");
-
-const modal =
-    document.getElementById("projectModal");
-
-const projectForm =
-    document.getElementById("projectForm");
-
-const saveBtn =
-    document.getElementById("saveBtn");
-
-let toastTimer = null;
+let allProjects = [];
 
 
-/* =========================
-   HOME
-========================= */
+/* =========================================================
+   HELPERS
+========================================================= */
 
-function goHome(){
-
-    window.location.href = "/";
-
+function $(id){
+    return document.getElementById(id);
 }
 
 
-/* =========================
-   MODAL
-========================= */
+function escapeHTML(value){
 
-function openModal(){
-
-    projectForm.reset();
-
-    document.getElementById("progress").value = 0;
-
-    document.getElementById("status").value = "active";
-
-    modal.classList.add("show");
-
-}
-
-
-function closeModal(){
-
-    modal.classList.remove("show");
-
-}
-
-
-modal.addEventListener("click", function(e){
-
-    if(e.target === modal){
-
-        closeModal();
-
+    if(value === null || value === undefined){
+        return "";
     }
 
-});
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
 
 
-/* =========================
-   TOAST
-========================= */
+function formatMoney(value){
+
+    const number = Number(value || 0);
+
+    return number.toLocaleString("ar-DZ") + " دج";
+}
+
+
+function formatDate(value){
+
+    if(!value){
+        return "—";
+    }
+
+    try{
+
+        const date = new Date(value);
+
+        if(Number.isNaN(date.getTime())){
+            return escapeHTML(value);
+        }
+
+        return date.toLocaleDateString(
+            "ar-DZ",
+            {
+                year:"numeric",
+                month:"short",
+                day:"numeric"
+            }
+        );
+
+    }catch(error){
+
+        return escapeHTML(value);
+
+    }
+}
+
 
 function showToast(message){
 
-    const toast =
-        document.getElementById("toast");
+    const toast = $("toast");
 
     toast.textContent = message;
 
     toast.classList.add("show");
 
-    clearTimeout(toastTimer);
-
-    toastTimer = setTimeout(() => {
-
+    setTimeout(()=>{
         toast.classList.remove("show");
-
-    }, 3000);
-
+    },2500);
 }
 
 
-/* =========================
-   ESCAPE HTML
-========================= */
-
-function escapeHTML(value){
-
-    if(value === null || value === undefined){
-
-        return "";
-
-    }
-
-    return String(value)
-
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* =========================
+/* =========================================================
    STATUS
-========================= */
+========================================================= */
 
 function getStatusInfo(status){
 
-    switch(status){
+    const value =
+        String(status || "").toLowerCase();
 
-        case "finished":
 
-            return {
-                text:"مكتمل",
-                className:"status-finished"
-            };
+    if(
+        value === "completed" ||
+        value.includes("مكتمل") ||
+        value.includes("منتهي")
+    ){
 
-        case "paused":
-
-            return {
-                text:"متوقف",
-                className:"status-paused"
-            };
-
-        case "cancelled":
-
-            return {
-                text:"ملغى",
-                className:"status-cancelled"
-            };
-
-        case "active":
-
-        default:
-
-            return {
-                text:"قيد الإنجاز",
-                className:"status-active"
-            };
+        return {
+            text:"مكتمل",
+            className:"completed"
+        };
 
     }
+
+
+    if(
+        value === "pending" ||
+        value.includes("قيد") ||
+        value.includes("انتظار")
+    ){
+
+        return {
+            text:"قيد الانتظار",
+            className:"pending"
+        };
+
+    }
+
+
+    if(
+        value === "cancelled" ||
+        value.includes("ملغ")
+    ){
+
+        return {
+            text:"ملغى",
+            className:"cancelled"
+        };
+
+    }
+
+
+    return {
+        text:"نشط",
+        className:"active"
+    };
 
 }
 
 
-/* =========================
-   FORMAT MONEY
-========================= */
-
-function formatMoney(value){
-
-    const number =
-        Number(value || 0);
-
-    return new Intl.NumberFormat(
-        "ar-DZ"
-    ).format(number);
-
-}
-
-
-/* =========================
-   FORMAT DATE
-========================= */
-
-function formatDate(value){
-
-    if(!value){
-
-        return "—";
-
-    }
-
-    try{
-
-        return new Date(value).toLocaleDateString(
-            "ar-DZ"
-        );
-
-    }catch(e){
-
-        return value;
-
-    }
-
-}
-
-
-/* =========================
+/* =========================================================
    LOAD PROJECTS
-========================= */
+========================================================= */
 
 async function loadProjects(){
 
-    projectsGrid.innerHTML = `
+    const grid =
+        $("projectsGrid");
 
+
+    grid.innerHTML = `
         <div class="loading">
 
-            <div class="loader"></div>
+            <div class="spinner"></div>
 
             <div>
                 جاري تحميل المشاريع...
             </div>
 
         </div>
-
     `;
+
 
     try{
 
         const response =
             await fetch("/api/projects");
 
+
         if(!response.ok){
 
             throw new Error(
-                "HTTP " + response.status
+                "تعذر الاتصال بالخادم."
             );
 
         }
+
 
         const data =
             await response.json();
 
 
-        let projects = [];
-
         if(Array.isArray(data)){
 
-            projects = data;
+            allProjects = data;
 
-        }else if(Array.isArray(data.projects)){
+        }else if(
+            data &&
+            Array.isArray(data.projects)
+        ){
 
-            projects = data.projects;
+            allProjects =
+                data.projects;
 
-        }else if(Array.isArray(data.data)){
+        }else{
 
-            projects = data.data;
+            allProjects = [];
 
         }
 
 
-        renderProjects(projects);
+        filterProjects();
 
 
     }catch(error){
@@ -1145,8 +1237,7 @@ async function loadProjects(){
         );
 
 
-        projectsGrid.innerHTML = `
-
+        grid.innerHTML = `
             <div class="empty">
 
                 <div class="empty-icon">
@@ -1158,19 +1249,21 @@ async function loadProjects(){
                 </h3>
 
                 <p>
-                    تأكد من اتصال الخادم وقاعدة البيانات ثم حاول مرة أخرى.
+                    ${escapeHTML(
+                        error.message ||
+                        "حدث خطأ غير معروف."
+                    )}
                 </p>
 
+                <br>
+
                 <button
-                    class="add-btn"
-                    style="margin-top:18px"
-                    onclick="loadProjects()"
-                >
+                    class="primary-btn"
+                    onclick="loadProjects()">
                     إعادة المحاولة
                 </button>
 
             </div>
-
         `;
 
     }
@@ -1178,16 +1271,89 @@ async function loadProjects(){
 }
 
 
-/* =========================
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterProjects(){
+
+    const search =
+        $("searchInput")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const status =
+        $("statusFilter")
+            .value;
+
+
+    const filtered =
+        allProjects.filter(project=>{
+
+            const searchable = [
+                project.name,
+                project.location,
+                project.client_name,
+                project.engineer_name,
+                project.notes
+            ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+            const matchesSearch =
+                !search ||
+                searchable.includes(search);
+
+
+            let matchesStatus = true;
+
+
+            if(status !== "all"){
+
+                const projectStatus =
+                    String(
+                        project.status ||
+                        "active"
+                    )
+                    .toLowerCase();
+
+
+                matchesStatus =
+                    projectStatus === status;
+
+            }
+
+
+            return (
+                matchesSearch &&
+                matchesStatus
+            );
+
+        });
+
+
+    renderProjects(filtered);
+
+}
+
+
+/* =========================================================
    RENDER PROJECTS
-========================= */
+========================================================= */
 
 function renderProjects(projects){
 
+    const grid =
+        $("projectsGrid");
+
+
     if(!projects.length){
 
-        projectsGrid.innerHTML = `
-
+        grid.innerHTML = `
             <div class="empty">
 
                 <div class="empty-icon">
@@ -1195,177 +1361,212 @@ function renderProjects(projects){
                 </div>
 
                 <h3>
-                    لا توجد مشاريع بعد
+                    لا توجد مشاريع
                 </h3>
 
                 <p>
-                    ابدأ بإضافة أول مشروع للمؤسسة.
+                    لم يتم العثور على مشروع مطابق للبحث.
                 </p>
 
             </div>
-
         `;
 
         return;
-
     }
 
 
-    projectsGrid.innerHTML =
-        projects.map(project => {
+    let html = "";
 
-            const status =
-                getStatusInfo(project.status);
 
-            const progress =
+    projects.forEach(project=>{
+
+        const statusInfo =
+            getStatusInfo(project.status);
+
+
+        const progress =
+            Math.max(
+                0,
                 Math.min(
                     100,
-                    Math.max(
-                        0,
-                        Number(project.progress || 0)
+                    Number(
+                        project.progress || 0
                     )
-                );
+                )
+            );
 
 
-            return `
+        html += `
+            <article
+                class="project-card"
+                onclick="openProject(${Number(project.id)})">
 
-                <div
-                    class="project-card"
-                    onclick="openProject(${Number(project.id)})"
-                >
+                <div class="card-top">
 
-                    <div class="project-icon">
-                        🏗️
-                    </div>
+                    <div class="card-top-content">
 
+                        <div class="project-name-row">
 
-                    <div class="project-name">
-
-                        ${escapeHTML(
-                            project.name || "مشروع بدون اسم"
-                        )}
-
-                    </div>
-
-
-                    <div class="project-location">
-
-                        📍
-                        ${escapeHTML(
-                            project.location || "الموقع غير محدد"
-                        )}
-
-                    </div>
-
-
-                    <div class="status-row">
-
-                        <span
-                            class="status ${status.className}"
-                        >
-                            ${status.text}
-                        </span>
-
-                        <span class="progress-value">
-                            ${progress}%
-                        </span>
-
-                    </div>
-
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar"
-                            style="width:${progress}%"
-                        ></div>
-
-                    </div>
-
-
-                    <div class="info-grid">
-
-                        <div class="info-box">
-
-                            <div class="info-label">
-                                العميل
-                            </div>
-
-                            <div class="info-value">
-
+                            <div class="project-name">
                                 ${escapeHTML(
-                                    project.client_name || "—"
+                                    project.name ||
+                                    "مشروع بدون اسم"
                                 )}
-
                             </div>
+
+                            <span
+                                class="status ${statusInfo.className}">
+                                ${statusInfo.text}
+                            </span>
 
                         </div>
 
-
-                        <div class="info-box">
-
-                            <div class="info-label">
-                                المهندس
-                            </div>
-
-                            <div class="info-value">
-
-                                ${escapeHTML(
-                                    project.engineer_name || "—"
-                                )}
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-box">
-
-                            <div class="info-label">
-                                الميزانية
-                            </div>
-
-                            <div class="info-value">
-
-                                ${formatMoney(
-                                    project.budget
-                                )} دج
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-box">
-
-                            <div class="info-label">
-                                البداية
-                            </div>
-
-                            <div class="info-value">
-
-                                ${formatDate(
-                                    project.start_date
-                                )}
-
-                            </div>
-
+                        <div class="location">
+                            📍 ${escapeHTML(
+                                project.location ||
+                                "الموقع غير محدد"
+                            )}
                         </div>
 
                     </div>
 
                 </div>
 
-            `;
 
-        }).join("");
+                <div class="card-body">
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            صاحب المشروع
+                        </span>
+
+                        <span class="info-value">
+                            ${escapeHTML(
+                                project.client_name ||
+                                "—"
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            المهندس
+                        </span>
+
+                        <span class="info-value">
+                            ${escapeHTML(
+                                project.engineer_name ||
+                                "—"
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            الميزانية
+                        </span>
+
+                        <span class="info-value">
+                            ${
+                                project.budget !== null &&
+                                project.budget !== undefined &&
+                                project.budget !== ""
+                                    ? formatMoney(
+                                        project.budget
+                                    )
+                                    : "—"
+                            }
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            المدة
+                        </span>
+
+                        <span class="info-value">
+
+                            ${formatDate(
+                                project.start_date
+                            )}
+
+                            →
+
+                            ${formatDate(
+                                project.end_date
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-wrap">
+
+                        <div class="progress-head">
+
+                            <span>
+                                نسبة الإنجاز
+                            </span>
+
+                            <span class="progress-percent">
+                                ${progress}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width:${progress}%">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-footer">
+
+                        <span class="project-id">
+                            مشروع #${Number(project.id)}
+                        </span>
+
+                        <button
+                            class="view-btn"
+                            onclick="event.stopPropagation();openProject(${Number(project.id)})">
+                            عرض المشروع →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+        `;
+
+    });
+
+
+    grid.innerHTML = html;
 
 }
 
 
-/* =========================
+/* =========================================================
    OPEN PROJECT
-========================= */
+========================================================= */
 
 function openProject(id){
 
@@ -1376,8 +1577,8 @@ function openProject(id){
         );
 
         return;
-
     }
+
 
     window.location.href =
         "/project.html?id=" +
@@ -1386,141 +1587,224 @@ function openProject(id){
 }
 
 
-/* =========================
-   CREATE PROJECT
-========================= */
+/* =========================================================
+   MODAL
+========================================================= */
 
-projectForm.addEventListener(
-    "submit",
-    async function(e){
+function openModal(){
 
-        e.preventDefault();
+    $("projectModal")
+        .classList.add("show");
 
+    setTimeout(()=>{
+        $("name").focus();
+    },100);
 
-        saveBtn.disabled = true;
-
-        saveBtn.textContent =
-            "جاري الحفظ...";
-
-
-        const project = {
-
-            name:
-                document.getElementById("name")
-                .value
-                .trim(),
-
-            location:
-                document.getElementById("location")
-                .value
-                .trim(),
-
-            client_name:
-                document.getElementById("client_name")
-                .value
-                .trim(),
-
-            engineer_name:
-                document.getElementById("engineer_name")
-                .value
-                .trim(),
-
-            start_date:
-                document.getElementById("start_date")
-                .value || null,
-
-            end_date:
-                document.getElementById("end_date")
-                .value || null,
-
-            budget:
-                Number(
-                    document.getElementById("budget")
-                    .value || 0
-                ),
-
-            progress:
-                Number(
-                    document.getElementById("progress")
-                    .value || 0
-                ),
-
-            status:
-                document.getElementById("status")
-                .value,
-
-            notes:
-                document.getElementById("notes")
-                .value
-                .trim()
-
-        };
+}
 
 
-        try{
+function closeModal(){
 
-            const response =
-                await fetch(
-                    "/api/projects",
-                    {
-                        method:"POST",
+    $("projectModal")
+        .classList.remove("show");
 
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(project)
-                    }
-                );
+}
 
 
-            const data =
-                await response.json()
-                .catch(() => ({}));
+$("projectModal")
+    .addEventListener(
+        "click",
+        function(event){
 
-
-            if(!response.ok || data.success === false){
-
-                throw new Error(
-                    data.message ||
-                    "تعذر إنشاء المشروع"
-                );
-
+            if(event.target === this){
+                closeModal();
             }
 
+        }
+    );
+
+
+/* =========================================================
+   CREATE PROJECT
+========================================================= */
+
+async function createProject(event){
+
+    event.preventDefault();
+
+
+    const saveBtn =
+        $("saveBtn");
+
+
+    saveBtn.disabled = true;
+
+    saveBtn.textContent =
+        "جاري الحفظ...";
+
+
+    const payload = {
+
+        name:
+            $("name").value.trim(),
+
+        location:
+            $("location").value.trim(),
+
+        client_name:
+            $("client_name").value.trim(),
+
+        engineer_name:
+            $("engineer_name").value.trim(),
+
+        budget:
+            $("budget").value
+                ? Number(
+                    $("budget").value
+                )
+                : 0,
+
+        start_date:
+            $("start_date").value ||
+            null,
+
+        end_date:
+            $("end_date").value ||
+            null,
+
+        progress:
+            Number(
+                $("progress").value || 0
+            ),
+
+        status:
+            $("status").value,
+
+        notes:
+            $("notes").value.trim()
+
+    };
+
+
+    if(!payload.name){
+
+        showToast(
+            "اكتب اسم المشروع أولاً"
+        );
+
+        saveBtn.disabled = false;
+
+        saveBtn.textContent =
+            "حفظ المشروع";
+
+        return;
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/projects",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(payload)
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "تعذر إنشاء المشروع."
+            );
+
+        }
+
+
+        showToast(
+            "تم إنشاء المشروع بنجاح ✅"
+        );
+
+
+        closeModal();
+
+
+        $("projectForm")
+            .reset();
+
+
+        $("progress").value = 0;
+
+        $("status").value =
+            "active";
+
+
+        await loadProjects();
+
+
+    }catch(error){
+
+        console.error(
+            "CREATE PROJECT ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "تعذر إنشاء المشروع."
+        );
+
+    }finally{
+
+        saveBtn.disabled = false;
+
+        saveBtn.textContent =
+            "حفظ المشروع";
+
+    }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function goHome(){
+
+    window.location.href =
+        "/";
+
+}
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape"
+        ){
 
             closeModal();
-
-            showToast(
-                "تم إنشاء المشروع بنجاح ✅"
-            );
-
-
-            await loadProjects();
-
-
-        }catch(error){
-
-            console.error(
-                "CREATE PROJECT ERROR:",
-                error
-            );
-
-
-            showToast(
-                error.message ||
-                "تعذر إنشاء المشروع ❌"
-            );
-
-
-        }finally{
-
-            saveBtn.disabled = false;
-
-            saveBtn.textContent =
-                "حفظ المشروع";
 
         }
 
@@ -1528,11 +1812,18 @@ projectForm.addEventListener(
 );
 
 
-/* =========================
+/* =========================================================
    START
-========================= */
+========================================================= */
 
-loadProjects();
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadProjects();
+
+    }
+);
 
 </script>
 
