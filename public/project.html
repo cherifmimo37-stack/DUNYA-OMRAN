@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>المشاريع | دنيا العمران والترقية</title>
+<title>تفاصيل المشروع | دنيا العمران والترقية</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
     --petroleum:#123B4A;
     --dark:#0B2934;
@@ -18,8 +19,9 @@
     --ivory:#F5F3EE;
     --gray:#68757A;
     --white:#ffffff;
-    --danger:#B84040;
+    --red:#B94A48;
     --shadow:0 10px 30px rgba(11,41,52,.10);
+    --radius:18px;
 }
 
 *{
@@ -35,261 +37,77 @@ body{
     min-height:100vh;
 }
 
+button,
+input,
+textarea,
+select{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
 /* =========================
-   HEADER
+   TOP BAR
 ========================= */
 
-.header{
+.topbar{
     background:linear-gradient(135deg,var(--dark),var(--petroleum));
     color:white;
-    padding:18px 20px;
+    padding:16px 20px;
     position:sticky;
     top:0;
     z-index:100;
     box-shadow:0 5px 20px rgba(0,0,0,.15);
 }
 
-.header-inner{
+.topbar-inner{
     max-width:1200px;
     margin:auto;
     display:flex;
     align-items:center;
-    justify-content:space-between;
     gap:15px;
 }
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.logo{
-    width:48px;
-    height:48px;
-    border-radius:14px;
-    background:linear-gradient(135deg,var(--copper),#e0a260);
+.back-btn{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:13px;
+    background:rgba(255,255,255,.12);
+    color:white;
+    font-size:23px;
     display:flex;
     align-items:center;
     justify-content:center;
-    color:white;
-    font-size:24px;
-    box-shadow:0 5px 15px rgba(196,119,53,.3);
 }
 
-.brand-text h1{
-    font-size:18px;
+.back-btn:hover{
+    background:rgba(255,255,255,.2);
+}
+
+.brand{
+    flex:1;
+}
+
+.brand h1{
+    font-size:19px;
     font-weight:900;
 }
 
-.brand-text span{
+.brand p{
     font-size:11px;
     opacity:.75;
 }
 
-.back-btn{
-    border:1px solid rgba(255,255,255,.18);
-    background:rgba(255,255,255,.08);
-    color:white;
-    border-radius:12px;
-    padding:10px 15px;
-    cursor:pointer;
-    font-family:inherit;
-    font-weight:700;
-    transition:.2s;
-}
-
-.back-btn:hover{
-    background:rgba(255,255,255,.15);
-}
-
 /* =========================
-   MAIN
+   CONTAINER
 ========================= */
 
 .container{
-    max-width:1200px;
-    margin:auto;
-    padding:25px 18px 50px;
-}
-
-.page-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:25px;
-}
-
-.page-title h2{
-    font-size:28px;
-    font-weight:900;
-    color:var(--dark);
-}
-
-.page-title p{
-    color:var(--gray);
-    font-size:13px;
-    margin-top:3px;
-}
-
-.add-btn{
-    background:linear-gradient(135deg,var(--copper),#d89250);
-    color:white;
-    border:none;
-    border-radius:14px;
-    padding:13px 20px;
-    font-family:inherit;
-    font-weight:800;
-    cursor:pointer;
-    box-shadow:0 8px 20px rgba(196,119,53,.22);
-    transition:.2s;
-}
-
-.add-btn:hover{
-    transform:translateY(-2px);
-}
-
-/* =========================
-   PROJECT GRID
-========================= */
-
-.projects-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-}
-
-.project-card{
-    background:white;
-    border-radius:20px;
-    padding:20px;
-    box-shadow:var(--shadow);
-    border:1px solid rgba(18,59,74,.06);
-    transition:.25s;
-    cursor:pointer;
-    position:relative;
-    overflow:hidden;
-}
-
-.project-card::before{
-    content:"";
-    position:absolute;
-    top:0;
-    right:0;
-    left:0;
-    height:5px;
-    background:linear-gradient(90deg,var(--copper),var(--green));
-}
-
-.project-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 18px 40px rgba(11,41,52,.15);
-}
-
-.project-icon{
-    width:52px;
-    height:52px;
-    border-radius:15px;
-    background:#edf3f2;
-    color:var(--petroleum);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:25px;
-    margin-bottom:15px;
-}
-
-.project-name{
-    font-size:19px;
-    font-weight:900;
-    color:var(--dark);
-    margin-bottom:6px;
-}
-
-.project-location{
-    font-size:12px;
-    color:var(--gray);
-    margin-bottom:15px;
-}
-
-.status-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-}
-
-.status{
-    padding:5px 10px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:800;
-}
-
-.status-active{
-    background:#e7f3ef;
-    color:#276b59;
-}
-
-.status-finished{
-    background:#e8edf0;
-    color:#50616a;
-}
-
-.status-paused{
-    background:#fff0df;
-    color:#a85d20;
-}
-
-.status-cancelled{
-    background:#f8e4e4;
-    color:#a33b3b;
-}
-
-.progress-value{
-    font-size:12px;
-    font-weight:900;
-    color:var(--petroleum);
-}
-
-.progress{
-    width:100%;
-    height:8px;
-    background:#e8ecec;
-    border-radius:20px;
-    overflow:hidden;
-    margin-bottom:17px;
-}
-
-.progress-bar{
-    height:100%;
-    border-radius:20px;
-    background:linear-gradient(90deg,var(--green),var(--copper));
-}
-
-.info-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:9px;
-}
-
-.info-box{
-    background:#f7f8f7;
-    border-radius:12px;
-    padding:10px;
-}
-
-.info-label{
-    font-size:10px;
-    color:var(--gray);
-    margin-bottom:2px;
-}
-
-.info-value{
-    font-size:12px;
-    font-weight:800;
-    color:var(--dark);
+    width:min(1200px,94%);
+    margin:25px auto 50px;
 }
 
 /* =========================
@@ -297,19 +115,22 @@ body{
 ========================= */
 
 .loading{
-    text-align:center;
-    padding:70px 20px;
+    min-height:60vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
     color:var(--gray);
 }
 
-.loader{
+.spinner{
     width:45px;
     height:45px;
-    border:4px solid #dfe5e5;
+    border:4px solid #ddd;
     border-top-color:var(--copper);
     border-radius:50%;
     animation:spin 1s linear infinite;
-    margin:0 auto 15px;
 }
 
 @keyframes spin{
@@ -318,163 +139,520 @@ body{
     }
 }
 
+.hidden{
+    display:none!important;
+}
+
 /* =========================
-   EMPTY / ERROR
+   PROJECT HERO
 ========================= */
 
-.empty{
-    grid-column:1/-1;
-    background:white;
-    border-radius:20px;
-    padding:60px 20px;
-    text-align:center;
+.project-hero{
+    background:linear-gradient(
+        135deg,
+        var(--petroleum),
+        var(--dark)
+    );
+    color:white;
+    border-radius:24px;
+    padding:25px;
     box-shadow:var(--shadow);
+    margin-bottom:20px;
+    position:relative;
+    overflow:hidden;
 }
 
-.empty-icon{
-    font-size:55px;
-    margin-bottom:15px;
+.project-hero::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+    left:-70px;
+    top:-80px;
 }
 
-.empty h3{
-    font-size:20px;
-    margin-bottom:7px;
+.project-title-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:20px;
+    position:relative;
+    z-index:2;
 }
 
-.empty p{
+.project-title{
+    font-size:28px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.project-location{
+    font-size:14px;
+    opacity:.8;
+}
+
+.status{
+    padding:8px 15px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.status.active{
+    background:#d9f0e9;
+    color:#236052;
+}
+
+.status.pending{
+    background:#fff0d8;
+    color:#946020;
+}
+
+.status.completed{
+    background:#dce8ed;
+    color:#285261;
+}
+
+.status.cancelled{
+    background:#f6dede;
+    color:#9b3838;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-section{
+    margin-top:25px;
+    position:relative;
+    z-index:2;
+}
+
+.progress-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
+    font-size:13px;
+}
+
+.progress-percent{
+    color:#f1c77f;
+    font-weight:900;
+}
+
+.progress{
+    height:12px;
+    background:rgba(255,255,255,.15);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        var(--copper),
+        #e4aa68
+    );
+    border-radius:20px;
+    transition:width .6s ease;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(18,59,74,.06);
+}
+
+.stat-icon{
+    width:44px;
+    height:44px;
+    border-radius:13px;
+    background:#edf3f2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+    margin-bottom:12px;
+}
+
+.stat-label{
+    font-size:12px;
+    color:var(--gray);
+    margin-bottom:4px;
+}
+
+.stat-value{
+    font-size:23px;
+    font-weight:900;
+    color:var(--petroleum);
+}
+
+/* =========================
+   GRID
+========================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:var(--radius);
+    padding:20px;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(18,59,74,.06);
+}
+
+.card.full{
+    grid-column:1/-1;
+}
+
+.card-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.card-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:17px;
+    font-weight:900;
+    color:var(--petroleum);
+}
+
+.card-title-icon{
+    width:36px;
+    height:36px;
+    border-radius:11px;
+    background:#edf3f2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* =========================
+   PROJECT INFO
+========================= */
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.info-item{
+    background:#f8f8f6;
+    border-radius:13px;
+    padding:13px;
+}
+
+.info-label{
+    color:var(--gray);
+    font-size:11px;
+    margin-bottom:4px;
+}
+
+.info-value{
+    font-size:14px;
+    font-weight:800;
+    color:var(--dark);
+    word-break:break-word;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:600px;
+}
+
+th{
+    background:#f1f4f3;
+    color:var(--petroleum);
+    font-size:12px;
+    font-weight:900;
+    padding:12px;
+    text-align:right;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    font-size:12px;
+}
+
+tr:last-child td{
+    border-bottom:none;
+}
+
+.empty{
+    text-align:center;
+    padding:30px 15px;
     color:var(--gray);
     font-size:13px;
 }
 
 /* =========================
-   MODAL
+   REPORT CARDS
 ========================= */
 
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(5,20,25,.65);
-    backdrop-filter:blur(5px);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:500;
+.report{
+    border:1px solid #e7e7e4;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:12px;
+    background:#fcfcfb;
 }
 
-.modal.show{
-    display:flex;
+.report:last-child{
+    margin-bottom:0;
 }
 
-.modal-box{
-    width:100%;
-    max-width:650px;
-    max-height:90vh;
-    overflow-y:auto;
-    background:white;
-    border-radius:24px;
-    box-shadow:0 30px 80px rgba(0,0,0,.25);
-    padding:25px;
-}
-
-.modal-header{
+.report-head{
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    margin-bottom:22px;
+    gap:10px;
+    margin-bottom:8px;
 }
 
-.modal-header h3{
-    font-size:21px;
+.report-name{
+    font-weight:900;
+    color:var(--petroleum);
+}
+
+.report-date{
+    font-size:11px;
+    color:var(--gray);
+}
+
+.report-text{
+    font-size:13px;
+    line-height:1.8;
+    color:#465359;
+}
+
+/* =========================
+   APPOINTMENTS
+========================= */
+
+.appointment{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    border-bottom:1px solid #eee;
+    padding:13px 0;
+}
+
+.appointment:last-child{
+    border-bottom:none;
+}
+
+.date-box{
+    min-width:55px;
+    text-align:center;
+    background:#edf3f2;
+    border-radius:12px;
+    padding:7px;
+}
+
+.date-day{
+    font-size:18px;
+    font-weight:900;
+    color:var(--petroleum);
+}
+
+.date-month{
+    font-size:10px;
+    color:var(--gray);
+}
+
+.appointment-info{
+    flex:1;
+}
+
+.appointment-title{
+    font-size:13px;
+    font-weight:800;
+}
+
+.appointment-time{
+    color:var(--gray);
+    font-size:11px;
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.message{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.message-avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--petroleum);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    flex-shrink:0;
+}
+
+.message-content{
+    background:#f3f5f4;
+    border-radius:14px;
+    padding:10px 13px;
+    flex:1;
+}
+
+.message-name{
+    font-size:11px;
+    font-weight:900;
+    color:var(--petroleum);
+}
+
+.message-text{
+    font-size:12px;
+    line-height:1.7;
+    margin-top:3px;
+}
+
+.message-date{
+    font-size:9px;
+    color:var(--gray);
+    margin-top:4px;
+}
+
+/* =========================
+   NOTIFICATION
+========================= */
+
+.notification{
+    display:flex;
+    gap:12px;
+    padding:13px 0;
+    border-bottom:1px solid #eee;
+}
+
+.notification:last-child{
+    border-bottom:none;
+}
+
+.notification-icon{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    background:#fff0df;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.notification-content{
+    flex:1;
+}
+
+.notification-title{
+    font-size:12px;
     font-weight:900;
 }
 
-.close-btn{
-    width:38px;
-    height:38px;
+.notification-text{
+    font-size:11px;
+    color:var(--gray);
+    margin-top:3px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
     border:none;
     border-radius:12px;
-    background:#f0f2f2;
-    color:var(--dark);
-    font-size:20px;
-    cursor:pointer;
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.form-group{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.form-group.full{
-    grid-column:1/-1;
-}
-
-.form-group label{
+    padding:10px 15px;
+    font-weight:800;
     font-size:12px;
-    font-weight:800;
-    color:var(--dark);
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea{
-    width:100%;
-    border:1px solid #dce2e2;
-    background:#fafbfb;
-    border-radius:12px;
-    padding:12px;
-    font-family:inherit;
-    font-size:13px;
-    color:var(--dark);
-    outline:none;
-    transition:.2s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
-    border-color:var(--copper);
-    box-shadow:0 0 0 3px rgba(196,119,53,.10);
-    background:white;
-}
-
-.form-group textarea{
-    min-height:100px;
-    resize:vertical;
-}
-
-.modal-actions{
-    display:flex;
-    gap:10px;
-    margin-top:22px;
-}
-
-.save-btn,
-.cancel-btn{
-    flex:1;
-    padding:13px;
-    border:none;
-    border-radius:13px;
-    font-family:inherit;
-    font-weight:800;
-    cursor:pointer;
-}
-
-.save-btn{
+.btn-back{
     background:var(--petroleum);
     color:white;
 }
 
-.cancel-btn{
-    background:#edf0f0;
+.btn-back:hover{
+    background:var(--dark);
+}
+
+.btn-refresh{
+    background:#eef3f2;
+    color:var(--petroleum);
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.error-box{
+    background:#fff;
+    border-radius:20px;
+    padding:35px 20px;
+    text-align:center;
+    box-shadow:var(--shadow);
+    max-width:550px;
+    margin:80px auto;
+}
+
+.error-icon{
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+.error-box h2{
     color:var(--dark);
+    margin-bottom:8px;
+}
+
+.error-box p{
+    color:var(--gray);
+    font-size:13px;
+    margin-bottom:20px;
 }
 
 /* =========================
@@ -483,1056 +661,2118 @@ body{
 
 .toast{
     position:fixed;
-    bottom:25px;
     left:50%;
+    bottom:25px;
     transform:translateX(-50%) translateY(100px);
     background:var(--dark);
     color:white;
-    padding:13px 20px;
-    border-radius:14px;
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
-    font-size:13px;
+    padding:12px 20px;
+    border-radius:13px;
+    font-size:12px;
     font-weight:700;
-    z-index:1000;
     opacity:0;
     transition:.3s;
+    z-index:9999;
 }
 
 .toast.show{
-    transform:translateX(-50%) translateY(0);
     opacity:1;
+    transform:translateX(-50%) translateY(0);
 }
 
 /* =========================
-   RESPONSIVE
+   MOBILE
 ========================= */
 
-@media(max-width:950px){
-    .projects-grid{
+@media(max-width:850px){
+
+    .stats{
         grid-template-columns:repeat(2,1fr);
     }
-}
 
-@media(max-width:650px){
-
-    .header{
-        padding:14px;
-    }
-
-    .brand-text h1{
-        font-size:15px;
-    }
-
-    .brand-text span{
-        display:none;
-    }
-
-    .logo{
-        width:42px;
-        height:42px;
-        font-size:20px;
-    }
-
-    .container{
-        padding:20px 12px 40px;
-    }
-
-    .page-top{
-        align-items:flex-start;
-    }
-
-    .page-title h2{
-        font-size:23px;
-    }
-
-    .page-title p{
-        font-size:11px;
-    }
-
-    .add-btn{
-        padding:11px 13px;
-        font-size:12px;
-        white-space:nowrap;
-    }
-
-    .projects-grid{
-        grid-template-columns:1fr;
-        gap:15px;
-    }
-
-    .project-card{
-        padding:17px;
-    }
-
-    .form-grid{
+    .grid{
         grid-template-columns:1fr;
     }
 
-    .form-group.full{
+    .card.full{
         grid-column:auto;
     }
 
-    .modal{
-        padding:10px;
-    }
-
-    .modal-box{
-        padding:18px;
-        border-radius:20px;
-    }
-
-    .back-btn{
-        padding:8px 11px;
-        font-size:11px;
-    }
 }
 
+@media(max-width:600px){
+
+    .container{
+        width:94%;
+        margin-top:15px;
+    }
+
+    .topbar{
+        padding:12px 14px;
+    }
+
+    .project-hero{
+        padding:20px;
+        border-radius:19px;
+    }
+
+    .project-title{
+        font-size:21px;
+    }
+
+    .project-title-row{
+        align-items:flex-start;
+    }
+
+    .status{
+        font-size:10px;
+        padding:6px 10px;
+    }
+
+    .stats{
+        gap:10px;
+    }
+
+    .stat-card{
+        padding:15px;
+    }
+
+    .stat-value{
+        font-size:20px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:15px;
+        border-radius:16px;
+    }
+
+    .card-title{
+        font-size:15px;
+    }
+
+}
+
+/* =========================
+   PRINT
+========================= */
+
+@media print{
+
+    .topbar,
+    .btn{
+        display:none!important;
+    }
+
+    body{
+        background:white;
+    }
+
+    .card,
+    .project-hero,
+    .stat-card{
+        box-shadow:none;
+        border:1px solid #ddd;
+    }
+}
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+<header class="topbar">
+    <div class="topbar-inner">
 
-<header class="header">
-
-    <div class="header-inner">
+        <button
+            class="back-btn"
+            onclick="goBack()"
+            title="العودة للمشاريع">
+            ←
+        </button>
 
         <div class="brand">
-
-            <div class="logo">
-                🏗️
-            </div>
-
-            <div class="brand-text">
-                <h1>دنيا العمران والترقية</h1>
-                <span>نظام تسيير مشاريع البناء والمقاولات</span>
-            </div>
-
+            <h1>دنيا العمران والترقية</h1>
+            <p>تفاصيل وإدارة المشروع</p>
         </div>
 
-        <button class="back-btn" onclick="goHome()">
-            ← الرئيسية
+        <button
+            class="back-btn"
+            onclick="loadProject()"
+            title="تحديث">
+            ↻
         </button>
 
     </div>
-
 </header>
-
-
-<!-- =========================
-     MAIN
-========================= -->
 
 <main class="container">
 
-    <div class="page-top">
+    <!-- LOADING -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <strong>جاري تحميل بيانات المشروع...</strong>
+    </div>
 
-        <div class="page-title">
-            <h2>المشاريع</h2>
-            <p>إدارة ومتابعة جميع مشاريع المؤسسة</p>
-        </div>
+    <!-- ERROR -->
+    <div id="errorBox" class="error-box hidden">
 
-        <button class="add-btn" onclick="openModal()">
-            ＋ مشروع جديد
+        <div class="error-icon">⚠️</div>
+
+        <h2>تعذر تحميل المشروع</h2>
+
+        <p id="errorMessage">
+            حدث خطأ أثناء تحميل بيانات المشروع.
+        </p>
+
+        <button
+            class="btn btn-back"
+            onclick="goBack()">
+            العودة إلى المشاريع
         </button>
 
     </div>
 
+    <!-- CONTENT -->
+    <div id="projectContent" class="hidden">
 
-    <div id="projectsGrid" class="projects-grid">
+        <!-- PROJECT HERO -->
+        <section class="project-hero">
 
-        <div class="loading">
+            <div class="project-title-row">
 
-            <div class="loader"></div>
+                <div>
+                    <h2
+                        id="projectName"
+                        class="project-title">
+                        المشروع
+                    </h2>
 
-            <div>
-                جاري تحميل المشاريع...
+                    <div
+                        id="projectLocation"
+                        class="project-location">
+                        📍 غير محدد
+                    </div>
+                </div>
+
+                <div
+                    id="projectStatus"
+                    class="status active">
+                    نشط
+                </div>
+
             </div>
 
-        </div>
+            <div class="progress-section">
+
+                <div class="progress-head">
+                    <span>نسبة الإنجاز</span>
+
+                    <span
+                        id="progressPercent"
+                        class="progress-percent">
+                        0%
+                    </span>
+                </div>
+
+                <div class="progress">
+                    <div
+                        id="progressBar"
+                        class="progress-bar"
+                        style="width:0%">
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATS -->
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">👷</div>
+
+                <div class="stat-label">
+                    العمال
+                </div>
+
+                <div
+                    id="workersCount"
+                    class="stat-value">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">📦</div>
+
+                <div class="stat-label">
+                    المواد
+                </div>
+
+                <div
+                    id="materialsCount"
+                    class="stat-value">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">💰</div>
+
+                <div class="stat-label">
+                    المصاريف
+                </div>
+
+                <div
+                    id="expensesTotal"
+                    class="stat-value">
+                    0 دج
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">📅</div>
+
+                <div class="stat-label">
+                    المواعيد
+                </div>
+
+                <div
+                    id="appointmentsCount"
+                    class="stat-value">
+                    0
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- GRID -->
+        <section class="grid">
+
+            <!-- PROJECT INFO -->
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            🏗️
+                        </span>
+
+                        معلومات المشروع
+
+                    </div>
+
+                </div>
+
+                <div class="info-grid">
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            صاحب المشروع
+                        </div>
+
+                        <div
+                            id="clientName"
+                            class="info-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            المهندس
+                        </div>
+
+                        <div
+                            id="engineerName"
+                            class="info-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            الميزانية
+                        </div>
+
+                        <div
+                            id="budget"
+                            class="info-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            تاريخ البداية
+                        </div>
+
+                        <div
+                            id="startDate"
+                            class="info-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            تاريخ النهاية
+                        </div>
+
+                        <div
+                            id="endDate"
+                            class="info-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            الحالة
+                        </div>
+
+                        <div
+                            id="infoStatus"
+                            class="info-value">
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTES -->
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            📝
+                        </span>
+
+                        ملاحظات المشروع
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="projectNotes"
+                    style="
+                    line-height:2;
+                    font-size:13px;
+                    color:#526066;
+                    ">
+                    لا توجد ملاحظات.
+                </div>
+
+            </div>
+
+
+            <!-- WORKERS -->
+            <div class="card full">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            👷
+                        </span>
+
+                        العمال المشاركون
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="workersContainer"
+                    class="table-wrap">
+
+                    <div class="empty">
+                        لا يوجد عمال مرتبطون بهذا المشروع.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MATERIALS -->
+            <div class="card full">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            📦
+                        </span>
+
+                        المواد
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="materialsContainer"
+                    class="table-wrap">
+
+                    <div class="empty">
+                        لا توجد مواد مرتبطة بالمشروع.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STOCK -->
+            <div class="card full">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            📊
+                        </span>
+
+                        حركة المخزن
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="stockContainer"
+                    class="table-wrap">
+
+                    <div class="empty">
+                        لا توجد حركة مخزن لهذا المشروع.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXPENSES -->
+            <div class="card full">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            💰
+                        </span>
+
+                        المصاريف
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="expensesContainer"
+                    class="table-wrap">
+
+                    <div class="empty">
+                        لا توجد مصاريف مسجلة.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ATTENDANCE -->
+            <div class="card full">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            🕘
+                        </span>
+
+                        الحضور والغياب
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="attendanceContainer"
+                    class="table-wrap">
+
+                    <div class="empty">
+                        لا توجد بيانات حضور.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DAILY REPORTS -->
+            <div class="card full">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            📋
+                        </span>
+
+                        ماذا أُنجز اليوم؟
+
+                    </div>
+
+                </div>
+
+                <div id="reportsContainer">
+
+                    <div class="empty">
+                        لا توجد تقارير يومية.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- APPOINTMENTS -->
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            📅
+                        </span>
+
+                        المواعيد
+
+                    </div>
+
+                </div>
+
+                <div id="appointmentsContainer">
+
+                    <div class="empty">
+                        لا توجد مواعيد.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MEETINGS -->
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            🤝
+                        </span>
+
+                        الاجتماعات
+
+                    </div>
+
+                </div>
+
+                <div id="meetingsContainer">
+
+                    <div class="empty">
+                        لا توجد اجتماعات.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHAT -->
+            <div class="card full">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            💬
+                        </span>
+
+                        غرفة المشروع
+
+                    </div>
+
+                </div>
+
+                <div id="messagesContainer">
+
+                    <div class="empty">
+                        لا توجد رسائل في غرفة المشروع.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTIFICATIONS -->
+            <div class="card full">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-title-icon">
+                            🔔
+                        </span>
+
+                        إشعارات المشروع
+
+                    </div>
+
+                </div>
+
+                <div id="notificationsContainer">
+
+                    <div class="empty">
+                        لا توجد إشعارات.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
 
     </div>
 
 </main>
 
 
-<!-- =========================
-     ADD PROJECT MODAL
-========================= -->
-
-<div id="projectModal" class="modal">
-
-    <div class="modal-box">
-
-        <div class="modal-header">
-
-            <h3>🏗️ إضافة مشروع جديد</h3>
-
-            <button class="close-btn" onclick="closeModal()">
-                ×
-            </button>
-
-        </div>
-
-
-        <form id="projectForm">
-
-            <div class="form-grid">
-
-                <div class="form-group full">
-
-                    <label>
-                        اسم المشروع *
-                    </label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="مثال: مشروع بناء 50 مسكن"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        الموقع
-                    </label>
-
-                    <input
-                        type="text"
-                        id="location"
-                        placeholder="مثال: غليزان"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        اسم العميل
-                    </label>
-
-                    <input
-                        type="text"
-                        id="client_name"
-                        placeholder="اسم العميل أو صاحب المشروع"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        المهندس المسؤول
-                    </label>
-
-                    <input
-                        type="text"
-                        id="engineer_name"
-                        placeholder="اسم المهندس"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        الميزانية
-                    </label>
-
-                    <input
-                        type="number"
-                        id="budget"
-                        placeholder="0"
-                        min="0"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        تاريخ البداية
-                    </label>
-
-                    <input
-                        type="date"
-                        id="start_date"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        تاريخ النهاية
-                    </label>
-
-                    <input
-                        type="date"
-                        id="end_date"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        نسبة الإنجاز %
-                    </label>
-
-                    <input
-                        type="number"
-                        id="progress"
-                        placeholder="0"
-                        min="0"
-                        max="100"
-                        value="0"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        حالة المشروع
-                    </label>
-
-                    <select id="status">
-
-                        <option value="active">
-                            قيد الإنجاز
-                        </option>
-
-                        <option value="finished">
-                            مكتمل
-                        </option>
-
-                        <option value="paused">
-                            متوقف
-                        </option>
-
-                        <option value="cancelled">
-                            ملغى
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group full">
-
-                    <label>
-                        ملاحظات
-                    </label>
-
-                    <textarea
-                        id="notes"
-                        placeholder="أدخل أي معلومات أو ملاحظات إضافية..."
-                    ></textarea>
-
-                </div>
-
-            </div>
-
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="cancel-btn"
-                    onclick="closeModal()"
-                >
-                    إلغاء
-                </button>
-
-                <button
-                    type="submit"
-                    class="save-btn"
-                    id="saveBtn"
-                >
-                    حفظ المشروع
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
+<div
+    id="toast"
+    class="toast">
 </div>
-
-
-<div id="toast" class="toast"></div>
 
 
 <script>
 
-/* =========================
-   VARIABLES
-========================= */
+/* =========================================================
+   PROJECT ID
+========================================================= */
 
-const projectsGrid =
-    document.getElementById("projectsGrid");
+const params = new URLSearchParams(window.location.search);
 
-const modal =
-    document.getElementById("projectModal");
-
-const projectForm =
-    document.getElementById("projectForm");
-
-const saveBtn =
-    document.getElementById("saveBtn");
-
-let toastTimer = null;
+const projectId = params.get("id");
 
 
-/* =========================
-   HOME
-========================= */
+/* =========================================================
+   HELPERS
+========================================================= */
 
-function goHome(){
-
-    window.location.href = "/";
-
+function $(id){
+    return document.getElementById(id);
 }
 
 
-/* =========================
-   MODAL
-========================= */
+function escapeHTML(value){
 
-function openModal(){
-
-    projectForm.reset();
-
-    document.getElementById("progress").value = 0;
-
-    document.getElementById("status").value = "active";
-
-    modal.classList.add("show");
-
-}
-
-
-function closeModal(){
-
-    modal.classList.remove("show");
-
-}
-
-
-modal.addEventListener("click", function(e){
-
-    if(e.target === modal){
-
-        closeModal();
-
+    if(value === null || value === undefined){
+        return "";
     }
 
-});
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
 
 
-/* =========================
-   TOAST
-========================= */
+function formatMoney(value){
+
+    const number = Number(value || 0);
+
+    return number.toLocaleString("ar-DZ") + " دج";
+}
+
+
+function formatNumber(value){
+
+    return Number(value || 0).toLocaleString("ar-DZ");
+}
+
+
+function formatDate(value){
+
+    if(!value){
+        return "—";
+    }
+
+    try{
+
+        const date = new Date(value);
+
+        if(Number.isNaN(date.getTime())){
+            return escapeHTML(value);
+        }
+
+        return date.toLocaleDateString("ar-DZ",{
+            year:"numeric",
+            month:"long",
+            day:"numeric"
+        });
+
+    }catch(error){
+
+        return escapeHTML(value);
+
+    }
+}
+
+
+function formatDateTime(value){
+
+    if(!value){
+        return "—";
+    }
+
+    try{
+
+        const date = new Date(value);
+
+        if(Number.isNaN(date.getTime())){
+            return escapeHTML(value);
+        }
+
+        return date.toLocaleString("ar-DZ",{
+            year:"numeric",
+            month:"short",
+            day:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        });
+
+    }catch(error){
+
+        return escapeHTML(value);
+
+    }
+}
+
 
 function showToast(message){
 
-    const toast =
-        document.getElementById("toast");
+    const toast = $("toast");
 
     toast.textContent = message;
 
     toast.classList.add("show");
 
-    clearTimeout(toastTimer);
-
-    toastTimer = setTimeout(() => {
-
+    setTimeout(()=>{
         toast.classList.remove("show");
+    },2500);
+}
 
-    }, 3000);
+
+function goBack(){
+
+    window.location.href = "/projects.html";
 
 }
 
 
-/* =========================
-   ESCAPE HTML
-========================= */
-
-function escapeHTML(value){
-
-    if(value === null || value === undefined){
-
-        return "";
-
-    }
-
-    return String(value)
-
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* =========================
+/* =========================================================
    STATUS
-========================= */
+========================================================= */
 
 function getStatusInfo(status){
 
-    switch(status){
+    const value = String(status || "").toLowerCase();
 
-        case "finished":
+    if(
+        value.includes("completed") ||
+        value.includes("مكتمل") ||
+        value.includes("منتهي")
+    ){
 
-            return {
-                text:"مكتمل",
-                className:"status-finished"
-            };
-
-        case "paused":
-
-            return {
-                text:"متوقف",
-                className:"status-paused"
-            };
-
-        case "cancelled":
-
-            return {
-                text:"ملغى",
-                className:"status-cancelled"
-            };
-
-        case "active":
-
-        default:
-
-            return {
-                text:"قيد الإنجاز",
-                className:"status-active"
-            };
+        return {
+            text:"مكتمل",
+            className:"completed"
+        };
 
     }
+
+    if(
+        value.includes("pending") ||
+        value.includes("قيد") ||
+        value.includes("انتظار")
+    ){
+
+        return {
+            text:"قيد الانتظار",
+            className:"pending"
+        };
+
+    }
+
+    if(
+        value.includes("cancel") ||
+        value.includes("ملغ")
+    ){
+
+        return {
+            text:"ملغى",
+            className:"cancelled"
+        };
+
+    }
+
+    return {
+        text:status || "نشط",
+        className:"active"
+    };
 
 }
 
 
-/* =========================
-   FORMAT MONEY
-========================= */
+/* =========================================================
+   LOAD PROJECT
+========================================================= */
 
-function formatMoney(value){
+async function loadProject(){
 
-    const number =
-        Number(value || 0);
+    if(!projectId){
 
-    return new Intl.NumberFormat(
-        "ar-DZ"
-    ).format(number);
+        $("loading").classList.add("hidden");
 
-}
+        $("errorBox").classList.remove("hidden");
 
+        $("errorMessage").textContent =
+            "لم يتم تحديد رقم المشروع.";
 
-/* =========================
-   FORMAT DATE
-========================= */
-
-function formatDate(value){
-
-    if(!value){
-
-        return "—";
-
+        return;
     }
+
+    $("loading").classList.remove("hidden");
+
+    $("errorBox").classList.add("hidden");
+
+    $("projectContent").classList.add("hidden");
+
 
     try{
 
-        return new Date(value).toLocaleDateString(
-            "ar-DZ"
+        const response = await fetch(
+            "/api/projects/" +
+            encodeURIComponent(projectId) +
+            "/full"
         );
 
-    }catch(e){
-
-        return value;
-
-    }
-
-}
-
-
-/* =========================
-   LOAD PROJECTS
-========================= */
-
-async function loadProjects(){
-
-    projectsGrid.innerHTML = `
-
-        <div class="loading">
-
-            <div class="loader"></div>
-
-            <div>
-                جاري تحميل المشاريع...
-            </div>
-
-        </div>
-
-    `;
-
-    try{
-
-        const response =
-            await fetch("/api/projects");
 
         if(!response.ok){
 
+            let message =
+                "تعذر تحميل بيانات المشروع.";
+
+            try{
+
+                const errorData =
+                    await response.json();
+
+                if(errorData.message){
+                    message = errorData.message;
+                }
+
+            }catch(e){}
+
+            throw new Error(message);
+
+        }
+
+
+        const data = await response.json();
+
+
+        if(!data.success){
+
             throw new Error(
-                "HTTP " + response.status
+                data.message ||
+                "تعذر تحميل المشروع."
             );
 
         }
 
-        const data =
-            await response.json();
+
+        renderProject(data);
 
 
-        let projects = [];
+        $("loading").classList.add("hidden");
 
-        if(Array.isArray(data)){
-
-            projects = data;
-
-        }else if(Array.isArray(data.projects)){
-
-            projects = data.projects;
-
-        }else if(Array.isArray(data.data)){
-
-            projects = data.data;
-
-        }
-
-
-        renderProjects(projects);
+        $("projectContent").classList.remove("hidden");
 
 
     }catch(error){
 
         console.error(
-            "LOAD PROJECTS ERROR:",
+            "LOAD PROJECT ERROR:",
             error
         );
 
+        $("loading").classList.add("hidden");
 
-        projectsGrid.innerHTML = `
+        $("errorBox").classList.remove("hidden");
 
-            <div class="empty">
-
-                <div class="empty-icon">
-                    ⚠️
-                </div>
-
-                <h3>
-                    تعذر تحميل المشاريع
-                </h3>
-
-                <p>
-                    تأكد من اتصال الخادم وقاعدة البيانات ثم حاول مرة أخرى.
-                </p>
-
-                <button
-                    class="add-btn"
-                    style="margin-top:18px"
-                    onclick="loadProjects()"
-                >
-                    إعادة المحاولة
-                </button>
-
-            </div>
-
-        `;
+        $("errorMessage").textContent =
+            error.message ||
+            "حدث خطأ أثناء تحميل المشروع.";
 
     }
 
 }
 
 
-/* =========================
-   RENDER PROJECTS
-========================= */
+/* =========================================================
+   RENDER PROJECT
+========================================================= */
 
-function renderProjects(projects){
+function renderProject(data){
 
-    if(!projects.length){
+    const project =
+        data.project || {};
 
-        projectsGrid.innerHTML = `
+    const workers =
+        Array.isArray(data.workers)
+            ? data.workers
+            : [];
 
-            <div class="empty">
+    const materials =
+        Array.isArray(data.materials)
+            ? data.materials
+            : [];
 
-                <div class="empty-icon">
-                    🏗️
-                </div>
+    const expenses =
+        Array.isArray(data.expenses)
+            ? data.expenses
+            : [];
 
-                <h3>
-                    لا توجد مشاريع بعد
-                </h3>
+    const reports =
+        Array.isArray(data.reports)
+            ? data.reports
+            : [];
 
-                <p>
-                    ابدأ بإضافة أول مشروع للمؤسسة.
-                </p>
+    const appointments =
+        Array.isArray(data.appointments)
+            ? data.appointments
+            : [];
 
-            </div>
+    const meetings =
+        Array.isArray(data.meetings)
+            ? data.meetings
+            : [];
 
-        `;
+    const messages =
+        Array.isArray(data.messages)
+            ? data.messages
+            : [];
 
-        return;
+    const notifications =
+        Array.isArray(data.notifications)
+            ? data.notifications
+            : [];
 
-    }
+    const attendance =
+        Array.isArray(data.attendance)
+            ? data.attendance
+            : [];
 
+    const stockMovements =
+        Array.isArray(data.stockMovements)
+            ? data.stockMovements
+            : [];
 
-    projectsGrid.innerHTML =
-        projects.map(project => {
 
-            const status =
-                getStatusInfo(project.status);
+    /* =========================
+       BASIC INFO
+    ========================= */
 
-            const progress =
-                Math.min(
-                    100,
-                    Math.max(
-                        0,
-                        Number(project.progress || 0)
-                    )
-                );
+    $("projectName").textContent =
+        project.name || "مشروع بدون اسم";
 
 
-            return `
+    $("projectLocation").textContent =
+        "📍 " +
+        (project.location || "الموقع غير محدد");
 
-                <div
-                    class="project-card"
-                    onclick="openProject(${Number(project.id)})"
-                >
 
-                    <div class="project-icon">
-                        🏗️
-                    </div>
+    const statusInfo =
+        getStatusInfo(project.status);
 
 
-                    <div class="project-name">
+    $("projectStatus").textContent =
+        statusInfo.text;
 
-                        ${escapeHTML(
-                            project.name || "مشروع بدون اسم"
-                        )}
 
-                    </div>
+    $("projectStatus").className =
+        "status " +
+        statusInfo.className;
 
 
-                    <div class="project-location">
+    $("infoStatus").textContent =
+        statusInfo.text;
 
-                        📍
-                        ${escapeHTML(
-                            project.location || "الموقع غير محدد"
-                        )}
 
-                    </div>
-
-
-                    <div class="status-row">
-
-                        <span
-                            class="status ${status.className}"
-                        >
-                            ${status.text}
-                        </span>
-
-                        <span class="progress-value">
-                            ${progress}%
-                        </span>
-
-                    </div>
-
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar"
-                            style="width:${progress}%"
-                        ></div>
-
-                    </div>
-
-
-                    <div class="info-grid">
-
-                        <div class="info-box">
-
-                            <div class="info-label">
-                                العميل
-                            </div>
-
-                            <div class="info-value">
-
-                                ${escapeHTML(
-                                    project.client_name || "—"
-                                )}
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-box">
-
-                            <div class="info-label">
-                                المهندس
-                            </div>
-
-                            <div class="info-value">
-
-                                ${escapeHTML(
-                                    project.engineer_name || "—"
-                                )}
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-box">
-
-                            <div class="info-label">
-                                الميزانية
-                            </div>
-
-                            <div class="info-value">
-
-                                ${formatMoney(
-                                    project.budget
-                                )} دج
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-box">
-
-                            <div class="info-label">
-                                البداية
-                            </div>
-
-                            <div class="info-value">
-
-                                ${formatDate(
-                                    project.start_date
-                                )}
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }).join("");
-
-}
-
-
-/* =========================
-   OPEN PROJECT
-========================= */
-
-function openProject(id){
-
-    if(!id){
-
-        showToast(
-            "رقم المشروع غير صحيح"
+    const progress =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(project.progress || 0)
+            )
         );
 
-        return;
 
-    }
+    $("progressPercent").textContent =
+        progress + "%";
 
-    window.location.href =
-        "/project.html?id=" +
-        encodeURIComponent(id);
+
+    $("progressBar").style.width =
+        progress + "%";
+
+
+    $("clientName").textContent =
+        project.client_name || "—";
+
+
+    $("engineerName").textContent =
+        project.engineer_name || "—";
+
+
+    $("budget").textContent =
+        project.budget !== null &&
+        project.budget !== undefined &&
+        project.budget !== ""
+            ? formatMoney(project.budget)
+            : "—";
+
+
+    $("startDate").textContent =
+        formatDate(project.start_date);
+
+
+    $("endDate").textContent =
+        formatDate(project.end_date);
+
+
+    $("projectNotes").textContent =
+        project.notes ||
+        "لا توجد ملاحظات مسجلة.";
+
+
+    /* =========================
+       STATS
+    ========================= */
+
+    $("workersCount").textContent =
+        formatNumber(workers.length);
+
+
+    $("materialsCount").textContent =
+        formatNumber(materials.length);
+
+
+    $("appointmentsCount").textContent =
+        formatNumber(appointments.length);
+
+
+    const totalExpenses =
+        expenses.reduce(
+            (total,item)=>{
+
+                return total +
+                    Number(
+                        item.amount ||
+                        item.total ||
+                        item.value ||
+                        0
+                    );
+
+            },
+            0
+        );
+
+
+    $("expensesTotal").textContent =
+        formatMoney(totalExpenses);
+
+
+    /* =========================
+       RENDER ALL
+    ========================= */
+
+    renderWorkers(workers);
+
+    renderMaterials(materials);
+
+    renderExpenses(expenses);
+
+    renderReports(reports);
+
+    renderAppointments(appointments);
+
+    renderMeetings(meetings);
+
+    renderMessages(messages);
+
+    renderNotifications(notifications);
+
+    renderAttendance(attendance);
+
+    renderStock(stockMovements);
 
 }
 
 
-/* =========================
-   CREATE PROJECT
-========================= */
+/* =========================================================
+   WORKERS
+========================================================= */
 
-projectForm.addEventListener(
-    "submit",
-    async function(e){
+function renderWorkers(workers){
 
-        e.preventDefault();
-
-
-        saveBtn.disabled = true;
-
-        saveBtn.textContent =
-            "جاري الحفظ...";
+    const container =
+        $("workersContainer");
 
 
-        const project = {
+    if(!workers.length){
 
-            name:
-                document.getElementById("name")
-                .value
-                .trim(),
+        container.innerHTML =
+            `<div class="empty">
+                👷 لا يوجد عمال مرتبطون بهذا المشروع حالياً.
+            </div>`;
 
-            location:
-                document.getElementById("location")
-                .value
-                .trim(),
-
-            client_name:
-                document.getElementById("client_name")
-                .value
-                .trim(),
-
-            engineer_name:
-                document.getElementById("engineer_name")
-                .value
-                .trim(),
-
-            start_date:
-                document.getElementById("start_date")
-                .value || null,
-
-            end_date:
-                document.getElementById("end_date")
-                .value || null,
-
-            budget:
-                Number(
-                    document.getElementById("budget")
-                    .value || 0
-                ),
-
-            progress:
-                Number(
-                    document.getElementById("progress")
-                    .value || 0
-                ),
-
-            status:
-                document.getElementById("status")
-                .value,
-
-            notes:
-                document.getElementById("notes")
-                .value
-                .trim()
-
-        };
+        return;
+    }
 
 
-        try{
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>العامل</th>
+                    <th>الهاتف</th>
+                    <th>المهنة</th>
+                    <th>الأجر</th>
+                    <th>الدور</th>
+                    <th>الحالة</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
 
-            const response =
-                await fetch(
-                    "/api/projects",
-                    {
-                        method:"POST",
 
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
+    workers.forEach(worker=>{
 
-                        body:
-                            JSON.stringify(project)
+        html += `
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHTML(worker.name || "—")}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHTML(worker.phone || "—")}
+                </td>
+
+                <td>
+                    ${escapeHTML(worker.job || "—")}
+                </td>
+
+                <td>
+                    ${
+                        worker.salary !== null &&
+                        worker.salary !== undefined
+                            ? formatMoney(worker.salary)
+                            : "—"
                     }
+                </td>
+
+                <td>
+                    ${escapeHTML(worker.role || "عامل")}
+                </td>
+
+                <td>
+                    ${worker.active === false
+                        ? "غير نشط"
+                        : "نشط"}
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   MATERIALS
+========================================================= */
+
+function renderMaterials(materials){
+
+    const container =
+        $("materialsContainer");
+
+
+    if(!materials.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                📦 لا توجد مواد مرتبطة بهذا المشروع.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>المادة</th>
+                    <th>الوحدة</th>
+                    <th>الكمية</th>
+                    <th>المستعمل</th>
+                    <th>السعر</th>
+                    <th>المورد</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+
+    materials.forEach(item=>{
+
+        html += `
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHTML(item.name || "—")}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHTML(item.unit || "—")}
+                </td>
+
+                <td>
+                    ${formatNumber(item.quantity)}
+                </td>
+
+                <td>
+                    ${formatNumber(item.used_quantity)}
+                </td>
+
+                <td>
+                    ${
+                        item.unit_price !== null &&
+                        item.unit_price !== undefined
+                            ? formatMoney(item.unit_price)
+                            : "—"
+                    }
+                </td>
+
+                <td>
+                    ${escapeHTML(item.supplier || "—")}
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   EXPENSES
+========================================================= */
+
+function renderExpenses(expenses){
+
+    const container =
+        $("expensesContainer");
+
+
+    if(!expenses.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                💰 لا توجد مصاريف مسجلة لهذا المشروع.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>التاريخ</th>
+                    <th>الوصف</th>
+                    <th>الفئة</th>
+                    <th>المبلغ</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+
+    expenses.forEach(item=>{
+
+        const amount =
+            Number(
+                item.amount ||
+                item.total ||
+                item.value ||
+                0
+            );
+
+
+        html += `
+            <tr>
+
+                <td>
+                    ${formatDate(
+                        item.expense_date ||
+                        item.date ||
+                        item.created_at
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.description ||
+                        item.title ||
+                        item.name ||
+                        "—"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.category ||
+                        "—"
+                    )}
+                </td>
+
+                <td>
+                    <strong>
+                        ${formatMoney(amount)}
+                    </strong>
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   REPORTS
+========================================================= */
+
+function renderReports(reports){
+
+    const container =
+        $("reportsContainer");
+
+
+    if(!reports.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                📋 لم تتم إضافة تقارير يومية بعد.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    reports.forEach(report=>{
+
+        html += `
+            <div class="report">
+
+                <div class="report-head">
+
+                    <div class="report-name">
+                        👷 ${escapeHTML(
+                            report.worker_name ||
+                            report.worker ||
+                            "الفريق"
+                        )}
+                    </div>
+
+                    <div class="report-date">
+                        ${formatDate(
+                            report.report_date ||
+                            report.created_at
+                        )}
+                    </div>
+
+                </div>
+
+                <div class="report-text">
+                    ${escapeHTML(
+                        report.description ||
+                        report.content ||
+                        report.report_text ||
+                        report.work_done ||
+                        "لا يوجد وصف."
+                    )}
+                </div>
+
+            </div>
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   APPOINTMENTS
+========================================================= */
+
+function renderAppointments(appointments){
+
+    const container =
+        $("appointmentsContainer");
+
+
+    if(!appointments.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                📅 لا توجد مواعيد لهذا المشروع.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    appointments.forEach(item=>{
+
+        const dateValue =
+            item.appointment_date ||
+            item.date;
+
+
+        const date =
+            dateValue
+                ? new Date(dateValue)
+                : null;
+
+
+        let day = "—";
+        let month = "—";
+
+
+        if(
+            date &&
+            !Number.isNaN(date.getTime())
+        ){
+
+            day =
+                date.getDate();
+
+
+            month =
+                date.toLocaleDateString(
+                    "ar-DZ",
+                    {month:"short"}
                 );
-
-
-            const data =
-                await response.json()
-                .catch(() => ({}));
-
-
-            if(!response.ok || data.success === false){
-
-                throw new Error(
-                    data.message ||
-                    "تعذر إنشاء المشروع"
-                );
-
-            }
-
-
-            closeModal();
-
-            showToast(
-                "تم إنشاء المشروع بنجاح ✅"
-            );
-
-
-            await loadProjects();
-
-
-        }catch(error){
-
-            console.error(
-                "CREATE PROJECT ERROR:",
-                error
-            );
-
-
-            showToast(
-                error.message ||
-                "تعذر إنشاء المشروع ❌"
-            );
-
-
-        }finally{
-
-            saveBtn.disabled = false;
-
-            saveBtn.textContent =
-                "حفظ المشروع";
 
         }
 
+
+        html += `
+            <div class="appointment">
+
+                <div class="date-box">
+
+                    <div class="date-day">
+                        ${day}
+                    </div>
+
+                    <div class="date-month">
+                        ${month}
+                    </div>
+
+                </div>
+
+                <div class="appointment-info">
+
+                    <div class="appointment-title">
+                        ${escapeHTML(
+                            item.title ||
+                            item.subject ||
+                            item.description ||
+                            "موعد"
+                        )}
+                    </div>
+
+                    <div class="appointment-time">
+                        🕐 ${
+                            escapeHTML(
+                                item.appointment_time ||
+                                item.time ||
+                                "الوقت غير محدد"
+                            )
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   MEETINGS
+========================================================= */
+
+function renderMeetings(meetings){
+
+    const container =
+        $("meetingsContainer");
+
+
+    if(!meetings.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                🤝 لا توجد اجتماعات مسجلة.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    meetings.forEach(item=>{
+
+        html += `
+            <div class="appointment">
+
+                <div class="date-box">
+                    <div style="font-size:20px;">
+                        🤝
+                    </div>
+                </div>
+
+                <div class="appointment-info">
+
+                    <div class="appointment-title">
+                        ${escapeHTML(
+                            item.title ||
+                            item.subject ||
+                            "اجتماع المشروع"
+                        )}
+                    </div>
+
+                    <div class="appointment-time">
+                        ${formatDate(
+                            item.meeting_date ||
+                            item.date
+                        )}
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+function renderMessages(messages){
+
+    const container =
+        $("messagesContainer");
+
+
+    if(!messages.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                💬 لا توجد رسائل في غرفة المشروع.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    messages.forEach(item=>{
+
+        const name =
+            item.sender_name ||
+            item.name ||
+            item.sender ||
+            "عضو المشروع";
+
+
+        const text =
+            item.message ||
+            item.content ||
+            item.text ||
+            "";
+
+
+        html += `
+            <div class="message">
+
+                <div class="message-avatar">
+                    ${escapeHTML(
+                        String(name).charAt(0)
+                    )}
+                </div>
+
+                <div class="message-content">
+
+                    <div class="message-name">
+                        ${escapeHTML(name)}
+                    </div>
+
+                    <div class="message-text">
+                        ${escapeHTML(text)}
+                    </div>
+
+                    <div class="message-date">
+                        ${formatDateTime(
+                            item.created_at
+                        )}
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+function renderNotifications(notifications){
+
+    const container =
+        $("notificationsContainer");
+
+
+    if(!notifications.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                🔔 لا توجد إشعارات لهذا المشروع.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    notifications.forEach(item=>{
+
+        html += `
+            <div class="notification">
+
+                <div class="notification-icon">
+                    🔔
+                </div>
+
+                <div class="notification-content">
+
+                    <div class="notification-title">
+                        ${escapeHTML(
+                            item.title ||
+                            "إشعار المشروع"
+                        )}
+                    </div>
+
+                    <div class="notification-text">
+                        ${escapeHTML(
+                            item.message ||
+                            item.content ||
+                            ""
+                        )}
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   ATTENDANCE
+========================================================= */
+
+function renderAttendance(attendance){
+
+    const container =
+        $("attendanceContainer");
+
+
+    if(!attendance.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                🕘 لا توجد بيانات حضور أو غياب.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = `
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>العامل</th>
+                    <th>المهنة</th>
+                    <th>التاريخ</th>
+                    <th>الحالة</th>
+                    <th>الدخول</th>
+                    <th>الخروج</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+    `;
+
+
+    attendance.forEach(item=>{
+
+        html += `
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHTML(
+                            item.worker_name ||
+                            "—"
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.job || "—"
+                    )}
+                </td>
+
+                <td>
+                    ${formatDate(
+                        item.attendance_date ||
+                        item.date
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.status ||
+                        "—"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.check_in ||
+                        item.entry_time ||
+                        "—"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.check_out ||
+                        item.exit_time ||
+                        "—"
+                    )}
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   STOCK MOVEMENTS
+========================================================= */
+
+function renderStock(stock){
+
+    const container =
+        $("stockContainer");
+
+
+    if(!stock.length){
+
+        container.innerHTML =
+            `<div class="empty">
+                📦 لا توجد حركات مخزن لهذا المشروع.
+            </div>`;
+
+        return;
+    }
+
+
+    let html = `
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>المادة</th>
+                    <th>النوع</th>
+                    <th>الكمية</th>
+                    <th>الوحدة</th>
+                    <th>التاريخ</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+    `;
+
+
+    stock.forEach(item=>{
+
+        const movementType =
+            item.movement_type ||
+            item.type ||
+            item.action ||
+            "—";
+
+
+        html += `
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHTML(
+                            item.material_name ||
+                            "—"
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        movementType
+                    )}
+                </td>
+
+                <td>
+                    ${formatNumber(
+                        item.quantity
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        item.unit || "—"
+                    )}
+                </td>
+
+                <td>
+                    ${formatDate(
+                        item.movement_date ||
+                        item.date ||
+                        item.created_at
+                    )}
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    ()=>{
+        loadProject();
     }
 );
-
-
-/* =========================
-   START
-========================= */
-
-loadProjects();
 
 </script>
 
