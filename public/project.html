@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>DUNYA OMRAN | المشروع</title>
 
 <link
-href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
-rel="stylesheet">
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+>
 
 <style>
 
 :root{
+
     --petroleum:#123B4A;
     --dark:#0B2934;
     --green:#3F6B63;
@@ -23,8 +28,13 @@ rel="stylesheet">
     --ivory:#F5F3EE;
     --stone:#68757A;
     --white:#ffffff;
+
     --red:#b94a48;
-    --shadow:0 10px 30px rgba(11,41,52,.10);
+    --gold:#d7a646;
+
+    --shadow:
+        0 10px 30px rgba(11,41,52,.10);
+
     --radius:20px;
 }
 
@@ -33,9 +43,13 @@ rel="stylesheet">
 }
 
 body{
+
     margin:0;
+
     font-family:"Cairo",sans-serif;
+
     background:var(--ivory);
+
     color:var(--dark);
 }
 
@@ -43,16 +57,22 @@ button,
 input,
 textarea,
 select{
+
     font-family:inherit;
 }
 
 button{
+
     cursor:pointer;
 }
 
-/* HEADER */
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .header{
+
     background:
         linear-gradient(
             135deg,
@@ -61,212 +81,382 @@ button{
         );
 
     color:white;
-    padding:20px 18px 28px;
+
+    padding:
+        18px
+        18px
+        25px;
 
     border-radius:
-        0 0 28px 28px;
+        0
+        0
+        28px
+        28px;
 
     box-shadow:var(--shadow);
+
 }
 
 .header-top{
+
     display:flex;
+
     align-items:center;
+
     gap:12px;
+
     margin-bottom:20px;
+
 }
 
 .back-btn{
-    width:42px;
-    height:42px;
+
+    width:43px;
+
+    height:43px;
+
     border:0;
+
     border-radius:13px;
-    background:rgba(255,255,255,.12);
+
+    background:
+        rgba(255,255,255,.12);
+
     color:white;
-    font-size:20px;
+
+    font-size:21px;
+
 }
 
 .header-title{
+
     flex:1;
+
 }
 
 .header-title h1{
+
     margin:0;
+
     font-size:21px;
+
     font-weight:900;
+
 }
 
 .header-title p{
+
     margin:3px 0 0;
+
     opacity:.75;
+
     font-size:12px;
+
 }
 
 .status{
-    padding:6px 11px;
+
+    padding:
+        6px
+        11px;
+
     border-radius:30px;
-    background:rgba(63,107,99,.35);
+
+    background:
+        rgba(63,107,99,.4);
+
     color:#d9eee9;
+
     font-size:11px;
+
     font-weight:800;
+
 }
 
-/* PROJECT INFO */
+
+/* =========================================================
+   PROJECT INFO
+========================================================= */
 
 .project-info{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.10);
+
+    background:
+        rgba(255,255,255,.08);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
     border-radius:20px;
+
     padding:16px;
+
 }
 
 .location{
+
     opacity:.8;
+
     font-size:12px;
+
 }
 
 .progress-row{
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     margin-top:14px;
+
 }
 
 .progress-value{
+
     font-size:22px;
+
     font-weight:900;
+
     color:#e9c45d;
+
 }
 
 .progress-bar{
+
     height:9px;
-    background:rgba(255,255,255,.12);
+
+    background:
+        rgba(255,255,255,.12);
+
     border-radius:20px;
+
     overflow:hidden;
+
     margin-top:8px;
+
 }
 
 .progress-fill{
+
     height:100%;
-    background:linear-gradient(
-        90deg,
-        var(--copper),
-        #e9c45d
-    );
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--copper),
+            #e9c45d
+        );
+
     border-radius:20px;
+
+    transition:.5s;
+
 }
 
-/* CONTENT */
+
+/* =========================================================
+   CONTENT
+========================================================= */
 
 .container{
+
     width:min(1100px,94%);
-    margin:20px auto 100px;
+
+    margin:
+        20px
+        auto
+        100px;
+
 }
 
-/* STATS */
+
+/* =========================================================
+   STATS
+========================================================= */
 
 .stats{
+
     display:grid;
+
     grid-template-columns:
         repeat(2,1fr);
 
     gap:12px;
+
 }
 
 .stat{
+
     background:white;
+
     border-radius:18px;
+
     padding:16px;
+
     box-shadow:var(--shadow);
-    border:1px solid rgba(18,59,74,.05);
+
+    border:
+        1px solid
+        rgba(18,59,74,.05);
+
 }
 
 .stat-icon{
+
     font-size:25px;
+
     margin-bottom:8px;
+
 }
 
 .stat-label{
+
     color:var(--stone);
+
     font-size:11px;
+
 }
 
 .stat-value{
+
     margin-top:3px;
-    font-size:22px;
+
+    font-size:21px;
+
     font-weight:900;
+
 }
 
-/* SECTION */
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
 
 .section-title{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
-    margin:25px 2px 12px;
+
+    margin:
+        25px
+        2px
+        12px;
+
 }
 
 .section-title h2{
+
     margin:0;
+
     font-size:17px;
+
     font-weight:900;
+
 }
 
 .section-title span{
+
     color:var(--stone);
+
     font-size:11px;
+
 }
 
-/* CARDS */
+
+/* =========================================================
+   MODULES
+========================================================= */
 
 .modules{
+
     display:grid;
+
     grid-template-columns:
         repeat(2,1fr);
 
     gap:12px;
+
 }
 
 .module{
+
     border:0;
+
     background:white;
+
     border-radius:19px;
-    padding:18px 14px;
+
+    padding:
+        18px
+        14px;
+
     text-align:right;
+
     box-shadow:var(--shadow);
-    border:1px solid rgba(18,59,74,.05);
+
+    border:
+        1px solid
+        rgba(18,59,74,.05);
+
     transition:.2s;
+
 }
 
 .module:active{
+
     transform:scale(.97);
+
 }
 
 .module-icon{
+
     width:46px;
+
     height:46px;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     border-radius:14px;
+
     background:#eef3f2;
+
     font-size:24px;
+
     margin-bottom:10px;
+
 }
 
 .module h3{
+
     margin:0;
+
     font-size:14px;
+
     font-weight:900;
+
 }
 
 .module p{
-    margin:5px 0 0;
-    font-size:10px;
-    color:var(--stone);
-}
 
-/* COLORS */
+    margin:
+        5px
+        0
+        0;
+
+    font-size:10px;
+
+    color:var(--stone);
+
+}
 
 .module.workers .module-icon{
     background:#e9f1ef;
@@ -308,110 +498,909 @@ button{
     background:#fff0df;
 }
 
-/* DETAILS */
+
+/* =========================================================
+   DETAILS
+========================================================= */
 
 .details{
+
     background:white;
+
     border-radius:20px;
+
     padding:18px;
+
     box-shadow:var(--shadow);
+
 }
 
 .detail{
+
     display:flex;
+
     justify-content:space-between;
+
     gap:15px;
+
     padding:11px 0;
-    border-bottom:1px solid #eee;
+
+    border-bottom:
+        1px solid #eee;
+
     font-size:12px;
+
 }
 
 .detail:last-child{
+
     border-bottom:0;
+
 }
 
 .detail span:first-child{
+
     color:var(--stone);
+
 }
 
 .detail strong{
+
     text-align:left;
+
 }
 
-/* EMPTY */
 
-.empty{
-    text-align:center;
-    padding:25px 10px;
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(5,25,32,.65);
+
+    display:none;
+
+    align-items:flex-end;
+
+    justify-content:center;
+
+    z-index:100;
+
+    padding:0;
+
+}
+
+.modal.show{
+
+    display:flex;
+
+}
+
+.modal-box{
+
+    width:min(
+        620px,
+        100%
+    );
+
+    max-height:92vh;
+
+    overflow-y:auto;
+
+    background:var(--ivory);
+
+    border-radius:
+        25px
+        25px
+        0
+        0;
+
+    padding:20px;
+
+    animation:
+        slideUp .25s ease;
+
+}
+
+@keyframes slideUp{
+
+    from{
+
+        transform:
+            translateY(100%);
+
+    }
+
+    to{
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+.modal-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+
+}
+
+.modal-header h2{
+
+    margin:0;
+
+    font-size:18px;
+
+    font-weight:900;
+
+}
+
+.close-btn{
+
+    width:38px;
+
+    height:38px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:#e8e4df;
+
+    color:var(--dark);
+
+    font-size:20px;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group{
+
+    margin-bottom:13px;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    font-size:11px;
+
     color:var(--stone);
-    font-size:12px;
+
+    margin-bottom:6px;
+
+    font-weight:700;
+
 }
 
-/* LOADING */
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+    width:100%;
+
+    border:
+        1px solid #ddd;
+
+    border-radius:13px;
+
+    padding:
+        12px
+        13px;
+
+    background:white;
+
+    outline:none;
+
+    font-size:13px;
+
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+
+    border-color:
+        var(--petroleum);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(18,59,74,.08);
+
+}
+
+.form-group textarea{
+
+    min-height:90px;
+
+    resize:vertical;
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+
+}
+
+.save-btn{
+
+    width:100%;
+
+    border:0;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--petroleum),
+            var(--green)
+        );
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:900;
+
+    margin-top:8px;
+
+}
+
+
+/* =========================================================
+   WORKERS PANEL
+========================================================= */
+
+.workers-panel{
+
+    position:fixed;
+
+    inset:0;
+
+    background:var(--ivory);
+
+    z-index:90;
+
+    display:none;
+
+    overflow-y:auto;
+
+}
+
+.workers-panel.show{
+
+    display:block;
+
+}
+
+.workers-header{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:5;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--dark),
+            var(--petroleum)
+        );
+
+    color:white;
+
+    padding:18px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.workers-header-top{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.workers-header h2{
+
+    margin:0;
+
+    flex:1;
+
+    font-size:19px;
+
+    font-weight:900;
+
+}
+
+.workers-close{
+
+    width:42px;
+
+    height:42px;
+
+    border:0;
+
+    border-radius:13px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    color:white;
+
+    font-size:20px;
+
+}
+
+.add-worker-btn{
+
+    border:0;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--copper),
+            var(--gold)
+        );
+
+    color:white;
+
+    border-radius:13px;
+
+    padding:
+        10px
+        14px;
+
+    font-size:12px;
+
+    font-weight:900;
+
+}
+
+.workers-container{
+
+    width:min(900px,94%);
+
+    margin:
+        20px
+        auto
+        40px;
+
+}
+
+.worker-summary{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:10px;
+
+    margin-bottom:18px;
+
+}
+
+.worker-summary-card{
+
+    background:white;
+
+    border-radius:16px;
+
+    padding:13px;
+
+    box-shadow:var(--shadow);
+
+    text-align:center;
+
+}
+
+.worker-summary-card strong{
+
+    display:block;
+
+    font-size:20px;
+
+    font-weight:900;
+
+}
+
+.worker-summary-card span{
+
+    font-size:9px;
+
+    color:var(--stone);
+
+}
+
+.workers-list{
+
+    display:grid;
+
+    gap:12px;
+
+}
+
+.worker-card{
+
+    background:white;
+
+    border-radius:19px;
+
+    padding:15px;
+
+    box-shadow:var(--shadow);
+
+    border:
+        1px solid
+        rgba(18,59,74,.05);
+
+}
+
+.worker-top{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.worker-avatar{
+
+    width:48px;
+
+    height:48px;
+
+    flex-shrink:0;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--petroleum),
+            var(--green)
+        );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:22px;
+
+}
+
+.worker-main{
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+.worker-name{
+
+    font-size:14px;
+
+    font-weight:900;
+
+}
+
+.worker-job{
+
+    color:var(--stone);
+
+    font-size:10px;
+
+    margin-top:2px;
+
+}
+
+.worker-status{
+
+    font-size:9px;
+
+    font-weight:900;
+
+    padding:
+        5px
+        8px;
+
+    border-radius:20px;
+
+}
+
+.worker-status.active{
+
+    background:#e5f1ed;
+
+    color:#2e6d5c;
+
+}
+
+.worker-status.inactive{
+
+    background:#f5e5e4;
+
+    color:#9a4441;
+
+}
+
+.worker-info{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:8px;
+
+    margin-top:14px;
+
+}
+
+.worker-info-item{
+
+    background:#f8f7f4;
+
+    border-radius:12px;
+
+    padding:9px;
+
+}
+
+.worker-info-item span{
+
+    display:block;
+
+    color:var(--stone);
+
+    font-size:9px;
+
+}
+
+.worker-info-item strong{
+
+    display:block;
+
+    margin-top:2px;
+
+    font-size:11px;
+
+}
+
+.worker-actions{
+
+    display:flex;
+
+    gap:8px;
+
+    margin-top:12px;
+
+}
+
+.worker-action{
+
+    flex:1;
+
+    border:0;
+
+    border-radius:11px;
+
+    padding:9px;
+
+    font-size:11px;
+
+    font-weight:800;
+
+}
+
+.edit-worker{
+
+    background:#edf2f4;
+
+    color:var(--petroleum);
+
+}
+
+.delete-worker{
+
+    background:#f8e9e7;
+
+    color:var(--red);
+
+}
+
+.empty-workers{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:45px 20px;
+
+    text-align:center;
+
+    box-shadow:var(--shadow);
+
+}
+
+.empty-workers .icon{
+
+    font-size:45px;
+
+    margin-bottom:10px;
+
+}
+
+.empty-workers h3{
+
+    margin:0;
+
+    font-size:16px;
+
+}
+
+.empty-workers p{
+
+    color:var(--stone);
+
+    font-size:11px;
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:88px;
+
+    transform:
+        translateX(-50%)
+        translateY(20px);
+
+    background:
+        var(--dark);
+
+    color:white;
+
+    padding:
+        11px
+        18px;
+
+    border-radius:13px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.3s;
+
+    z-index:300;
+
+    box-shadow:var(--shadow);
+
+    max-width:90%;
+
+    text-align:center;
+
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
 
 .loading{
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
     text-align:center;
-    padding:50px 20px;
+
     color:var(--stone);
+
+    padding:20px;
+
 }
 
-/* BOTTOM */
+
+/* =========================================================
+   BOTTOM
+========================================================= */
 
 .bottom-nav{
+
     position:fixed;
+
     bottom:0;
+
     left:0;
+
     right:0;
+
     height:72px;
 
     background:
-        rgba(255,255,255,.96);
+        rgba(255,255,255,.97);
 
     backdrop-filter:blur(12px);
 
-    border-top:1px solid #e8e4df;
+    border-top:
+        1px solid #e8e4df;
 
     display:flex;
+
     justify-content:center;
 
     z-index:50;
+
 }
 
 .bottom-inner{
+
     width:min(600px,100%);
+
     display:flex;
+
 }
 
 .bottom-item{
+
     flex:1;
+
     border:0;
+
     background:none;
+
     color:var(--stone);
+
     font-size:10px;
+
     font-weight:700;
+
 }
 
 .bottom-item div{
+
     font-size:21px;
+
     margin-bottom:2px;
+
 }
 
 .bottom-item.active{
+
     color:var(--petroleum);
+
 }
 
-/* DESKTOP */
+
+/* =========================================================
+   DESKTOP
+========================================================= */
 
 @media(min-width:700px){
 
     .stats{
+
         grid-template-columns:
             repeat(4,1fr);
+
     }
 
     .modules{
+
         grid-template-columns:
             repeat(5,1fr);
+
+    }
+
+    .modal{
+
+        align-items:center;
+
+        padding:20px;
+
+    }
+
+    .modal-box{
+
+        border-radius:25px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL SCREEN
+========================================================= */
+
+@media(max-width:400px){
+
+    .worker-summary-card strong{
+
+        font-size:17px;
+
+    }
+
+    .worker-info{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .form-grid{
+
+        grid-template-columns:
+            1fr;
+
     }
 
 }
@@ -420,13 +1409,35 @@ button{
 
 </head>
 
+
 <body>
 
-<div id="loading" class="loading">
+
+<!-- =======================================================
+     LOADING
+======================================================== -->
+
+<div
+    id="loading"
+    class="loading">
+
     ⏳ جاري تحميل المشروع...
+
 </div>
 
-<div id="app" style="display:none">
+
+<!-- =======================================================
+     MAIN APP
+======================================================== -->
+
+<div
+    id="app"
+    style="display:none">
+
+
+<!-- =======================================================
+     HEADER
+======================================================== -->
 
 <header class="header">
 
@@ -435,25 +1446,37 @@ button{
         <button
             class="back-btn"
             onclick="goBack()">
+
             ←
+
         </button>
+
 
         <div class="header-title">
 
-            <h1 id="projectName">
+            <h1
+                id="projectName">
+
                 المشروع
+
             </h1>
 
-            <p id="projectLocation">
+            <p
+                id="projectLocation">
+
                 جاري التحميل...
+
             </p>
 
         </div>
 
+
         <div
             id="projectStatus"
             class="status">
+
             —
+
         </div>
 
     </div>
@@ -462,22 +1485,31 @@ button{
     <div class="project-info">
 
         <div class="location">
+
             تقدم المشروع
+
         </div>
+
 
         <div class="progress-row">
 
             <span>
+
                 نسبة الإنجاز
+
             </span>
+
 
             <span
                 id="progressValue"
                 class="progress-value">
+
                 0%
+
             </span>
 
         </div>
+
 
         <div class="progress-bar">
 
@@ -485,6 +1517,7 @@ button{
                 id="progressFill"
                 class="progress-fill"
                 style="width:0%">
+
             </div>
 
         </div>
@@ -494,291 +1527,449 @@ button{
 </header>
 
 
+<!-- =======================================================
+     CONTENT
+======================================================== -->
+
 <main class="container">
 
-    <!-- STATS -->
 
-    <div class="stats">
+<!-- STATS -->
 
-        <div class="stat">
-            <div class="stat-icon">👷</div>
-            <div class="stat-label">العمال</div>
-            <div id="workersCount"
-                 class="stat-value">0</div>
+<div class="stats">
+
+
+    <div class="stat">
+
+        <div class="stat-icon">
+            👷
         </div>
 
-        <div class="stat">
-            <div class="stat-icon">🧱</div>
-            <div class="stat-label">المواد</div>
-            <div id="materialsCount"
-                 class="stat-value">0</div>
+        <div class="stat-label">
+            العمال
         </div>
 
-        <div class="stat">
-            <div class="stat-icon">💰</div>
-            <div class="stat-label">المصاريف</div>
-            <div id="expensesTotal"
-                 class="stat-value">0 دج</div>
-        </div>
+        <div
+            id="workersCount"
+            class="stat-value">
 
-        <div class="stat">
-            <div class="stat-icon">📅</div>
-            <div class="stat-label">المواعيد</div>
-            <div id="appointmentsCount"
-                 class="stat-value">0</div>
+            0
+
         </div>
 
     </div>
 
 
-    <!-- MODULES -->
+    <div class="stat">
 
-    <div class="section-title">
+        <div class="stat-icon">
+            🧱
+        </div>
 
-        <h2>
-            إدارة المشروع
-        </h2>
+        <div class="stat-label">
+            المواد
+        </div>
+
+        <div
+            id="materialsCount"
+            class="stat-value">
+
+            0
+
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-icon">
+            💰
+        </div>
+
+        <div class="stat-label">
+            المصاريف
+        </div>
+
+        <div
+            id="expensesTotal"
+            class="stat-value">
+
+            0 دج
+
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-icon">
+            📅
+        </div>
+
+        <div class="stat-label">
+            المواعيد
+        </div>
+
+        <div
+            id="appointmentsCount"
+            class="stat-value">
+
+            0
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- MODULES -->
+
+<div class="section-title">
+
+    <h2>
+        إدارة المشروع
+    </h2>
+
+    <span>
+        كل بيانات المشروع
+    </span>
+
+</div>
+
+
+<div class="modules">
+
+
+    <button
+        class="module workers"
+        onclick="openWorkers()">
+
+        <div class="module-icon">
+            👷
+        </div>
+
+        <h3>
+            العمال
+        </h3>
+
+        <p>
+            العمال والوظائف والأجور
+        </p>
+
+    </button>
+
+
+    <button
+        class="module materials"
+        onclick="openModule('المخزن والمواد')">
+
+        <div class="module-icon">
+            🧱
+        </div>
+
+        <h3>
+            المخزن والمواد
+        </h3>
+
+        <p>
+            الدخول والخروج والمخزون
+        </p>
+
+    </button>
+
+
+    <button
+        class="module attendance"
+        onclick="openModule('الحضور')">
+
+        <div class="module-icon">
+            🕘
+        </div>
+
+        <h3>
+            الحضور
+        </h3>
+
+        <p>
+            متابعة حضور العمال
+        </p>
+
+    </button>
+
+
+    <button
+        class="module expenses"
+        onclick="openModule('المصاريف')">
+
+        <div class="module-icon">
+            💰
+        </div>
+
+        <h3>
+            المصاريف
+        </h3>
+
+        <p>
+            مصاريف ومدفوعات المشروع
+        </p>
+
+    </button>
+
+
+    <button
+        class="module reports"
+        onclick="openModule('التقارير اليومية')">
+
+        <div class="module-icon">
+            📋
+        </div>
+
+        <h3>
+            التقارير اليومية
+        </h3>
+
+        <p>
+            ماذا أنجزنا اليوم؟
+        </p>
+
+    </button>
+
+
+    <button
+        class="module appointments"
+        onclick="openModule('المواعيد')">
+
+        <div class="module-icon">
+            📅
+        </div>
+
+        <h3>
+            المواعيد
+        </h3>
+
+        <p>
+            مواعيد واجتماعات المشروع
+        </p>
+
+    </button>
+
+
+    <button
+        class="module meetings"
+        onclick="openModule('الاجتماعات')">
+
+        <div class="module-icon">
+            🤝
+        </div>
+
+        <h3>
+            الاجتماعات
+        </h3>
+
+        <p>
+            تنظيم اجتماعات الفريق
+        </p>
+
+    </button>
+
+
+    <button
+        class="module chat"
+        onclick="openModule('المحادثة')">
+
+        <div class="module-icon">
+            💬
+        </div>
+
+        <h3>
+            محادثة المشروع
+        </h3>
+
+        <p>
+            تواصل العمال والمهندسين
+        </p>
+
+    </button>
+
+
+    <button
+        class="module photos"
+        onclick="openModule('صور المشروع')">
+
+        <div class="module-icon">
+            📷
+        </div>
+
+        <h3>
+            صور المشروع
+        </h3>
+
+        <p>
+            توثيق مراحل الإنجاز
+        </p>
+
+    </button>
+
+
+    <button
+        class="module notifications"
+        onclick="openModule('الإشعارات')">
+
+        <div class="module-icon">
+            🔔
+        </div>
+
+        <h3>
+            الإشعارات
+        </h3>
+
+        <p>
+            تنبيهات المشروع
+        </p>
+
+    </button>
+
+
+</div>
+
+
+<!-- PROJECT DETAILS -->
+
+<div class="section-title">
+
+    <h2>
+        معلومات المشروع
+    </h2>
+
+</div>
+
+
+<div class="details">
+
+
+    <div class="detail">
 
         <span>
-            كل بيانات المشروع
+            العميل
         </span>
 
-    </div>
+        <strong
+            id="clientName">
 
+            —
 
-    <div class="modules">
-
-        <button
-            class="module workers"
-            onclick="openModule('العمال')">
-
-            <div class="module-icon">
-                👷
-            </div>
-
-            <h3>العمال</h3>
-
-            <p>
-                العمال والوظائف والأجور
-            </p>
-
-        </button>
-
-
-        <button
-            class="module materials"
-            onclick="openModule('المخزن والمواد')">
-
-            <div class="module-icon">
-                🧱
-            </div>
-
-            <h3>المخزن والمواد</h3>
-
-            <p>
-                الدخول والخروج والمخزون
-            </p>
-
-        </button>
-
-
-        <button
-            class="module attendance"
-            onclick="openModule('الحضور')">
-
-            <div class="module-icon">
-                🕘
-            </div>
-
-            <h3>الحضور</h3>
-
-            <p>
-                متابعة حضور العمال
-            </p>
-
-        </button>
-
-
-        <button
-            class="module expenses"
-            onclick="openModule('المصاريف')">
-
-            <div class="module-icon">
-                💰
-            </div>
-
-            <h3>المصاريف</h3>
-
-            <p>
-                مصاريف ومدفوعات المشروع
-            </p>
-
-        </button>
-
-
-        <button
-            class="module reports"
-            onclick="openModule('التقارير اليومية')">
-
-            <div class="module-icon">
-                📋
-            </div>
-
-            <h3>التقارير اليومية</h3>
-
-            <p>
-                ماذا أنجزنا اليوم؟
-            </p>
-
-        </button>
-
-
-        <button
-            class="module appointments"
-            onclick="openModule('المواعيد')">
-
-            <div class="module-icon">
-                📅
-            </div>
-
-            <h3>المواعيد</h3>
-
-            <p>
-                مواعيد واجتماعات المشروع
-            </p>
-
-        </button>
-
-
-        <button
-            class="module meetings"
-            onclick="openModule('الاجتماعات')">
-
-            <div class="module-icon">
-                🤝
-            </div>
-
-            <h3>الاجتماعات</h3>
-
-            <p>
-                تنظيم اجتماعات الفريق
-            </p>
-
-        </button>
-
-
-        <button
-            class="module chat"
-            onclick="openModule('المحادثة')">
-
-            <div class="module-icon">
-                💬
-            </div>
-
-            <h3>محادثة المشروع</h3>
-
-            <p>
-                تواصل العمال والمهندسين
-            </p>
-
-        </button>
-
-
-        <button
-            class="module photos"
-            onclick="openModule('صور المشروع')">
-
-            <div class="module-icon">
-                📷
-            </div>
-
-            <h3>صور المشروع</h3>
-
-            <p>
-                توثيق مراحل الإنجاز
-            </p>
-
-        </button>
-
-
-        <button
-            class="module notifications"
-            onclick="openModule('الإشعارات')">
-
-            <div class="module-icon">
-                🔔
-            </div>
-
-            <h3>الإشعارات</h3>
-
-            <p>
-                تنبيهات المشروع
-            </p>
-
-        </button>
+        </strong>
 
     </div>
 
 
-    <!-- DETAILS -->
+    <div class="detail">
 
-    <div class="section-title">
+        <span>
+            المهندس
+        </span>
 
-        <h2>
-            معلومات المشروع
-        </h2>
+        <strong
+            id="engineerName">
+
+            —
+
+        </strong>
+
+    </div>
+
+
+    <div class="detail">
+
+        <span>
+            تاريخ البداية
+        </span>
+
+        <strong
+            id="startDate">
+
+            —
+
+        </strong>
 
     </div>
 
 
-    <div class="details">
+    <div class="detail">
 
-        <div class="detail">
-            <span>العميل</span>
-            <strong id="clientName">—</strong>
-        </div>
+        <span>
+            تاريخ النهاية
+        </span>
 
-        <div class="detail">
-            <span>المهندس</span>
-            <strong id="engineerName">—</strong>
-        </div>
+        <strong
+            id="endDate">
 
-        <div class="detail">
-            <span>تاريخ البداية</span>
-            <strong id="startDate">—</strong>
-        </div>
+            —
 
-        <div class="detail">
-            <span>تاريخ النهاية</span>
-            <strong id="endDate">—</strong>
-        </div>
-
-        <div class="detail">
-            <span>الميزانية</span>
-            <strong id="budget">—</strong>
-        </div>
-
-        <div class="detail">
-            <span>ملاحظات</span>
-            <strong id="notes">—</strong>
-        </div>
+        </strong>
 
     </div>
+
+
+    <div class="detail">
+
+        <span>
+            الميزانية
+        </span>
+
+        <strong
+            id="budget">
+
+            —
+
+        </strong>
+
+    </div>
+
+
+    <div class="detail">
+
+        <span>
+            ملاحظات
+        </span>
+
+        <strong
+            id="notes">
+
+            —
+
+        </strong>
+
+    </div>
+
+
+</div>
+
 
 </main>
 
 
-<!-- BOTTOM NAV -->
+<!-- =======================================================
+     BOTTOM NAV
+======================================================== -->
 
 <nav class="bottom-nav">
 
     <div class="bottom-inner">
 
+
         <button
             class="bottom-item"
             onclick="location.href='/'">
 
-            <div>⌂</div>
+            <div>
+                ⌂
+            </div>
+
             الرئيسية
 
         </button>
@@ -787,7 +1978,10 @@ button{
         <button
             class="bottom-item active">
 
-            <div>🏗️</div>
+            <div>
+                🏗️
+            </div>
+
             المشروع
 
         </button>
@@ -797,19 +1991,314 @@ button{
             class="bottom-item"
             onclick="location.href='/projects.html'">
 
-            <div>📁</div>
+            <div>
+                📁
+            </div>
+
             المشاريع
 
         </button>
+
 
     </div>
 
 </nav>
 
+
+</div>
+
+
+<!-- =======================================================
+     WORKERS PANEL
+======================================================== -->
+
+<div
+    id="workersPanel"
+    class="workers-panel">
+
+
+    <div class="workers-header">
+
+        <div class="workers-header-top">
+
+
+            <button
+                class="workers-close"
+                onclick="closeWorkers()">
+
+                ←
+
+            </button>
+
+
+            <h2>
+                عمال المشروع
+            </h2>
+
+
+            <button
+                class="add-worker-btn"
+                onclick="openWorkerModal()">
+
+                + إضافة عامل
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="workers-container">
+
+
+        <div class="worker-summary">
+
+
+            <div class="worker-summary-card">
+
+                <strong
+                    id="totalWorkers">
+
+                    0
+
+                </strong>
+
+                <span>
+                    إجمالي العمال
+                </span>
+
+            </div>
+
+
+            <div class="worker-summary-card">
+
+                <strong
+                    id="activeWorkers">
+
+                    0
+
+                </strong>
+
+                <span>
+                    نشط
+                </span>
+
+            </div>
+
+
+            <div class="worker-summary-card">
+
+                <strong
+                    id="totalSalaries">
+
+                    0
+
+                </strong>
+
+                <span>
+                    مجموع الأجور
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            id="workersList"
+            class="workers-list">
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     WORKER MODAL
+======================================================== -->
+
+<div
+    id="workerModal"
+    class="modal">
+
+
+    <div class="modal-box">
+
+
+        <div class="modal-header">
+
+            <h2
+                id="workerModalTitle">
+
+                إضافة عامل
+
+            </h2>
+
+
+            <button
+                class="close-btn"
+                onclick="closeWorkerModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <form
+            id="workerForm"
+            onsubmit="saveWorker(event)">
+
+
+            <input
+                type="hidden"
+                id="workerId">
+
+
+            <div class="form-group">
+
+                <label>
+                    اسم العامل *
+                </label>
+
+                <input
+                    id="workerName"
+                    type="text"
+                    placeholder="مثال: محمد بن علي"
+                    required>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        رقم الهاتف
+                    </label>
+
+                    <input
+                        id="workerPhone"
+                        type="tel"
+                        placeholder="05xxxxxxxx">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        المهنة *
+                    </label>
+
+                    <input
+                        id="workerJob"
+                        type="text"
+                        placeholder="مثال: بنّاء"
+                        required>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        الأجر
+                    </label>
+
+                    <input
+                        id="workerSalary"
+                        type="number"
+                        min="0"
+                        placeholder="مثال: 2500">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        الحالة
+                    </label>
+
+                    <select
+                        id="workerStatus">
+
+                        <option value="active">
+                            نشط
+                        </option>
+
+                        <option value="inactive">
+                            غير نشط
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    ملاحظات
+                </label>
+
+                <textarea
+                    id="workerNotes"
+                    placeholder="ملاحظات إضافية عن العامل..."></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="save-btn">
+
+                💾 حفظ العامل
+
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast">
+
 </div>
 
 
 <script>
+
+/* =========================================================
+   PROJECT ID
+========================================================= */
 
 const params =
     new URLSearchParams(
@@ -820,6 +2309,60 @@ const projectId =
     params.get("id");
 
 
+/* =========================================================
+   WORKER STORAGE KEY
+   كل مشروع عنده قائمة مستقلة
+========================================================= */
+
+function workersStorageKey(){
+
+    return "dunya_omran_workers_project_" +
+        projectId;
+
+}
+
+
+/* =========================================================
+   GET WORKERS
+========================================================= */
+
+function getWorkers(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(
+                workersStorageKey()
+            ) || "[]"
+        );
+
+    }catch(error){
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE WORKERS
+========================================================= */
+
+function saveWorkers(workers){
+
+    localStorage.setItem(
+        workersStorageKey(),
+        JSON.stringify(workers)
+    );
+
+}
+
+
+/* =========================================================
+   MONEY
+========================================================= */
+
 function money(value){
 
     const number =
@@ -828,8 +2371,53 @@ function money(value){
     return number.toLocaleString(
         "ar-DZ"
     ) + " دج";
+
 }
 
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        toastTimer
+    );
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
 
 function goBack(){
 
@@ -838,6 +2426,10 @@ function goBack(){
 
 }
 
+
+/* =========================================================
+   LOAD PROJECT
+========================================================= */
 
 async function loadProject(){
 
@@ -850,6 +2442,7 @@ async function loadProject(){
         goBack();
 
         return;
+
     }
 
 
@@ -867,8 +2460,10 @@ async function loadProject(){
             await response.json();
 
 
-        if(!response.ok ||
-           !data.success){
+        if(
+            !response.ok ||
+            !data.success
+        ){
 
             throw new Error(
                 data.message ||
@@ -885,7 +2480,8 @@ async function loadProject(){
         document.getElementById(
             "projectName"
         ).textContent =
-            project.name || "المشروع";
+            project.name ||
+            "المشروع";
 
 
         document.getElementById(
@@ -926,10 +2522,26 @@ async function loadProject(){
             ) + "%";
 
 
+        const storedWorkers =
+            getWorkers();
+
+
+        const backendWorkers =
+            data.workers || [];
+
+
+        /*
+         * إذا كانت هناك عمال من الواجهة المحلية
+         * نستعملهم في هذه المرحلة.
+         *
+         * لاحقًا نربطهم مباشرة بـ PostgreSQL.
+         */
+
         document.getElementById(
             "workersCount"
         ).textContent =
-            (data.workers || []).length;
+            storedWorkers.length ||
+            backendWorkers.length;
 
 
         document.getElementById(
@@ -950,11 +2562,17 @@ async function loadProject(){
 
         const totalExpenses =
             expenses.reduce(
-                (sum, item) =>
-                    sum +
-                    Number(
-                        item.amount || 0
-                    ),
+                (
+                    sum,
+                    item
+                ) => {
+
+                    return sum +
+                        Number(
+                            item.amount || 0
+                        );
+
+                },
                 0
             );
 
@@ -962,7 +2580,9 @@ async function loadProject(){
         document.getElementById(
             "expensesTotal"
         ).textContent =
-            money(totalExpenses);
+            money(
+                totalExpenses
+            );
 
 
         document.getElementById(
@@ -996,7 +2616,9 @@ async function loadProject(){
         document.getElementById(
             "budget"
         ).textContent =
-            money(project.budget);
+            money(
+                project.budget
+            );
 
 
         document.getElementById(
@@ -1020,12 +2642,15 @@ async function loadProject(){
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         document.getElementById(
             "loading"
-        ).innerHTML =
-            `
+        ).innerHTML = `
+
             <div style="
                 background:white;
                 margin:20px;
@@ -1063,31 +2688,877 @@ async function loadProject(){
                         font-family:inherit;
                         font-weight:800;
                     ">
+
                     العودة للمشاريع
+
                 </button>
 
             </div>
-            `;
+
+        `;
 
     }
 
 }
 
 
-function openModule(name){
+/* =========================================================
+   OPEN WORKERS
+========================================================= */
 
-    alert(
-        "📌 " +
-        name +
-        "\n\nسيتم تجهيز هذا القسم وربطه بالمشروع الحالي في الخطوة القادمة."
+function openWorkers(){
+
+    renderWorkers();
+
+    document
+        .getElementById(
+            "workersPanel"
+        )
+        .classList.add(
+            "show"
+        );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+/* =========================================================
+   CLOSE WORKERS
+========================================================= */
+
+function closeWorkers(){
+
+    document
+        .getElementById(
+            "workersPanel"
+        )
+        .classList.remove(
+            "show"
+        );
+
+    document.body.style.overflow =
+        "";
+
+    updateWorkerCount();
+
+}
+
+
+/* =========================================================
+   RENDER WORKERS
+========================================================= */
+
+function renderWorkers(){
+
+    const workers =
+        getWorkers();
+
+
+    const list =
+        document.getElementById(
+            "workersList"
+        );
+
+
+    document.getElementById(
+        "totalWorkers"
+    ).textContent =
+        workers.length;
+
+
+    const active =
+        workers.filter(
+            worker =>
+                worker.status ===
+                "active"
+        ).length;
+
+
+    document.getElementById(
+        "activeWorkers"
+    ).textContent =
+        active;
+
+
+    const salaryTotal =
+        workers.reduce(
+            (
+                total,
+                worker
+            ) => {
+
+                return total +
+                    Number(
+                        worker.salary || 0
+                    );
+
+            },
+            0
+        );
+
+
+    document.getElementById(
+        "totalSalaries"
+    ).textContent =
+        money(
+            salaryTotal
+        );
+
+
+    if(!workers.length){
+
+        list.innerHTML = `
+
+            <div class="empty-workers">
+
+                <div class="icon">
+                    👷
+                </div>
+
+                <h3>
+                    لا يوجد عمال بعد
+                </h3>
+
+                <p>
+                    أضف أول عامل مرتبط بهذا المشروع.
+                </p>
+
+                <button
+                    class="add-worker-btn"
+                    onclick="openWorkerModal()">
+
+                    + إضافة أول عامل
+
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        workers.map(
+            worker =>
+                workerCard(
+                    worker
+                )
+        ).join("");
+
+}
+
+
+/* =========================================================
+   WORKER CARD
+========================================================= */
+
+function workerCard(worker){
+
+    const status =
+        worker.status ===
+        "inactive"
+            ? "inactive"
+            : "active";
+
+
+    const statusText =
+        status === "active"
+            ? "نشط"
+            : "غير نشط";
+
+
+    const salary =
+        money(
+            worker.salary
+        );
+
+
+    return `
+
+        <div class="worker-card">
+
+            <div class="worker-top">
+
+                <div class="worker-avatar">
+                    👷
+                </div>
+
+
+                <div class="worker-main">
+
+                    <div class="worker-name">
+
+                        ${escapeHtml(
+                            worker.name
+                        )}
+
+                    </div>
+
+                    <div class="worker-job">
+
+                        ${escapeHtml(
+                            worker.job ||
+                            "عامل"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="worker-status ${status}">
+
+                    ${statusText}
+
+                </div>
+
+            </div>
+
+
+            <div class="worker-info">
+
+
+                <div class="worker-info-item">
+
+                    <span>
+                        📞 الهاتف
+                    </span>
+
+                    <strong>
+
+                        ${
+                            worker.phone
+                                ? escapeHtml(
+                                    worker.phone
+                                  )
+                                : "غير محدد"
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="worker-info-item">
+
+                    <span>
+                        💰 الأجر
+                    </span>
+
+                    <strong>
+
+                        ${salary}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="worker-info-item">
+
+                    <span>
+                        📅 تاريخ الإضافة
+                    </span>
+
+                    <strong>
+
+                        ${
+                            worker.createdAt
+                                ? formatDate(
+                                    worker.createdAt
+                                  )
+                                : "اليوم"
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="worker-info-item">
+
+                    <span>
+                        🏗️ المشروع
+                    </span>
+
+                    <strong>
+                        هذا المشروع
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            ${
+                worker.notes
+                    ? `
+                        <div
+                            style="
+                                margin-top:10px;
+                                padding:10px;
+                                border-radius:12px;
+                                background:#f8f7f4;
+                                font-size:10px;
+                                color:#68757A;
+                            ">
+
+                            📝
+                            ${escapeHtml(
+                                worker.notes
+                            )}
+
+                        </div>
+                    `
+                    : ""
+            }
+
+
+            <div class="worker-actions">
+
+
+                <button
+                    class="worker-action edit-worker"
+                    onclick="editWorker('${worker.id}')">
+
+                    ✏️ تعديل
+
+                </button>
+
+
+                <button
+                    class="worker-action delete-worker"
+                    onclick="deleteWorker('${worker.id}')">
+
+                    🗑️ حذف
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   OPEN WORKER MODAL
+========================================================= */
+
+function openWorkerModal(
+    worker = null
+){
+
+    const modal =
+        document.getElementById(
+            "workerModal"
+        );
+
+
+    document.getElementById(
+        "workerForm"
+    ).reset();
+
+
+    document.getElementById(
+        "workerId"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "workerModalTitle"
+    ).textContent =
+        worker
+            ? "تعديل العامل"
+            : "إضافة عامل";
+
+
+    if(worker){
+
+        document.getElementById(
+            "workerId"
+        ).value =
+            worker.id;
+
+
+        document.getElementById(
+            "workerName"
+        ).value =
+            worker.name || "";
+
+
+        document.getElementById(
+            "workerPhone"
+        ).value =
+            worker.phone || "";
+
+
+        document.getElementById(
+            "workerJob"
+        ).value =
+            worker.job || "";
+
+
+        document.getElementById(
+            "workerSalary"
+        ).value =
+            worker.salary || "";
+
+
+        document.getElementById(
+            "workerStatus"
+        ).value =
+            worker.status ||
+            "active";
+
+
+        document.getElementById(
+            "workerNotes"
+        ).value =
+            worker.notes || "";
+
+    }
+
+
+    modal.classList.add(
+        "show"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+/* =========================================================
+   CLOSE WORKER MODAL
+========================================================= */
+
+function closeWorkerModal(){
+
+    document
+        .getElementById(
+            "workerModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =========================================================
+   SAVE WORKER
+========================================================= */
+
+function saveWorker(event){
+
+    event.preventDefault();
+
+
+    const id =
+        document.getElementById(
+            "workerId"
+        ).value;
+
+
+    const name =
+        document.getElementById(
+            "workerName"
+        ).value.trim();
+
+
+    const phone =
+        document.getElementById(
+            "workerPhone"
+        ).value.trim();
+
+
+    const job =
+        document.getElementById(
+            "workerJob"
+        ).value.trim();
+
+
+    const salary =
+        Number(
+            document.getElementById(
+                "workerSalary"
+            ).value || 0
+        );
+
+
+    const status =
+        document.getElementById(
+            "workerStatus"
+        ).value;
+
+
+    const notes =
+        document.getElementById(
+            "workerNotes"
+        ).value.trim();
+
+
+    if(!name){
+
+        showToast(
+            "اكتب اسم العامل"
+        );
+
+        return;
+
+    }
+
+
+    if(!job){
+
+        showToast(
+            "اكتب مهنة العامل"
+        );
+
+        return;
+
+    }
+
+
+    const workers =
+        getWorkers();
+
+
+    if(id){
+
+        const index =
+            workers.findIndex(
+                worker =>
+                    String(
+                        worker.id
+                    ) === String(id)
+            );
+
+
+        if(index !== -1){
+
+            workers[index] = {
+
+                ...workers[index],
+
+                name,
+
+                phone,
+
+                job,
+
+                salary,
+
+                status,
+
+                notes
+
+            };
+
+        }
+
+
+        showToast(
+            "تم تعديل بيانات العامل ✅"
+        );
+
+    }else{
+
+        const worker = {
+
+            id:
+                Date.now()
+                .toString(),
+
+            projectId:
+
+                String(
+                    projectId
+                ),
+
+            name,
+
+            phone,
+
+            job,
+
+            salary,
+
+            status,
+
+            notes,
+
+            createdAt:
+                new Date()
+                .toISOString()
+
+        };
+
+
+        workers.unshift(
+            worker
+        );
+
+
+        showToast(
+            "تمت إضافة العامل بنجاح ✅"
+        );
+
+    }
+
+
+    saveWorkers(
+        workers
+    );
+
+
+    closeWorkerModal();
+
+    renderWorkers();
+
+    updateWorkerCount();
+
+}
+
+
+/* =========================================================
+   EDIT WORKER
+========================================================= */
+
+function editWorker(id){
+
+    const workers =
+        getWorkers();
+
+
+    const worker =
+        workers.find(
+            item =>
+                String(
+                    item.id
+                ) === String(id)
+        );
+
+
+    if(!worker){
+
+        return;
+
+    }
+
+
+    openWorkerModal(
+        worker
     );
 
 }
 
+
+/* =========================================================
+   DELETE WORKER
+========================================================= */
+
+function deleteWorker(id){
+
+    const workers =
+        getWorkers();
+
+
+    const worker =
+        workers.find(
+            item =>
+                String(
+                    item.id
+                ) === String(id)
+        );
+
+
+    if(!worker){
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "هل تريد حذف العامل:\n\n" +
+            worker.name +
+            "\n\nمن هذا المشروع؟"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    const updated =
+        workers.filter(
+            item =>
+                String(
+                    item.id
+                ) !== String(id)
+        );
+
+
+    saveWorkers(
+        updated
+    );
+
+
+    renderWorkers();
+
+    updateWorkerCount();
+
+
+    showToast(
+        "تم حذف العامل"
+    );
+
+}
+
+
+/* =========================================================
+   UPDATE WORKER COUNT
+========================================================= */
+
+function updateWorkerCount(){
+
+    const workers =
+        getWorkers();
+
+
+    document.getElementById(
+        "workersCount"
+    ).textContent =
+        workers.length;
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDate(date){
+
+    try{
+
+        return new Date(
+            date
+        ).toLocaleDateString(
+            "ar-DZ"
+        );
+
+    }catch(error){
+
+        return "—";
+
+    }
+
+}
+
+
+/* =========================================================
+   OTHER MODULES
+========================================================= */
+
+function openModule(name){
+
+    showToast(
+        "📌 قسم " +
+        name +
+        " سنطوره في المرحلة القادمة."
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICK OUTSIDE
+========================================================= */
+
+document
+    .getElementById(
+        "workerModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target ===
+                this
+            ){
+
+                closeWorkerModal();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   START
+========================================================= */
 
 loadProject();
 
 </script>
 
 </body>
+
 </html>
