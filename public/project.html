@@ -1,671 +1,491 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>المشروع | دنيا العمران والترقية</title>
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <style>
-
-        :root {
-            --petroleum: #123B4A;
-            --petroleum-dark: #0B2934;
-            --green: #3F6B63;
-            --copper: #C47735;
-            --ivory: #F5F3EE;
-            --stone: #68757A;
-            --white: #FFFFFF;
-            --border: #E1E2DE;
-            --danger: #B94A48;
-        }
-
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        body {
-            font-family: "Cairo", sans-serif;
-            background: var(--ivory);
-            color: #263238;
-            min-height: 100vh;
-        }
-
-
-        button,
-        input,
-        textarea {
-            font-family: inherit;
-        }
-
-
-        /* HEADER */
-
-        .topbar {
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--petroleum-dark),
-                    var(--petroleum)
-                );
-
-            color: white;
-            padding: 15px 18px;
-
-            position: sticky;
-            top: 0;
-            z-index: 100;
-
-            box-shadow:
-                0 4px 18px
-                rgba(0,0,0,.13);
-        }
-
-
-        .topbar-inner {
-            max-width: 1200px;
-            margin: auto;
-
-            display: flex;
-            align-items: center;
-            gap: 13px;
-        }
-
-
-        .back-btn {
-            width: 42px;
-            height: 42px;
-
-            border: 1px solid
-                rgba(255,255,255,.18);
-
-            background:
-                rgba(255,255,255,.08);
-
-            color: white;
-
-            border-radius: 11px;
-
-            cursor: pointer;
-
-            font-size: 20px;
-        }
-
-
-        .project-head {
-            flex: 1;
-            min-width: 0;
-        }
-
-
-        .project-head h1 {
-            font-size: 18px;
-            font-weight: 800;
-
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-
-        .project-head p {
-            color: #D5E0E2;
-            font-size: 11px;
-        }
-
-
-        /* MAIN */
-
-        main {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px 16px 80px;
-        }
-
-
-        /* HERO */
-
-        .hero {
-            background: white;
-
-            border: 1px solid var(--border);
-
-            border-radius: 20px;
-
-            padding: 20px;
-
-            box-shadow:
-                0 6px 22px
-                rgba(18,59,74,.06);
-
-            margin-bottom: 17px;
-        }
-
-
-        .hero-top {
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: flex-start;
-
-            gap: 15px;
-        }
-
-
-        .hero-title {
-            color: var(--petroleum-dark);
-
-            font-size: 23px;
-
-            font-weight: 800;
-        }
-
-
-        .hero-location {
-            color: var(--stone);
-
-            font-size: 12px;
-
-            margin-top: 3px;
-        }
-
-
-        .status {
-            padding: 6px 11px;
-
-            border-radius: 20px;
-
-            font-size: 11px;
-
-            font-weight: 800;
-
-            white-space: nowrap;
-        }
-
-
-        .status-active {
-            background: #E5F1ED;
-            color: var(--green);
-        }
-
-
-        .status-paused {
-            background: #F8E9D8;
-            color: var(--copper);
-        }
-
-
-        .status-done {
-            background: #E9ECEC;
-            color: var(--stone);
-        }
-
-
-        .progress-block {
-            margin-top: 20px;
-        }
-
-
-        .progress-label {
-            display: flex;
-
-            justify-content: space-between;
-
-            color: var(--stone);
-
-            font-size: 12px;
-
-            margin-bottom: 7px;
-        }
-
-
-        .progress-label strong {
-            color: var(--petroleum);
-        }
-
-
-        .progress {
-            height: 10px;
-
-            background: #E7E9E6;
-
-            border-radius: 20px;
-
-            overflow: hidden;
-        }
-
-
-        .progress-bar {
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    var(--green),
-                    var(--copper)
-                );
-
-            border-radius: 20px;
-
-            transition: width .4s ease;
-        }
-
-
-        .hero-info {
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 10px;
-
-            margin-top: 18px;
-        }
-
-
-        .hero-box {
-            background: #F7F7F4;
-
-            border-radius: 11px;
-
-            padding: 11px;
-        }
-
-
-        .hero-box span {
-            display: block;
-
-            color: var(--stone);
-
-            font-size: 10px;
-        }
-
-
-        .hero-box strong {
-            display: block;
-
-            color: var(--petroleum);
-
-            font-size: 13px;
-
-            margin-top: 3px;
-        }
-
-
-        /* SECTION CARDS */
-
-        .section-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 14px;
-
-            margin-bottom: 18px;
-        }
-
-
-        .section-card {
-            background: white;
-
-            border: 1px solid var(--border);
-
-            border-radius: 17px;
-
-            padding: 17px;
-
-            cursor: pointer;
-
-            transition: .2s;
-
-            box-shadow:
-                0 4px 15px
-                rgba(18,59,74,.04);
-        }
-
-
-        .section-card:hover {
-            transform: translateY(-2px);
-
-            border-color: var(--copper);
-        }
-
-
-        .section-icon {
-            width: 43px;
-            height: 43px;
-
-            border-radius: 11px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 21px;
-
-            margin-bottom: 11px;
-        }
-
-
-        .icon-workers {
-            background: #E5F1ED;
-        }
-
-
-        .icon-materials {
-            background: #F8E9D8;
-        }
-
-
-        .icon-money {
-            background: #E7F0F3;
-        }
-
-
-        .icon-attendance {
-            background: #EEE9F4;
-        }
-
-
-        .icon-reports {
-            background: #E8EFE9;
-        }
-
-
-        .icon-calendar {
-            background: #F4EAE2;
-        }
-
-
-        .icon-meeting {
-            background: #E7EDF0;
-        }
-
-
-        .icon-chat {
-            background: #ECE8F2;
-        }
-
-
-        .icon-notify {
-            background: #F6E7E2;
-        }
-
-
-        .section-card h3 {
-            color: var(--petroleum);
-
-            font-size: 15px;
-
-            font-weight: 800;
-        }
-
-
-        .section-card p {
-            color: var(--stone);
-
-            font-size: 11px;
-
-            margin-top: 3px;
-        }
-
-
-        .section-count {
-            color: var(--copper);
-
-            font-size: 12px;
-
-            font-weight: 800;
-
-            margin-top: 9px;
-        }
-
-
-        /* DETAILS */
-
-        .details {
-            background: white;
-
-            border: 1px solid var(--border);
-
-            border-radius: 17px;
-
-            padding: 18px;
-
-            margin-bottom: 18px;
-        }
-
-
-        .details h2 {
-            color: var(--petroleum);
-
-            font-size: 17px;
-
-            margin-bottom: 14px;
-        }
-
-
-        .details-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 10px;
-        }
-
-
-        .detail {
-            background: #F8F8F5;
-
-            border-radius: 10px;
-
-            padding: 11px;
-        }
-
-
-        .detail span {
-            display: block;
-
-            color: var(--stone);
-
-            font-size: 10px;
-        }
-
-
-        .detail strong {
-            display: block;
-
-            color: var(--petroleum-dark);
-
-            font-size: 13px;
-
-            margin-top: 3px;
-        }
-
-
-        .notes {
-            margin-top: 10px;
-
-            background: #F8F8F5;
-
-            border-radius: 10px;
-
-            padding: 12px;
-
-            color: #465359;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-
-        /* LOADING */
-
-        .loading {
-            background: white;
-
-            border: 1px solid var(--border);
-
-            border-radius: 17px;
-
-            padding: 60px 20px;
-
-            text-align: center;
-
-            color: var(--stone);
-        }
-
-
-        .loading-icon {
-            font-size: 45px;
-
-            margin-bottom: 10px;
-        }
-
-
-        /* ERROR */
-
-        .error {
-            background: white;
-
-            border: 1px solid #E7C5C4;
-
-            border-radius: 17px;
-
-            padding: 40px 20px;
-
-            text-align: center;
-
-            color: var(--danger);
-        }
-
-
-        .retry-btn {
-            margin-top: 15px;
-
-            border: 0;
-
-            background: var(--petroleum);
-
-            color: white;
-
-            border-radius: 10px;
-
-            padding: 10px 18px;
-
-            cursor: pointer;
-
-            font-weight: 700;
-        }
-
-
-        /* MOBILE */
-
-        @media(max-width: 900px) {
-
-            .section-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .hero-info {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-        }
-
-
-        @media(max-width: 600px) {
-
-            main {
-                padding:
-                    15px 12px 70px;
-            }
-
-
-            .hero-title {
-                font-size: 20px;
-            }
-
-
-            .hero {
-                padding: 16px;
-            }
-
-
-            .section-grid {
-                grid-template-columns: 1fr;
-            }
-
-
-            .details-grid {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-    </style>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>DUNYA OMRAN | المشروع</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+rel="stylesheet">
+
+<style>
+
+:root{
+    --petroleum:#123B4A;
+    --dark:#0B2934;
+    --green:#3F6B63;
+    --copper:#C47735;
+    --ivory:#F5F3EE;
+    --stone:#68757A;
+    --white:#ffffff;
+    --red:#b94a48;
+    --shadow:0 10px 30px rgba(11,41,52,.10);
+    --radius:20px;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:"Cairo",sans-serif;
+    background:var(--ivory);
+    color:var(--dark);
+}
+
+button,
+input,
+textarea,
+select{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* HEADER */
+
+.header{
+    background:
+        linear-gradient(
+            135deg,
+            var(--dark),
+            var(--petroleum)
+        );
+
+    color:white;
+    padding:20px 18px 28px;
+
+    border-radius:
+        0 0 28px 28px;
+
+    box-shadow:var(--shadow);
+}
+
+.header-top{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.back-btn{
+    width:42px;
+    height:42px;
+    border:0;
+    border-radius:13px;
+    background:rgba(255,255,255,.12);
+    color:white;
+    font-size:20px;
+}
+
+.header-title{
+    flex:1;
+}
+
+.header-title h1{
+    margin:0;
+    font-size:21px;
+    font-weight:900;
+}
+
+.header-title p{
+    margin:3px 0 0;
+    opacity:.75;
+    font-size:12px;
+}
+
+.status{
+    padding:6px 11px;
+    border-radius:30px;
+    background:rgba(63,107,99,.35);
+    color:#d9eee9;
+    font-size:11px;
+    font-weight:800;
+}
+
+/* PROJECT INFO */
+
+.project-info{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:20px;
+    padding:16px;
+}
+
+.location{
+    opacity:.8;
+    font-size:12px;
+}
+
+.progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:14px;
+}
+
+.progress-value{
+    font-size:22px;
+    font-weight:900;
+    color:#e9c45d;
+}
+
+.progress-bar{
+    height:9px;
+    background:rgba(255,255,255,.12);
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:8px;
+}
+
+.progress-fill{
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        var(--copper),
+        #e9c45d
+    );
+    border-radius:20px;
+}
+
+/* CONTENT */
+
+.container{
+    width:min(1100px,94%);
+    margin:20px auto 100px;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:12px;
+}
+
+.stat{
+    background:white;
+    border-radius:18px;
+    padding:16px;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(18,59,74,.05);
+}
+
+.stat-icon{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.stat-label{
+    color:var(--stone);
+    font-size:11px;
+}
+
+.stat-value{
+    margin-top:3px;
+    font-size:22px;
+    font-weight:900;
+}
+
+/* SECTION */
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:25px 2px 12px;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:17px;
+    font-weight:900;
+}
+
+.section-title span{
+    color:var(--stone);
+    font-size:11px;
+}
+
+/* CARDS */
+
+.modules{
+    display:grid;
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:12px;
+}
+
+.module{
+    border:0;
+    background:white;
+    border-radius:19px;
+    padding:18px 14px;
+    text-align:right;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(18,59,74,.05);
+    transition:.2s;
+}
+
+.module:active{
+    transform:scale(.97);
+}
+
+.module-icon{
+    width:46px;
+    height:46px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:#eef3f2;
+    font-size:24px;
+    margin-bottom:10px;
+}
+
+.module h3{
+    margin:0;
+    font-size:14px;
+    font-weight:900;
+}
+
+.module p{
+    margin:5px 0 0;
+    font-size:10px;
+    color:var(--stone);
+}
+
+/* COLORS */
+
+.module.workers .module-icon{
+    background:#e9f1ef;
+}
+
+.module.materials .module-icon{
+    background:#fff0e4;
+}
+
+.module.attendance .module-icon{
+    background:#edf3f7;
+}
+
+.module.expenses .module-icon{
+    background:#f8ebe8;
+}
+
+.module.reports .module-icon{
+    background:#eef0f7;
+}
+
+.module.appointments .module-icon{
+    background:#fff5df;
+}
+
+.module.meetings .module-icon{
+    background:#e8f2ef;
+}
+
+.module.chat .module-icon{
+    background:#e8eef4;
+}
+
+.module.photos .module-icon{
+    background:#f1eaf5;
+}
+
+.module.notifications .module-icon{
+    background:#fff0df;
+}
+
+/* DETAILS */
+
+.details{
+    background:white;
+    border-radius:20px;
+    padding:18px;
+    box-shadow:var(--shadow);
+}
+
+.detail{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:11px 0;
+    border-bottom:1px solid #eee;
+    font-size:12px;
+}
+
+.detail:last-child{
+    border-bottom:0;
+}
+
+.detail span:first-child{
+    color:var(--stone);
+}
+
+.detail strong{
+    text-align:left;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:25px 10px;
+    color:var(--stone);
+    font-size:12px;
+}
+
+/* LOADING */
+
+.loading{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--stone);
+}
+
+/* BOTTOM */
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:72px;
+
+    background:
+        rgba(255,255,255,.96);
+
+    backdrop-filter:blur(12px);
+
+    border-top:1px solid #e8e4df;
+
+    display:flex;
+    justify-content:center;
+
+    z-index:50;
+}
+
+.bottom-inner{
+    width:min(600px,100%);
+    display:flex;
+}
+
+.bottom-item{
+    flex:1;
+    border:0;
+    background:none;
+    color:var(--stone);
+    font-size:10px;
+    font-weight:700;
+}
+
+.bottom-item div{
+    font-size:21px;
+    margin-bottom:2px;
+}
+
+.bottom-item.active{
+    color:var(--petroleum);
+}
+
+/* DESKTOP */
+
+@media(min-width:700px){
+
+    .stats{
+        grid-template-columns:
+            repeat(4,1fr);
+    }
+
+    .modules{
+        grid-template-columns:
+            repeat(5,1fr);
+    }
+
+}
+
+</style>
 
 </head>
 
-
 <body>
 
+<div id="loading" class="loading">
+    ⏳ جاري تحميل المشروع...
+</div>
 
-<header class="topbar">
+<div id="app" style="display:none">
 
-    <div class="topbar-inner">
+<header class="header">
+
+    <div class="header-top">
 
         <button
             class="back-btn"
-            onclick="goBack()"
-        >
+            onclick="goBack()">
             ←
         </button>
 
+        <div class="header-title">
 
-        <div class="project-head">
-
-            <h1 id="headerProjectName">
-                جاري تحميل المشروع...
+            <h1 id="projectName">
+                المشروع
             </h1>
 
-            <p>
-                دنيا العمران والترقية
+            <p id="projectLocation">
+                جاري التحميل...
             </p>
+
+        </div>
+
+        <div
+            id="projectStatus"
+            class="status">
+            —
+        </div>
+
+    </div>
+
+
+    <div class="project-info">
+
+        <div class="location">
+            تقدم المشروع
+        </div>
+
+        <div class="progress-row">
+
+            <span>
+                نسبة الإنجاز
+            </span>
+
+            <span
+                id="progressValue"
+                class="progress-value">
+                0%
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                id="progressFill"
+                class="progress-fill"
+                style="width:0%">
+            </div>
 
         </div>
 
@@ -674,16 +494,273 @@
 </header>
 
 
-<main id="app">
+<main class="container">
 
-    <div class="loading">
+    <!-- STATS -->
 
-        <div class="loading-icon">
-            🏗️
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-icon">👷</div>
+            <div class="stat-label">العمال</div>
+            <div id="workersCount"
+                 class="stat-value">0</div>
         </div>
 
-        <div>
-            جاري تحميل بيانات المشروع...
+        <div class="stat">
+            <div class="stat-icon">🧱</div>
+            <div class="stat-label">المواد</div>
+            <div id="materialsCount"
+                 class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">💰</div>
+            <div class="stat-label">المصاريف</div>
+            <div id="expensesTotal"
+                 class="stat-value">0 دج</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">📅</div>
+            <div class="stat-label">المواعيد</div>
+            <div id="appointmentsCount"
+                 class="stat-value">0</div>
+        </div>
+
+    </div>
+
+
+    <!-- MODULES -->
+
+    <div class="section-title">
+
+        <h2>
+            إدارة المشروع
+        </h2>
+
+        <span>
+            كل بيانات المشروع
+        </span>
+
+    </div>
+
+
+    <div class="modules">
+
+        <button
+            class="module workers"
+            onclick="openModule('العمال')">
+
+            <div class="module-icon">
+                👷
+            </div>
+
+            <h3>العمال</h3>
+
+            <p>
+                العمال والوظائف والأجور
+            </p>
+
+        </button>
+
+
+        <button
+            class="module materials"
+            onclick="openModule('المخزن والمواد')">
+
+            <div class="module-icon">
+                🧱
+            </div>
+
+            <h3>المخزن والمواد</h3>
+
+            <p>
+                الدخول والخروج والمخزون
+            </p>
+
+        </button>
+
+
+        <button
+            class="module attendance"
+            onclick="openModule('الحضور')">
+
+            <div class="module-icon">
+                🕘
+            </div>
+
+            <h3>الحضور</h3>
+
+            <p>
+                متابعة حضور العمال
+            </p>
+
+        </button>
+
+
+        <button
+            class="module expenses"
+            onclick="openModule('المصاريف')">
+
+            <div class="module-icon">
+                💰
+            </div>
+
+            <h3>المصاريف</h3>
+
+            <p>
+                مصاريف ومدفوعات المشروع
+            </p>
+
+        </button>
+
+
+        <button
+            class="module reports"
+            onclick="openModule('التقارير اليومية')">
+
+            <div class="module-icon">
+                📋
+            </div>
+
+            <h3>التقارير اليومية</h3>
+
+            <p>
+                ماذا أنجزنا اليوم؟
+            </p>
+
+        </button>
+
+
+        <button
+            class="module appointments"
+            onclick="openModule('المواعيد')">
+
+            <div class="module-icon">
+                📅
+            </div>
+
+            <h3>المواعيد</h3>
+
+            <p>
+                مواعيد واجتماعات المشروع
+            </p>
+
+        </button>
+
+
+        <button
+            class="module meetings"
+            onclick="openModule('الاجتماعات')">
+
+            <div class="module-icon">
+                🤝
+            </div>
+
+            <h3>الاجتماعات</h3>
+
+            <p>
+                تنظيم اجتماعات الفريق
+            </p>
+
+        </button>
+
+
+        <button
+            class="module chat"
+            onclick="openModule('المحادثة')">
+
+            <div class="module-icon">
+                💬
+            </div>
+
+            <h3>محادثة المشروع</h3>
+
+            <p>
+                تواصل العمال والمهندسين
+            </p>
+
+        </button>
+
+
+        <button
+            class="module photos"
+            onclick="openModule('صور المشروع')">
+
+            <div class="module-icon">
+                📷
+            </div>
+
+            <h3>صور المشروع</h3>
+
+            <p>
+                توثيق مراحل الإنجاز
+            </p>
+
+        </button>
+
+
+        <button
+            class="module notifications"
+            onclick="openModule('الإشعارات')">
+
+            <div class="module-icon">
+                🔔
+            </div>
+
+            <h3>الإشعارات</h3>
+
+            <p>
+                تنبيهات المشروع
+            </p>
+
+        </button>
+
+    </div>
+
+
+    <!-- DETAILS -->
+
+    <div class="section-title">
+
+        <h2>
+            معلومات المشروع
+        </h2>
+
+    </div>
+
+
+    <div class="details">
+
+        <div class="detail">
+            <span>العميل</span>
+            <strong id="clientName">—</strong>
+        </div>
+
+        <div class="detail">
+            <span>المهندس</span>
+            <strong id="engineerName">—</strong>
+        </div>
+
+        <div class="detail">
+            <span>تاريخ البداية</span>
+            <strong id="startDate">—</strong>
+        </div>
+
+        <div class="detail">
+            <span>تاريخ النهاية</span>
+            <strong id="endDate">—</strong>
+        </div>
+
+        <div class="detail">
+            <span>الميزانية</span>
+            <strong id="budget">—</strong>
+        </div>
+
+        <div class="detail">
+            <span>ملاحظات</span>
+            <strong id="notes">—</strong>
         </div>
 
     </div>
@@ -691,12 +768,48 @@
 </main>
 
 
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <div class="bottom-inner">
+
+        <button
+            class="bottom-item"
+            onclick="location.href='/'">
+
+            <div>⌂</div>
+            الرئيسية
+
+        </button>
+
+
+        <button
+            class="bottom-item active">
+
+            <div>🏗️</div>
+            المشروع
+
+        </button>
+
+
+        <button
+            class="bottom-item"
+            onclick="location.href='/projects.html'">
+
+            <div>📁</div>
+            المشاريع
+
+        </button>
+
+    </div>
+
+</nav>
+
+</div>
+
+
 <script>
-
-
-/* ============================================================
-   PROJECT ID
-============================================================ */
 
 const params =
     new URLSearchParams(
@@ -707,55 +820,18 @@ const projectId =
     params.get("id");
 
 
-/* ============================================================
-   HELPERS
-============================================================ */
+function money(value){
 
-function escapeHtml(value) {
+    const number =
+        Number(value || 0);
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
+    return number.toLocaleString(
+        "ar-DZ"
+    ) + " دج";
 }
 
 
-function money(value) {
-
-    return Number(value || 0)
-        .toLocaleString("ar-DZ");
-
-}
-
-
-function count(value) {
-
-    return Array.isArray(value)
-        ? value.length
-        : 0;
-
-}
-
-
-function statusClass(status) {
-
-    if (status === "مكتمل") {
-        return "status status-done";
-    }
-
-    if (status === "متوقف") {
-        return "status status-paused";
-    }
-
-    return "status status-active";
-
-}
-
-
-function goBack() {
+function goBack(){
 
     window.location.href =
         "/projects.html";
@@ -763,610 +839,21 @@ function goBack() {
 }
 
 
-/* ============================================================
-   SECTION NAVIGATION
-============================================================ */
+async function loadProject(){
 
-function openSection(section) {
+    if(!projectId){
 
-    /*
-       هذه الأقسام سنفعّل وظائفها
-       واحدة بواحدة في المراحل القادمة.
-    */
-
-    alert(
-        "قسم " +
-        section +
-        " سيتم تفعيله في المرحلة القادمة."
-    );
-
-}
-
-
-/* ============================================================
-   RENDER
-============================================================ */
-
-function renderProject(data) {
-
-    const project =
-        data.project;
-
-
-    document.title =
-        project.name +
-        " | دنيا العمران والترقية";
-
-
-    document.getElementById(
-        "headerProjectName"
-    ).textContent =
-        project.name;
-
-
-    const progress =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                Number(project.progress || 0)
-            )
+        alert(
+            "رقم المشروع غير موجود"
         );
 
-
-    document.getElementById("app")
-        .innerHTML = `
-
-        <!-- HERO -->
-
-        <section class="hero">
-
-            <div class="hero-top">
-
-                <div>
-
-                    <div class="hero-title">
-
-                        ${escapeHtml(
-                            project.name
-                        )}
-
-                    </div>
-
-                    <div class="hero-location">
-
-                        📍
-                        ${escapeHtml(
-                            project.location ||
-                            "الموقع غير محدد"
-                        )}
-
-                    </div>
-
-                </div>
-
-
-                <span class="${statusClass(
-                    project.status
-                )}">
-
-                    ${escapeHtml(
-                        project.status ||
-                        "جاري"
-                    )}
-
-                </span>
-
-            </div>
-
-
-            <div class="progress-block">
-
-                <div class="progress-label">
-
-                    <span>
-                        نسبة إنجاز المشروع
-                    </span>
-
-                    <strong>
-                        ${progress}%
-                    </strong>
-
-                </div>
-
-
-                <div class="progress">
-
-                    <div
-                        class="progress-bar"
-                        style="width:${progress}%"
-                    ></div>
-
-                </div>
-
-            </div>
-
-
-            <div class="hero-info">
-
-                <div class="hero-box">
-
-                    <span>
-                        الميزانية
-                    </span>
-
-                    <strong>
-                        ${money(project.budget)} دج
-                    </strong>
-
-                </div>
-
-
-                <div class="hero-box">
-
-                    <span>
-                        العمال
-                    </span>
-
-                    <strong>
-                        ${count(data.workers)} عامل
-                    </strong>
-
-                </div>
-
-
-                <div class="hero-box">
-
-                    <span>
-                        المواد
-                    </span>
-
-                    <strong>
-                        ${count(data.materials)} مادة
-                    </strong>
-
-                </div>
-
-
-                <div class="hero-box">
-
-                    <span>
-                        المصاريف
-                    </span>
-
-                    <strong>
-                        ${money(
-                            calculateExpenses(
-                                data.expenses
-                            )
-                        )} دج
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- SECTIONS -->
-
-        <section class="section-grid">
-
-
-            <div
-                class="section-card"
-                onclick="openSection('العمال')"
-            >
-
-                <div class="section-icon icon-workers">
-                    👷
-                </div>
-
-                <h3>
-                    العمال
-                </h3>
-
-                <p>
-                    العمال المعيّنون في المشروع
-                </p>
-
-                <div class="section-count">
-                    ${count(data.workers)} عامل
-                </div>
-
-            </div>
-
-
-            <div
-                class="section-card"
-                onclick="openSection('المخزن والمواد')"
-            >
-
-                <div class="section-icon icon-materials">
-                    📦
-                </div>
-
-                <h3>
-                    المخزن والمواد
-                </h3>
-
-                <p>
-                    المواد والكميات والحركة
-                </p>
-
-                <div class="section-count">
-                    ${count(data.materials)} مادة
-                </div>
-
-            </div>
-
-
-            <div
-                class="section-card"
-                onclick="openSection('المصاريف')"
-            >
-
-                <div class="section-icon icon-money">
-                    💰
-                </div>
-
-                <h3>
-                    المصاريف
-                </h3>
-
-                <p>
-                    متابعة مصاريف المشروع
-                </p>
-
-                <div class="section-count">
-                    ${count(data.expenses)} عملية
-                </div>
-
-            </div>
-
-
-            <div
-                class="section-card"
-                onclick="openSection('الحضور')"
-            >
-
-                <div class="section-icon icon-attendance">
-                    🕒
-                </div>
-
-                <h3>
-                    الحضور
-                </h3>
-
-                <p>
-                    متابعة حضور العمال
-                </p>
-
-                <div class="section-count">
-                    ${count(data.attendance)} سجل
-                </div>
-
-            </div>
-
-
-            <div
-                class="section-card"
-                onclick="openSection('التقارير اليومية')"
-            >
-
-                <div class="section-icon icon-reports">
-                    📝
-                </div>
-
-                <h3>
-                    التقارير اليومية
-                </h3>
-
-                <p>
-                    ماذا أنجزنا اليوم؟
-                </p>
-
-                <div class="section-count">
-                    ${count(data.reports)} تقرير
-                </div>
-
-            </div>
-
-
-            <div
-                class="section-card"
-                onclick="openSection('المواعيد')"
-            >
-
-                <div class="section-icon icon-calendar">
-                    📅
-                </div>
-
-                <h3>
-                    المواعيد
-                </h3>
-
-                <p>
-                    مواعيد المشروع والزيارات
-                </p>
-
-                <div class="section-count">
-                    ${count(data.appointments)} موعد
-                </div>
-
-            </div>
-
-
-            <div
-                class="section-card"
-                onclick="openSection('الاجتماعات')"
-            >
-
-                <div class="section-icon icon-meeting">
-                    🤝
-                </div>
-
-                <h3>
-                    الاجتماعات
-                </h3>
-
-                <p>
-                    اجتماعات الفريق
-                </p>
-
-                <div class="section-count">
-                    ${count(data.meetings)} اجتماع
-                </div>
-
-            </div>
-
-
-            <div
-                class="section-card"
-                onclick="openSection('محادثة المشروع')"
-            >
-
-                <div class="section-icon icon-chat">
-                    💬
-                </div>
-
-                <h3>
-                    محادثة المشروع
-                </h3>
-
-                <p>
-                    تواصل فريق المشروع
-                </p>
-
-                <div class="section-count">
-                    ${count(data.messages)} رسالة
-                </div>
-
-            </div>
-
-
-            <div
-                class="section-card"
-                onclick="openSection('الإشعارات')"
-            >
-
-                <div class="section-icon icon-notify">
-                    🔔
-                </div>
-
-                <h3>
-                    الإشعارات
-                </h3>
-
-                <p>
-                    تنبيهات وأحداث المشروع
-                </p>
-
-                <div class="section-count">
-                    ${count(data.notifications)} إشعار
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-        <!-- PROJECT DETAILS -->
-
-        <section class="details">
-
-            <h2>
-                تفاصيل المشروع
-            </h2>
-
-
-            <div class="details-grid">
-
-
-                <div class="detail">
-
-                    <span>
-                        صاحب المشروع
-                    </span>
-
-                    <strong>
-                        ${escapeHtml(
-                            project.client_name ||
-                            "-"
-                        )}
-                    </strong>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <span>
-                        المهندس المسؤول
-                    </span>
-
-                    <strong>
-                        ${escapeHtml(
-                            project.engineer_name ||
-                            "-"
-                        )}
-                    </strong>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <span>
-                        تاريخ البداية
-                    </span>
-
-                    <strong>
-                        ${formatDate(
-                            project.start_date
-                        )}
-                    </strong>
-
-                </div>
-
-
-                <div class="detail">
-
-                    <span>
-                        تاريخ النهاية
-                    </span>
-
-                    <strong>
-                        ${formatDate(
-                            project.end_date
-                        )}
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-
-            ${
-                project.notes
-                ? `
-                    <div class="notes">
-
-                        <strong>
-                            ملاحظات:
-                        </strong>
-
-                        <br>
-
-                        ${escapeHtml(
-                            project.notes
-                        )}
-
-                    </div>
-                `
-                : ""
-            }
-
-        </section>
-
-    `;
-
-}
-
-
-function calculateExpenses(expenses) {
-
-    if (!Array.isArray(expenses)) {
-        return 0;
-    }
-
-
-    return expenses.reduce(
-        (total, item) => {
-
-            return total +
-                Number(
-                    item.amount || 0
-                );
-
-        },
-        0
-    );
-
-}
-
-
-function formatDate(value) {
-
-    if (!value) {
-        return "-";
-    }
-
-
-    try {
-
-        return new Date(value)
-            .toLocaleDateString(
-                "ar-DZ"
-            );
-
-    } catch {
-
-        return value;
-
-    }
-
-}
-
-
-/* ============================================================
-   LOAD PROJECT
-============================================================ */
-
-async function loadProject() {
-
-    const app =
-        document.getElementById("app");
-
-
-    if (!projectId) {
-
-        app.innerHTML = `
-
-            <div class="error">
-
-                <div style="font-size:45px;">
-                    ⚠️
-                </div>
-
-                <h3>
-                    لم يتم تحديد المشروع
-                </h3>
-
-                <p>
-                    افتح المشروع من صفحة المشاريع.
-                </p>
-
-                <button
-                    class="retry-btn"
-                    onclick="goBack()"
-                >
-                    العودة للمشاريع
-                </button>
-
-            </div>
-
-        `;
+        goBack();
 
         return;
-
     }
 
 
-    try {
+    try{
 
         const response =
             await fetch(
@@ -1380,8 +867,8 @@ async function loadProject() {
             await response.json();
 
 
-        if (!response.ok ||
-            !data.success) {
+        if(!response.ok ||
+           !data.success){
 
             throw new Error(
                 data.message ||
@@ -1391,57 +878,216 @@ async function loadProject() {
         }
 
 
-        renderProject(data);
+        const project =
+            data.project;
 
 
-    } catch (error) {
+        document.getElementById(
+            "projectName"
+        ).textContent =
+            project.name || "المشروع";
+
+
+        document.getElementById(
+            "projectLocation"
+        ).textContent =
+            project.location ||
+            "الموقع غير محدد";
+
+
+        document.getElementById(
+            "projectStatus"
+        ).textContent =
+            project.status ||
+            "قيد التنفيذ";
+
+
+        const progress =
+            Number(
+                project.progress || 0
+            );
+
+
+        document.getElementById(
+            "progressValue"
+        ).textContent =
+            progress + "%";
+
+
+        document.getElementById(
+            "progressFill"
+        ).style.width =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    progress
+                )
+            ) + "%";
+
+
+        document.getElementById(
+            "workersCount"
+        ).textContent =
+            (data.workers || []).length;
+
+
+        document.getElementById(
+            "materialsCount"
+        ).textContent =
+            (data.materials || []).length;
+
+
+        document.getElementById(
+            "appointmentsCount"
+        ).textContent =
+            (data.appointments || []).length;
+
+
+        const expenses =
+            data.expenses || [];
+
+
+        const totalExpenses =
+            expenses.reduce(
+                (sum, item) =>
+                    sum +
+                    Number(
+                        item.amount || 0
+                    ),
+                0
+            );
+
+
+        document.getElementById(
+            "expensesTotal"
+        ).textContent =
+            money(totalExpenses);
+
+
+        document.getElementById(
+            "clientName"
+        ).textContent =
+            project.client_name ||
+            "غير محدد";
+
+
+        document.getElementById(
+            "engineerName"
+        ).textContent =
+            project.engineer_name ||
+            "غير محدد";
+
+
+        document.getElementById(
+            "startDate"
+        ).textContent =
+            project.start_date ||
+            "غير محدد";
+
+
+        document.getElementById(
+            "endDate"
+        ).textContent =
+            project.end_date ||
+            "غير محدد";
+
+
+        document.getElementById(
+            "budget"
+        ).textContent =
+            money(project.budget);
+
+
+        document.getElementById(
+            "notes"
+        ).textContent =
+            project.notes ||
+            "لا توجد ملاحظات";
+
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "app"
+        ).style.display =
+            "block";
+
+
+    }catch(error){
 
         console.error(error);
 
+        document.getElementById(
+            "loading"
+        ).innerHTML =
+            `
+            <div style="
+                background:white;
+                margin:20px;
+                padding:25px;
+                border-radius:20px;
+                box-shadow:var(--shadow);
+            ">
 
-        app.innerHTML = `
-
-            <div class="error">
-
-                <div style="font-size:45px;">
+                <div style="
+                    font-size:40px;
+                    margin-bottom:10px;
+                ">
                     ⚠️
                 </div>
 
-                <h3>
+                <strong>
                     تعذر تحميل المشروع
-                </h3>
+                </strong>
 
-                <p>
-                    ${escapeHtml(
-                        error.message
-                    )}
+                <p style="
+                    font-size:12px;
+                    color:#68757A;
+                ">
+                    ${error.message}
                 </p>
 
                 <button
-                    class="retry-btn"
-                    onclick="loadProject()"
-                >
-                    إعادة المحاولة
+                    onclick="goBack()"
+                    style="
+                        border:0;
+                        padding:12px 20px;
+                        border-radius:12px;
+                        background:#123B4A;
+                        color:white;
+                        font-family:inherit;
+                        font-weight:800;
+                    ">
+                    العودة للمشاريع
                 </button>
 
             </div>
-
-        `;
+            `;
 
     }
 
 }
 
 
-/* ============================================================
-   START
-============================================================ */
+function openModule(name){
+
+    alert(
+        "📌 " +
+        name +
+        "\n\nسيتم تجهيز هذا القسم وربطه بالمشروع الحالي في الخطوة القادمة."
+    );
+
+}
+
 
 loadProject();
-
 
 </script>
 
 </body>
-
 </html>
