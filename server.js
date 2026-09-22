@@ -20,12 +20,11 @@ app.use(express.static(path.join(__dirname, "public")));
 ========================================================= */
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL
+    connectionString: process.env.DUNYA_DATABASE_URL,
+    ssl: process.env.DUNYA_DATABASE_URL
         ? { rejectUnauthorized: false }
         : false
 });
-
 
 /* =========================================================
    DATABASE INITIALIZATION
