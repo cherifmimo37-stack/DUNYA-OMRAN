@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>إدارة العمال | دنيا العمران والترقية</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --petroleum: #123B4A;
+            --dark: #0B2934;
+            --green: #3F6B63;
+            --copper: #C47735;
+            --ivory: #F5F3EE;
+            --white: #ffffff;
+            --danger: #b93838;
+            --muted: #6b7b80;
+            --border: #dfe5e3;
+            --shadow: 0 12px 35px rgba(11,41,52,.10);
+            --radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Cairo", sans-serif;
+            background: var(--ivory);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        .topbar {
+            background: linear-gradient(135deg, var(--dark), var(--petroleum));
+            color: white;
+            padding: 18px 22px;
+            box-shadow: 0 6px 25px rgba(11,41,52,.20);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-inner {
+            max-width: 1250px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            background: rgba(196,119,53,.18);
+            border: 1px solid rgba(196,119,53,.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e0a064;
+            font-size: 22px;
+        }
+
+        .brand h1 {
+            font-size: 19px;
+            font-weight: 900;
+        }
+
+        .brand p {
+            font-size: 12px;
+            opacity: .72;
+            margin-top: 2px;
+        }
+
+        .back-btn {
+            border: 1px solid rgba(255,255,255,.18);
+            background: rgba(255,255,255,.08);
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: .2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,.15);
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 25px 18px 50px;
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .page-title h2 {
+            font-size: 25px;
+            font-weight: 900;
+            color: var(--dark);
+        }
+
+        .page-title p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .add-btn {
+            border: none;
+            background: linear-gradient(135deg, var(--copper), #a75e25);
+            color: white;
+            padding: 13px 19px;
+            border-radius: 13px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 7px 18px rgba(196,119,53,.25);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: .2s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .stat {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+
+        .stat:nth-child(1) .stat-icon {
+            background: #e8f0f2;
+            color: var(--petroleum);
+        }
+
+        .stat:nth-child(2) .stat-icon {
+            background: #e6f1ed;
+            color: var(--green);
+        }
+
+        .stat:nth-child(3) .stat-icon {
+            background: #f8ece4;
+            color: var(--copper);
+        }
+
+        .stat:nth-child(4) .stat-icon {
+            background: #edf0f1;
+            color: var(--dark);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 3px;
+        }
+
+        .stat-value {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 17px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        .search-box {
+            position: relative;
+            width: 290px;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8a989c;
+        }
+
+        .search-box input {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: #fafcfc;
+            border-radius: 12px;
+            padding: 11px 40px 11px 12px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .search-box input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(63,107,99,.08);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: #f6f8f7;
+            color: #657477;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 14px 16px;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 16px;
+            border-top: 1px solid #edf0ef;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: .15s;
+        }
+
+        tbody tr:hover {
+            background: #fbfcfc;
+        }
+
+        .worker-name {
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .worker-id {
+            font-size: 11px;
+            color: #8a989c;
+            margin-top: 2px;
+        }
+
+        .phone {
+            direction: ltr;
+            text-align: right;
+            color: #526267;
+        }
+
+        .job {
+            color: #536469;
+        }
+
+        .salary {
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 30px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .status.active {
+            color: #24634d;
+            background: #e5f3ed;
+        }
+
+        .status.inactive {
+            color: #855d2e;
+            background: #f8eee3;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .actions {
+            display: flex;
+            gap: 7px;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .18s;
+        }
+
+        .edit-btn {
+            background: #edf2f3;
+            color: var(--petroleum);
+        }
+
+        .delete-btn {
+            background: #faecec;
+            color: var(--danger);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .empty {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty i {
+            font-size: 45px;
+            margin-bottom: 15px;
+            color: #b7c2c4;
+        }
+
+        .empty h3 {
+            font-size: 17px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .empty p {
+            font-size: 13px;
+        }
+
+        .loading {
+            padding: 45px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .loading i {
+            margin-left: 7px;
+        }
+
+        /* MODAL */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5,24,31,.58);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            z-index: 100;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 520px;
+            border-radius: 22px;
+            box-shadow: 0 25px 70px rgba(0,0,0,.25);
+            overflow: hidden;
+            animation: modalIn .2s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(.98);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--dark), var(--petroleum));
+            color: white;
+            padding: 19px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 17px;
+        }
+
+        .close-btn {
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,.10);
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form {
+            padding: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 800;
+            color: #526267;
+        }
+
+        .field input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            padding: 11px 12px;
+            outline: none;
+            font-size: 13px;
+            background: #fbfcfc;
+        }
+
+        .field input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(63,107,99,.08);
+        }
+
+        .active-row {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f6f8f7;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .active-row input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--green);
+        }
+
+        .active-row label {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            flex: 1;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--green), #31584f);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #edf1f1;
+            color: var(--dark);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 22px;
+            left: 22px;
+            z-index: 200;
+            background: var(--dark);
+            color: white;
+            padding: 13px 17px;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0,0,0,.20);
+            font-size: 13px;
+            font-weight: 700;
+            transform: translateY(100px);
+            opacity: 0;
+            pointer-events: none;
+            transition: .25s;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-right: 4px solid var(--green);
+        }
+
+        .toast.error {
+            border-right: 4px solid var(--danger);
+        }
+
+        @media (max-width: 850px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-title {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .add-btn {
+                justify-content: center;
+            }
+
+            .panel-header {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .container {
+                padding: 18px 12px 40px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat {
+                padding: 13px;
+                gap: 9px;
+            }
+
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .stat-value {
+                font-size: 17px;
+            }
+
+            .stat-label {
+                font-size: 10px;
+            }
+
+            .brand h1 {
+                font-size: 15px;
+            }
+
+            .back-btn {
+                padding: 9px 11px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-helmet-safety"></i>
+            </div>
+
+            <div>
+                <h1>دنيا العمران والترقية</h1>
+                <p>نظام إدارة العمال والمشاريع</p>
+            </div>
+        </div>
+
+        <a href="/" class="back-btn">
+            <i class="fa-solid fa-arrow-right"></i>
+            الرئيسية
+        </a>
+
+    </div>
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div>
+            <h2>إدارة العمال 👷</h2>
+            <p>إضافة وتعديل ومتابعة جميع العمال</p>
+        </div>
+
+        <button class="add-btn" onclick="openAddModal()">
+            <i class="fa-solid fa-plus"></i>
+            إضافة عامل
+        </button>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <section class="stats">
+
+        <div class="stat">
+            <div class="stat-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">إجمالي العمال</div>
+                <div class="stat-value" id="totalWorkers">0</div>
+            </div>
+        </div>
+
+
+        <div class="stat">
+            <div class="stat-icon">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">العمال النشطون</div>
+                <div class="stat-value" id="activeWorkers">0</div>
+            </div>
+        </div>
+
+
+        <div class="stat">
+            <div class="stat-icon">
+                <i class="fa-solid fa-user-clock"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">غير النشطين</div>
+                <div class="stat-value" id="inactiveWorkers">0</div>
+            </div>
+        </div>
+
+
+        <div class="stat">
+            <div class="stat-icon">
+                <i class="fa-solid fa-money-bill-wave"></i>
+            </div>
+
+            <div>
+                <div class="stat-label">إجمالي الرواتب</div>
+                <div class="stat-value" id="totalSalary">0 دج</div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- WORKERS -->
+
+    <section class="panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title">
+                <i class="fa-solid fa-people-group"></i>
+                قائمة العمال
+            </div>
+
+            <div class="search-box">
+                <i class="fa-solid fa-search"></i>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="ابحث عن عامل..."
+                    oninput="renderWorkers()"
+                >
+            </div>
+
+        </div>
+
+
+        <div id="workersContainer">
+
+            <div class="loading">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                جاري تحميل العمال...
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- MODAL -->
+
+<div class="modal" id="workerModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3 id="modalTitle">
+                إضافة عامل جديد
+            </h3>
+
+            <button class="close-btn" onclick="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <form class="form" onsubmit="saveWorker(event)">
+
+            <input type="hidden" id="workerId">
+
+
+            <div class="form-grid">
+
+                <div class="field full">
+                    <label>اسم العامل *</label>
+
+                    <input
+                        type="text"
+                        id="workerName"
+                        placeholder="مثال: محمد بن علي"
+                        required
+                    >
+                </div>
+
+
+                <div class="field">
+
+                    <label>رقم الهاتف</label>
+
+                    <input
+                        type="tel"
+                        id="workerPhone"
+                        placeholder="05xxxxxxxx"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>المهنة / الوظيفة</label>
+
+                    <input
+                        type="text"
+                        id="workerJob"
+                        placeholder="مثال: بنّاء"
+                    >
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>الراتب الشهري (دج)</label>
+
+                    <input
+                        type="number"
+                        id="workerSalary"
+                        min="0"
+                        step="0.01"
+                        placeholder="مثال: 45000"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="active-row">
+
+                <input
+                    type="checkbox"
+                    id="workerActive"
+                    checked
+                >
+
+                <label for="workerActive">
+                    العامل نشط حاليًا
+                </label>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeModal()"
+                >
+                    إلغاء
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                    id="saveButton"
+                >
+                    <i class="fa-solid fa-check"></i>
+                    حفظ العامل
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+let workers = [];
+
+
+/* ================================
+   LOAD WORKERS
+================================ */
+
+async function loadWorkers() {
+
+    const container = document.getElementById("workersContainer");
+
+    container.innerHTML = `
+        <div class="loading">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            جاري تحميل العمال...
+        </div>
+    `;
+
+    try {
+
+        const response = await fetch("/api/workers");
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "تعذر تحميل العمال");
+        }
+
+        workers = Array.isArray(data.workers)
+            ? data.workers
+            : [];
+
+        updateStats();
+
+        renderWorkers();
+
+    } catch (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="empty">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <h3>تعذر تحميل العمال</h3>
+                <p>${escapeHtml(error.message)}</p>
+            </div>
+        `;
+
+        showToast("تعذر تحميل العمال", "error");
+    }
+}
+
+
+/* ================================
+   STATS
+================================ */
+
+function updateStats() {
+
+    const total = workers.length;
+
+    const active = workers.filter(
+        worker => worker.active === true
+    ).length;
+
+    const inactive = total - active;
+
+    const salary = workers.reduce(
+        (sum, worker) => sum + Number(worker.salary || 0),
+        0
+    );
+
+    document.getElementById("totalWorkers").textContent = total;
+
+    document.getElementById("activeWorkers").textContent = active;
+
+    document.getElementById("inactiveWorkers").textContent = inactive;
+
+    document.getElementById("totalSalary").textContent =
+        formatMoney(salary) + " دج";
+}
+
+
+/* ================================
+   RENDER
+================================ */
+
+function renderWorkers() {
+
+    const container =
+        document.getElementById("workersContainer");
+
+    const search =
+        document.getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const filtered = workers.filter(worker => {
+
+        const text = [
+
+            worker.name || "",
+
+            worker.phone || "",
+
+            worker.job || ""
+
+        ].join(" ").toLowerCase();
+
+        return text.includes(search);
+
+    });
+
+
+    if (!filtered.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+
+                <i class="fa-solid fa-users-slash"></i>
+
+                <h3>
+                    ${search ? "لا توجد نتائج" : "لا يوجد عمال بعد"}
+                </h3>
+
+                <p>
+                    ${search
+                        ? "جرّب كلمة بحث أخرى"
+                        : "ابدأ بإضافة أول عامل إلى النظام"}
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = `
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>العامل</th>
+                        <th>الهاتف</th>
+                        <th>المهنة</th>
+                        <th>الراتب</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${filtered.map(worker => `
+
+                        <tr>
+
+                            <td>
+
+                                <div class="worker-name">
+                                    ${escapeHtml(worker.name)}
+                                </div>
+
+                                <div class="worker-id">
+                                    #${worker.id}
+                                </div>
+
+                            </td>
+
+
+                            <td class="phone">
+
+                                ${worker.phone
+                                    ? escapeHtml(worker.phone)
+                                    : "—"}
+
+                            </td>
+
+
+                            <td class="job">
+
+                                ${worker.job
+                                    ? escapeHtml(worker.job)
+                                    : "غير محددة"}
+
+                            </td>
+
+
+                            <td class="salary">
+
+                                ${formatMoney(worker.salary || 0)}
+                                دج
+
+                            </td>
+
+
+                            <td>
+
+                                ${
+                                    worker.active
+                                    ?
+
+                                    `
+                                    <span class="status active">
+                                        <span class="status-dot"></span>
+                                        نشط
+                                    </span>
+                                    `
+
+                                    :
+
+                                    `
+                                    <span class="status inactive">
+                                        <span class="status-dot"></span>
+                                        غير نشط
+                                    </span>
+                                    `
+                                }
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="actions">
+
+                                    <button
+                                        class="action-btn edit-btn"
+                                        title="تعديل"
+                                        onclick="editWorker(${worker.id})"
+                                    >
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+
+
+                                    <button
+                                        class="action-btn delete-btn"
+                                        title="حذف"
+                                        onclick="deleteWorker(${worker.id})"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    `).join("")}
+
+                </tbody>
+
+            </table>
+
+        </div>
+    `;
+}
+
+
+/* ================================
+   ADD
+================================ */
+
+function openAddModal() {
+
+    document.getElementById("modalTitle").textContent =
+        "إضافة عامل جديد";
+
+    document.getElementById("workerId").value = "";
+
+    document.getElementById("workerName").value = "";
+
+    document.getElementById("workerPhone").value = "";
+
+    document.getElementById("workerJob").value = "";
+
+    document.getElementById("workerSalary").value = "";
+
+    document.getElementById("workerActive").checked = true;
+
+    document.getElementById("saveButton").innerHTML =
+        '<i class="fa-solid fa-check"></i> حفظ العامل';
+
+    document
+        .getElementById("workerModal")
+        .classList.add("show");
+
+    setTimeout(() => {
+        document.getElementById("workerName").focus();
+    }, 100);
+}
+
+
+/* ================================
+   EDIT
+================================ */
+
+function editWorker(id) {
+
+    const worker = workers.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!worker) {
+
+        showToast("العامل غير موجود", "error");
+
+        return;
+    }
+
+
+    document.getElementById("modalTitle").textContent =
+        "تعديل بيانات العامل";
+
+
+    document.getElementById("workerId").value =
+        worker.id;
+
+
+    document.getElementById("workerName").value =
+        worker.name || "";
+
+
+    document.getElementById("workerPhone").value =
+        worker.phone || "";
+
+
+    document.getElementById("workerJob").value =
+        worker.job || "";
+
+
+    document.getElementById("workerSalary").value =
+        worker.salary || 0;
+
+
+    document.getElementById("workerActive").checked =
+        worker.active === true;
+
+
+    document.getElementById("saveButton").innerHTML =
+        '<i class="fa-solid fa-save"></i> حفظ التعديلات';
+
+
+    document
+        .getElementById("workerModal")
+        .classList.add("show");
+}
+
+
+/* ================================
+   SAVE
+================================ */
+
+async function saveWorker(event) {
+
+    event.preventDefault();
+
+
+    const id =
+        document.getElementById("workerId").value;
+
+
+    const payload = {
+
+        name:
+            document.getElementById("workerName")
+            .value
+            .trim(),
+
+        phone:
+            document.getElementById("workerPhone")
+            .value
+            .trim(),
+
+        job:
+            document.getElementById("workerJob")
+            .value
+            .trim(),
+
+        salary:
+            Number(
+                document.getElementById("workerSalary")
+                .value
+            ) || 0,
+
+        active:
+            document.getElementById("workerActive")
+            .checked
+
+    };
+
+
+    if (!payload.name) {
+
+        showToast("أدخل اسم العامل", "error");
+
+        return;
+    }
+
+
+    const saveButton =
+        document.getElementById("saveButton");
+
+    saveButton.disabled = true;
+
+    saveButton.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
+
+
+    try {
+
+        const url = id
+            ? `/api/workers/${id}`
+            : "/api/workers";
+
+        const method = id
+            ? "PUT"
+            : "POST";
+
+
+        const response = await fetch(url, {
+
+            method,
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(payload)
+
+        });
+
+
+        const data = await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message || "تعذر حفظ العامل"
+            );
+        }
+
+
+        closeModal();
+
+        await loadWorkers();
+
+        showToast(
+            id
+                ? "تم تعديل العامل بنجاح ✅"
+                : "تمت إضافة العامل بنجاح ✅",
+            "success"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message || "حدث خطأ أثناء الحفظ",
+            "error"
+        );
+
+    } finally {
+
+        saveButton.disabled = false;
+
+    }
+}
+
+
+/* ================================
+   DELETE
+================================ */
+
+async function deleteWorker(id) {
+
+    const worker =
+        workers.find(
+            item => Number(item.id) === Number(id)
+        );
+
+
+    if (!worker) {
+
+        showToast("العامل غير موجود", "error");
+
+        return;
+    }
+
+
+    const confirmed = confirm(
+        `هل أنت متأكد من حذف العامل "${worker.name}"؟\n\nسيتم حذف بيانات العامل من النظام.`
+    );
+
+
+    if (!confirmed) return;
+
+
+    try {
+
+        const response = await fetch(
+            `/api/workers/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message || "تعذر حذف العامل"
+            );
+        }
+
+
+        await loadWorkers();
+
+        showToast(
+            "تم حذف العامل بنجاح",
+            "success"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message || "تعذر حذف العامل",
+            "error"
+        );
+    }
+}
+
+
+/* ================================
+   MODAL
+================================ */
+
+function closeModal() {
+
+    document
+        .getElementById("workerModal")
+        .classList.remove("show");
+}
+
+
+document
+    .getElementById("workerModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+            closeModal();
+        }
+
+    });
+
+
+/* ================================
+   TOAST
+================================ */
+
+function showToast(message, type = "success") {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.className =
+        `toast show ${type}`;
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 3000);
+}
+
+
+/* ================================
+   HELPERS
+================================ */
+
+function formatMoney(value) {
+
+    return new Intl.NumberFormat("fr-DZ", {
+        maximumFractionDigits: 0
+    }).format(Number(value) || 0);
+}
+
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ================================
+   START
+================================ */
+
+loadWorkers();
+
+</script>
+
+</body>
+</html>
