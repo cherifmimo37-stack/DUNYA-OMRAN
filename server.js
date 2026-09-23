@@ -863,6 +863,234 @@ app.get("/api/projects/:id", async (req, res) => {
 
 });
 
+/* =========================================================
+   WORKERS
+========================================================= */
+
+// GET ALL WORKERS
+app.get("/api/workers", async (req, res) => {
+
+    try {
+
+        const result = await pool.query(`
+            SELECT
+                id,
+                name,
+                phone,
+                job,
+                salary,
+                active,
+                created_at
+            FROM workers
+            ORDER BY created_at DESC, name ASC
+        `);
+
+        res.json({
+            success: true,
+            workers: result.rows
+        });
+
+    } catch (error) {
+
+        console.error("GET WORKERS ERROR:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "تعذر تحميل العمال"
+        });
+
+    }
+
+});
+
+
+// ADD WORKER
+app.post("/api/workers", async (req, res) => {
+
+    try {
+
+        const {
+            name,
+            phone,
+            job,
+            salary,
+            active
+        } = req.body;
+
+        if (!name || !String(name).trim()) {
+
+            return res.status(400).json({
+                success: false,
+                message: "اسم العامل مطلوب"
+            });
+
+        }
+
+        const result = await pool.query(`
+            INSERT INTO workers (
+                name,
+                phone,
+                job,
+                salary,
+                active
+            )
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *
+        `, [
+            String(name).trim(),
+            phone ? String(phone).trim() : null,
+            job ? String(job).trim() : null,
+            Number(salary) || 0,
+            active !== false
+        ]);
+
+        res.status(201).json({
+            success: true,
+            worker: result.rows[0]
+        });
+
+    } catch (error) {
+
+        console.error("ADD WORKER ERROR:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "تعذر إضافة العامل"
+        });
+
+    }
+
+});
+
+
+// UPDATE WORKER
+app.put("/api/workers/:id", async (req, res) => {
+
+    try {
+
+        const workerId = Number(req.params.id);
+
+        if (!Number.isInteger(workerId)) {
+
+            return res.status(400).json({
+                success: false,
+                message: "رقم العامل غير صحيح"
+            });
+
+        }
+
+        const {
+            name,
+            phone,
+            job,
+            salary,
+            active
+        } = req.body;
+
+        if (!name || !String(name).trim()) {
+
+            return res.status(400).json({
+                success: false,
+                message: "اسم العامل مطلوب"
+            });
+
+        }
+
+        const result = await pool.query(`
+            UPDATE workers
+            SET
+                name = $1,
+                phone = $2,
+                job = $3,
+                salary = $4,
+                active = $5
+            WHERE id = $6
+            RETURNING *
+        `, [
+            String(name).trim(),
+            phone ? String(phone).trim() : null,
+            job ? String(job).trim() : null,
+            Number(salary) || 0,
+            active !== false,
+            workerId
+        ]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+                success: false,
+                message: "العامل غير موجود"
+            });
+
+        }
+
+        res.json({
+            success: true,
+            worker: result.rows[0]
+        });
+
+    } catch (error) {
+
+        console.error("UPDATE WORKER ERROR:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "تعذر تعديل العامل"
+        });
+
+    }
+
+});
+
+
+// DELETE WORKER
+app.delete("/api/workers/:id", async (req, res) => {
+
+    try {
+
+        const workerId = Number(req.params.id);
+
+        if (!Number.isInteger(workerId)) {
+
+            return res.status(400).json({
+                success: false,
+                message: "رقم العامل غير صحيح"
+            });
+
+        }
+
+        const result = await pool.query(`
+            DELETE FROM workers
+            WHERE id = $1
+            RETURNING id
+        `, [workerId]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+                success: false,
+                message: "العامل غير موجود"
+            });
+
+        }
+
+        res.json({
+            success: true,
+            message: "تم حذف العامل بنجاح"
+        });
+
+    } catch (error) {
+
+        console.error("DELETE WORKER ERROR:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "تعذر حذف العامل"
+        });
+
+    }
+
+});
 
 /* =========================================================
    404 / FRONTEND
