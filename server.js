@@ -32,10 +32,10 @@ const pool = new Pool({
 
 async function initDatabase() {
 
-    if (!process.env.DATABASE_URL) {
-        console.log("⚠️ DATABASE_URL غير موجودة");
-        return;
-    }
+    if (!process.env.DUNYA_DATABASE_URL) {
+    console.log("⚠️ DUNYA_DATABASE_URL غير موجودة");
+    return;
+}
 
     try {
 
