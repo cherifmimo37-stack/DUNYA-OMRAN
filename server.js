@@ -714,6 +714,159 @@ app.post("/api/projects", async (req, res) => {
 
 });
 
+/* =========================================================
+   UPDATE PROJECT
+========================================================= */
+
+app.put("/api/projects/:id", async (req, res) => {
+
+    try {
+
+        const projectId = Number(req.params.id);
+
+        if (!Number.isInteger(projectId)) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "رقم المشروع غير صحيح"
+
+            });
+
+        }
+
+
+        const {
+
+            name,
+            location,
+            client_name,
+            engineer_name,
+            start_date,
+            end_date,
+            budget,
+            progress,
+            status,
+            notes
+
+        } = req.body;
+
+
+        if (!name || !String(name).trim()) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "اسم المشروع مطلوب"
+
+            });
+
+        }
+
+
+        const safeProgress = Math.min(
+            100,
+            Math.max(
+                0,
+                Number(progress) || 0
+            )
+        );
+
+
+        const result =
+            await pool.query(`
+
+                UPDATE projects
+
+                SET
+
+                    name = $1,
+                    location = $2,
+                    client_name = $3,
+                    engineer_name = $4,
+                    start_date = $5,
+                    end_date = $6,
+                    budget = $7,
+                    progress = $8,
+                    status = $9,
+                    notes = $10
+
+                WHERE id = $11
+
+                RETURNING *
+
+            `, [
+
+                String(name).trim(),
+
+                location || null,
+
+                client_name || null,
+
+                engineer_name || null,
+
+                start_date || null,
+
+                end_date || null,
+
+                Number(budget) || 0,
+
+                safeProgress,
+
+                status || "جاري",
+
+                notes || null,
+
+                projectId
+
+            ]);
+
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "المشروع غير موجود"
+
+            });
+
+        }
+
+
+        res.json({
+
+            success: true,
+
+            message: "تم تحديث المشروع بنجاح",
+
+            project: result.rows[0]
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "UPDATE PROJECT ERROR:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            success: false,
+
+            message: "تعذر تحديث المشروع"
+
+        });
+
+    }
+
+});
 
 /* =========================================================
    SINGLE PROJECT
