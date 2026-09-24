@@ -599,6 +599,37 @@ tr:last-child td{
     margin-top:3px;
 }
 
+    /* =========================
+   زر تعديل المشروع
+========================= */
+
+.btn-edit {
+    background: linear-gradient(135deg, #c47735, #e09a55);
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 5px 14px rgba(196, 119, 53, 0.22);
+    transition: all 0.2s ease;
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(196, 119, 53, 0.30);
+}
+
+.btn-edit:active {
+    transform: translateY(0);
+}
+    
 /* =========================
    BUTTONS
 ========================= */
@@ -778,6 +809,295 @@ tr:last-child td{
         border:1px solid #ddd;
     }
 }
+    /* =========================================================
+   EDIT PROJECT MODAL
+========================================================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 41, 52, 0.72);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    z-index: 9999;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.edit-project-modal {
+    width: min(760px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+
+    background: #F5F3EE;
+    border: 1px solid rgba(196, 119, 53, 0.25);
+    border-radius: 22px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.28);
+
+    direction: rtl;
+    animation: editModalIn 0.25s ease;
+}
+
+@keyframes editModalIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* رأس النافذة */
+
+.edit-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #123B4A,
+            #0B2934
+        );
+
+    color: #ffffff;
+
+    border-radius: 22px 22px 0 0;
+}
+
+.edit-modal-title {
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.edit-modal-subtitle {
+    margin-top: 5px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    opacity: 0.75;
+}
+
+
+/* زر الإغلاق */
+
+.edit-modal-close {
+    width: 40px;
+    height: 40px;
+
+    border: 0;
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.12);
+    color: #ffffff;
+
+    font-size: 26px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.edit-modal-close:hover {
+    background: rgba(196,119,53,0.9);
+    transform: rotate(5deg);
+}
+
+
+/* محتوى النموذج */
+
+#editProjectForm {
+    padding: 22px;
+}
+
+.edit-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+.edit-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.edit-form-full {
+    margin-top: 16px;
+}
+
+.edit-form-group label {
+    color: #123B4A;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.edit-form-group input,
+.edit-form-group select,
+.edit-form-group textarea {
+
+    width: 100%;
+    box-sizing: border-box;
+
+    border: 1px solid #d8d2c8;
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: #123B4A;
+
+    padding: 12px 13px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.edit-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.edit-form-group input:focus,
+.edit-form-group select:focus,
+.edit-form-group textarea:focus {
+
+    border-color: #C47735;
+
+    box-shadow:
+        0 0 0 3px rgba(196,119,53,0.12);
+}
+
+
+/* أزرار النافذة */
+
+.edit-modal-actions {
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+.edit-btn-cancel,
+.edit-btn-save {
+
+    border: 0;
+    border-radius: 12px;
+
+    padding: 12px 20px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.edit-btn-cancel {
+
+    background: #e7e3dc;
+    color: #123B4A;
+}
+
+.edit-btn-cancel:hover {
+    background: #d8d2c8;
+}
+
+.edit-btn-save {
+
+    background:
+        linear-gradient(
+            135deg,
+            #C47735,
+            #A95E25
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 6px 16px rgba(196,119,53,0.25);
+}
+
+.edit-btn-save:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 9px 20px rgba(196,119,53,0.32);
+}
+
+
+/* الهاتف */
+
+@media (max-width: 600px) {
+
+    .modal-overlay {
+        padding: 10px;
+        align-items: flex-end;
+    }
+
+    .edit-project-modal {
+        max-height: 94vh;
+        border-radius: 20px;
+    }
+
+    .edit-modal-header {
+        border-radius: 20px 20px 0 0;
+    }
+
+    .edit-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #editProjectForm {
+        padding: 16px;
+    }
+
+    .edit-modal-actions {
+        flex-direction: column;
+    }
+
+    .edit-btn-cancel,
+    .edit-btn-save {
+        width: 100%;
+    }
+
+}
+    
 </style>
 </head>
 
@@ -1703,6 +2023,7 @@ function renderProject(data){
 
     const project =
         data.project || {};
+    window.currentProject = project;
 
     const workers =
         Array.isArray(data.workers)
@@ -2780,7 +3101,711 @@ document.addEventListener(
     }
 );
 
-</script>
+    /* =========================================================
+   EDIT PROJECT
+========================================================= */
 
+function openEditProject(){
+
+    const modal = $("editProjectModal");
+
+    if(!modal){
+        console.error("EDIT MODAL NOT FOUND");
+        return;
+    }
+
+    /*
+       نستعمل البيانات الموجودة في الصفحة
+       بدل طلبها من الخادم مرة ثانية.
+    */
+
+    const name =
+        $("projectName")?.textContent?.trim() || "";
+
+    const location =
+        $("projectLocation")?.textContent
+            ?.replace("📍","")
+            .trim() || "";
+
+    const client =
+        $("clientName")?.textContent?.trim() || "";
+
+    const engineer =
+        $("engineerName")?.textContent?.trim() || "";
+
+    const budgetText =
+        $("budget")?.textContent
+            ?.replace(/[^\d.,-]/g,"")
+            .replace(/,/g,"") || "";
+
+    const progress =
+        $("progressPercent")?.textContent
+            ?.replace("%","")
+            .trim() || "0";
+
+    const notes =
+        $("projectNotes")?.textContent?.trim() || "";
+
+
+    $("editProjectName").value =
+        name === "مشروع بدون اسم" ? "" : name;
+
+    $("editProjectLocation").value =
+        location === "الموقع غير محدد" ? "" : location;
+
+    $("editProjectOwner").value =
+        client === "—" ? "" : client;
+
+    $("editProjectEngineer").value =
+        engineer === "—" ? "" : engineer;
+
+    $("editProjectBudget").value =
+        budgetText;
+
+    $("editProjectProgress").value =
+        progress;
+
+    $("editProjectNotes").value =
+        notes === "لا توجد ملاحظات مسجلة."
+            ? ""
+            : notes;
+
+
+    /*
+       نحدد الحالة الحالية من الـclass
+    */
+
+    const statusElement =
+        $("projectStatus");
+
+    let currentStatus = "active";
+
+    if(statusElement){
+
+        if(
+            statusElement.classList.contains("completed")
+        ){
+            currentStatus = "completed";
+        }
+        else if(
+            statusElement.classList.contains("pending")
+        ){
+            currentStatus = "planned";
+        }
+        else if(
+            statusElement.classList.contains("cancelled")
+        ){
+            currentStatus = "paused";
+        }
+        else{
+            currentStatus = "active";
+        }
+
+    }
+
+    $("editProjectStatus").value =
+        currentStatus;
+
+
+    /*
+       التواريخ
+    */
+
+    const startText =
+        $("startDate")?.textContent?.trim() || "";
+
+    const endText =
+        $("endDate")?.textContent?.trim() || "";
+
+
+    /*
+       نحاول استعمال البيانات الأصلية
+       إذا كانت متوفرة في window
+    */
+
+    if(window.currentProject){
+
+        const project =
+            window.currentProject;
+
+        $("editProjectStartDate").value =
+            normalizeDateInput(
+                project.start_date
+            );
+
+        $("editProjectEndDate").value =
+            normalizeDateInput(
+                project.end_date
+            );
+
+    }
+    else{
+
+        $("editProjectStartDate").value = "";
+
+        $("editProjectEndDate").value = "";
+
+    }
+
+
+    modal.classList.add("show");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+/* =========================================================
+   CLOSE EDIT MODAL
+========================================================= */
+
+function closeEditProject(){
+
+    const modal =
+        $("editProjectModal");
+
+    if(!modal){
+        return;
+    }
+
+    modal.classList.remove("show");
+
+    document.body.style.overflow = "";
+
+}
+
+
+/* =========================================================
+   DATE HELPER
+========================================================= */
+
+function normalizeDateInput(value){
+
+    if(!value){
+        return "";
+    }
+
+    const date =
+        new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+        return "";
+    }
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2,"0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2,"0");
+
+    return `${year}-${month}-${day}`;
+}
+
+
+/* =========================================================
+   SAVE PROJECT
+========================================================= */
+
+async function saveEditedProject(event){
+
+    event.preventDefault();
+
+
+    if(!projectId){
+
+        showToast(
+            "❌ رقم المشروع غير موجود."
+        );
+
+        return;
+    }
+
+
+    const saveButton =
+        document.querySelector(
+            ".edit-btn-save"
+        );
+
+
+    const originalText =
+        saveButton
+            ? saveButton.textContent
+            : "";
+
+
+    try{
+
+        if(saveButton){
+
+            saveButton.disabled = true;
+
+            saveButton.textContent =
+                "⏳ جاري الحفظ...";
+        }
+
+
+        const payload = {
+
+            name:
+                $("editProjectName").value.trim(),
+
+            location:
+                $("editProjectLocation").value.trim(),
+
+            client_name:
+                $("editProjectOwner").value.trim(),
+
+            engineer_name:
+                $("editProjectEngineer").value.trim(),
+
+            budget:
+                $("editProjectBudget").value
+                    ? Number(
+                        $("editProjectBudget").value
+                    )
+                    : 0,
+
+            start_date:
+                $("editProjectStartDate").value || null,
+
+            end_date:
+                $("editProjectEndDate").value || null,
+
+            status:
+                $("editProjectStatus").value,
+
+            progress:
+                $("editProjectProgress").value
+                    ? Number(
+                        $("editProjectProgress").value
+                    )
+                    : 0,
+
+            notes:
+                $("editProjectNotes").value.trim()
+
+        };
+
+
+        if(!payload.name){
+
+            showToast(
+                "⚠️ اسم المشروع مطلوب."
+            );
+
+            return;
+        }
+
+
+        if(
+            payload.progress < 0 ||
+            payload.progress > 100
+        ){
+
+            showToast(
+                "⚠️ نسبة الإنجاز يجب أن تكون بين 0 و100."
+            );
+
+            return;
+        }
+
+
+        const response =
+            await fetch(
+                "/api/projects/" +
+                encodeURIComponent(projectId),
+                {
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(payload)
+                }
+            );
+
+
+        let result = {};
+
+        try{
+
+            result =
+                await response.json();
+
+        }catch(error){
+
+            result = {};
+
+        }
+
+
+        if(!response.ok || !result.success){
+
+            throw new Error(
+                result.message ||
+                "تعذر حفظ تعديلات المشروع."
+            );
+
+        }
+
+
+        closeEditProject();
+
+        showToast(
+            "✅ تم حفظ تعديلات المشروع بنجاح."
+        );
+
+
+        /*
+           نعيد تحميل المشروع من الخادم
+           حتى تظهر البيانات الجديدة في كل الأقسام.
+        */
+
+        await loadProject();
+
+
+    }catch(error){
+
+        console.error(
+            "UPDATE PROJECT ERROR:",
+            error
+        );
+
+        showToast(
+            "❌ " +
+            (
+                error.message ||
+                "حدث خطأ أثناء حفظ التعديلات."
+            )
+        );
+
+    }finally{
+
+        if(saveButton){
+
+            saveButton.disabled = false;
+
+            saveButton.textContent =
+                originalText ||
+                "💾 حفظ التعديلات";
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   FORM SUBMIT
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    ()=>{
+
+        const form =
+            $("editProjectForm");
+
+        if(form){
+
+            form.addEventListener(
+                "submit",
+                saveEditedProject
+            );
+
+        }
+
+
+        /*
+           إغلاق النافذة عند الضغط خارجها
+        */
+
+        const modal =
+            $("editProjectModal");
+
+        if(modal){
+
+            modal.addEventListener(
+                "click",
+                (event)=>{
+
+                    if(
+                        event.target === modal
+                    ){
+
+                        closeEditProject();
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ESC CLOSE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    (event)=>{
+
+        if(event.key === "Escape"){
+
+            closeEditProject();
+
+        }
+
+    }
+);
+    
+</script>
+<!-- =====================================================
+     نافذة تعديل المشروع
+===================================================== -->
+
+<div id="editProjectModal" class="modal-overlay">
+
+    <div class="edit-project-modal">
+
+        <div class="edit-modal-header">
+
+            <div>
+                <div class="edit-modal-title">
+                    ✏️ تعديل المشروع
+                </div>
+
+                <div class="edit-modal-subtitle">
+                    تعديل معلومات المشروع الأساسية
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="edit-modal-close"
+                onclick="closeEditProject()">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="editProjectForm">
+
+            <div class="edit-form-grid">
+
+                <!-- اسم المشروع -->
+                <div class="edit-form-group">
+
+                    <label>
+                        اسم المشروع
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editProjectName"
+                        placeholder="اسم المشروع"
+                        required>
+
+                </div>
+
+
+                <!-- الموقع -->
+                <div class="edit-form-group">
+
+                    <label>
+                        الموقع
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editProjectLocation"
+                        placeholder="موقع المشروع">
+
+                </div>
+
+
+                <!-- صاحب المشروع -->
+                <div class="edit-form-group">
+
+                    <label>
+                        صاحب المشروع
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editProjectOwner"
+                        placeholder="اسم صاحب المشروع">
+
+                </div>
+
+
+                <!-- المهندس -->
+                <div class="edit-form-group">
+
+                    <label>
+                        المهندس
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editProjectEngineer"
+                        placeholder="اسم المهندس">
+
+                </div>
+
+
+                <!-- الميزانية -->
+                <div class="edit-form-group">
+
+                    <label>
+                        الميزانية
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editProjectBudget"
+                        placeholder="الميزانية"
+                        min="0">
+
+                </div>
+
+
+                <!-- تاريخ البداية -->
+                <div class="edit-form-group">
+
+                    <label>
+                        تاريخ البداية
+                    </label>
+
+                    <input
+                        type="date"
+                        id="editProjectStartDate">
+
+                </div>
+
+
+                <!-- تاريخ النهاية -->
+                <div class="edit-form-group">
+
+                    <label>
+                        تاريخ النهاية
+                    </label>
+
+                    <input
+                        type="date"
+                        id="editProjectEndDate">
+
+                </div>
+
+
+                <!-- الحالة -->
+                <div class="edit-form-group">
+
+                    <label>
+                        حالة المشروع
+                    </label>
+
+                    <select id="editProjectStatus">
+
+                        <option value="planned">
+                            مخطط
+                        </option>
+
+                        <option value="active">
+                            قيد الإنجاز
+                        </option>
+
+                        <option value="completed">
+                            مكتمل
+                        </option>
+
+                        <option value="paused">
+                            متوقف
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- نسبة الإنجاز -->
+                <div class="edit-form-group">
+
+                    <label>
+                        نسبة الإنجاز
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editProjectProgress"
+                        min="0"
+                        max="100"
+                        placeholder="0 - 100">
+
+                </div>
+
+            </div>
+
+
+            <!-- الملاحظات -->
+
+            <div class="edit-form-group edit-form-full">
+
+                <label>
+                    ملاحظات المشروع
+                </label>
+
+                <textarea
+                    id="editProjectNotes"
+                    rows="4"
+                    placeholder="اكتب ملاحظات المشروع هنا..."></textarea>
+
+            </div>
+
+
+            <!-- أزرار النافذة -->
+
+            <div class="edit-modal-actions">
+
+                <button
+                    type="button"
+                    class="edit-btn-cancel"
+                    onclick="closeEditProject()">
+
+                    إلغاء
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="edit-btn-save">
+
+                    💾 حفظ التعديلات
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 </body>
 </html>
