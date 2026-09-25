@@ -2608,6 +2608,7 @@ function renderWorkers(workers){
                     <th>الأجر</th>
                     <th>الدور</th>
                     <th>الحالة</th>
+                    <th>الإجراءات</th>
                 </tr>
             </thead>
             <tbody>
@@ -2692,7 +2693,75 @@ function renderWorkers(workers){
 
 }
 
+/* =========================================================
+   REMOVE WORKER FROM PROJECT
+========================================================= */
 
+async function removeProjectWorker(workerId, workerName){
+
+    if(!projectId){
+        alert("رقم المشروع غير موجود");
+        return;
+    }
+
+    const confirmed =
+        confirm(
+            "هل تريد إزالة العامل:\n\n" +
+            workerName +
+            "\n\nمن هذا المشروع فقط؟"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/project-workers/" +
+                encodeURIComponent(workerId) +
+                "?project_id=" +
+                encodeURIComponent(projectId),
+                {
+                    method: "DELETE"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message ||
+                "تعذر إزالة العامل من المشروع"
+            );
+
+        }
+
+        alert(
+            "تمت إزالة العامل من المشروع بنجاح ✅"
+        );
+
+        await loadProject();
+
+    }catch(error){
+
+        console.error(
+            "REMOVE PROJECT WORKER ERROR:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "تعذر إزالة العامل من المشروع"
+        );
+
+    }
+
+}
+    
 /* =========================================================
    MATERIALS
 ========================================================= */
