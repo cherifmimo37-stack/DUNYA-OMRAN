@@ -94,6 +94,130 @@ async function logAction(action, entity, entityId = null, details = null) {
 }
 
 /* =========================================================
+   AUTHENTICATION / SECURITY
+========================================================= */
+
+function hashToken(token) {
+
+    return crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+}
+
+
+async function hashPassword(password) {
+
+    const salt =
+        crypto
+            .randomBytes(16)
+            .toString("hex");
+
+
+    const derivedKey =
+        await scryptAsync(
+            password,
+            salt,
+            64
+        );
+
+
+    return `scrypt:${salt}:${Buffer
+        .from(derivedKey)
+        .toString("hex")}`;
+}
+
+
+async function verifyPassword(
+    password,
+    storedHash
+) {
+
+    try {
+
+        const parts =
+            String(
+                storedHash || ""
+            ).split(":");
+
+
+        if (
+            parts.length !== 3 ||
+            parts[0] !== "scrypt"
+        ) {
+
+            return false;
+        }
+
+
+        const salt =
+            parts[1];
+
+
+        const storedKey =
+            Buffer.from(
+                parts[2],
+                "hex"
+            );
+
+
+        if (
+            !salt ||
+            !storedKey.length
+        ) {
+
+            return false;
+        }
+
+
+        const derivedKey =
+            await scryptAsync(
+                password,
+                salt,
+                storedKey.length
+            );
+
+
+        const derivedBuffer =
+            Buffer.from(
+                derivedKey
+            );
+
+
+        if (
+            storedKey.length !==
+            derivedBuffer.length
+        ) {
+
+            return false;
+        }
+
+
+        return crypto.timingSafeEqual(
+            storedKey,
+            derivedBuffer
+        );
+
+    } catch (error) {
+
+        console.error(
+            "PASSWORD VERIFY ERROR:",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+function createAuthToken() {
+
+    return crypto
+        .randomBytes(48)
+        .toString("hex");
+}
+
+/* =========================================================
    DATABASE INITIALIZATION
 ========================================================= */
 
