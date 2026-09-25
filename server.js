@@ -1265,6 +1265,69 @@ app.post("/api/project-workers", async (req, res) => {
                 message: "بيانات العامل والمشروع والدور مطلوبة"
             });
 
+           /* =========================================================
+   REMOVE WORKER FROM PROJECT
+========================================================= */
+
+app.delete("/api/project-workers/:workerId", async (req, res) => {
+
+    try {
+
+        const workerId = Number(req.params.workerId);
+        const projectId = Number(req.query.project_id);
+
+        if (
+            !Number.isInteger(workerId) ||
+            !Number.isInteger(projectId)
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message: "رقم العامل أو المشروع غير صحيح"
+            });
+
+        }
+
+        const result = await pool.query(`
+            DELETE FROM project_workers
+            WHERE worker_id = $1
+              AND project_id = $2
+            RETURNING *
+        `, [
+            workerId,
+            projectId
+        ]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+                success: false,
+                message: "العامل غير مرتبط بهذا المشروع"
+            });
+
+        }
+
+        res.json({
+            success: true,
+            message: "تمت إزالة العامل من المشروع بنجاح"
+        });
+
+    } catch (error) {
+
+        console.error(
+            "REMOVE WORKER FROM PROJECT ERROR:",
+            error
+        );
+
+        res.status(500).json({
+            success: false,
+            message: "تعذر إزالة العامل من المشروع"
+        });
+
+    }
+
+});
+
         }
 
         const projectId = Number(project_id);
