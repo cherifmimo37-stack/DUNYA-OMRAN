@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -20,8 +21,9 @@
     --gray:#68757A;
     --white:#fff;
     --red:#B94A48;
-    --shadow:0 10px 30px rgba(11,41,52,.10);
-    --radius:18px;
+    --light:#edf2f1;
+    --shadow:0 12px 35px rgba(11,41,52,.10);
+    --radius:20px;
 }
 
 *{
@@ -30,9 +32,15 @@
     padding:0;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     font-family:"Cairo",sans-serif;
-    background:var(--ivory);
+    background:
+        radial-gradient(circle at top left,rgba(196,119,53,.06),transparent 28%),
+        var(--ivory);
     color:var(--dark);
     min-height:100vh;
 }
@@ -48,26 +56,22 @@ button{
     cursor:pointer;
 }
 
-/* =========================
+/* =========================================================
    TOPBAR
-========================= */
+========================================================= */
 
 .topbar{
-    background:linear-gradient(
-        135deg,
-        var(--dark),
-        var(--petroleum)
-    );
-    color:white;
-    padding:15px 20px;
+    background:linear-gradient(135deg,var(--dark),var(--petroleum));
+    color:#fff;
+    padding:14px 20px;
     position:sticky;
     top:0;
     z-index:100;
-    box-shadow:0 5px 20px rgba(0,0,0,.15);
+    box-shadow:0 6px 25px rgba(0,0,0,.16);
 }
 
 .topbar-inner{
-    width:min(1200px,94%);
+    width:min(1250px,94%);
     margin:auto;
     display:flex;
     align-items:center;
@@ -77,15 +81,17 @@ button{
 .back-btn{
     width:44px;
     height:44px;
-    border:0;
-    border-radius:13px;
-    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:14px;
+    background:rgba(255,255,255,.10);
     color:#fff;
-    font-size:22px;
+    font-size:21px;
+    transition:.2s;
 }
 
 .back-btn:hover{
-    background:rgba(255,255,255,.20);
+    background:rgba(255,255,255,.18);
+    transform:translateY(-1px);
 }
 
 .brand{
@@ -98,22 +104,22 @@ button{
 }
 
 .brand p{
-    font-size:11px;
-    opacity:.75;
+    font-size:10px;
+    opacity:.72;
 }
 
-/* =========================
-   MAIN
-========================= */
+/* =========================================================
+   CONTAINER
+========================================================= */
 
 .container{
-    width:min(1200px,94%);
-    margin:25px auto 50px;
+    width:min(1250px,94%);
+    margin:25px auto 55px;
 }
 
-/* =========================
+/* =========================================================
    PAGE HEADER
-========================= */
+========================================================= */
 
 .page-header{
     display:flex;
@@ -124,7 +130,7 @@ button{
 }
 
 .page-title h2{
-    font-size:27px;
+    font-size:29px;
     font-weight:900;
     color:var(--petroleum);
 }
@@ -137,35 +143,102 @@ button{
 
 .primary-btn{
     border:0;
-    background:linear-gradient(
-        135deg,
-        var(--copper),
-        #a95e25
-    );
+    background:linear-gradient(135deg,var(--copper),#a95e25);
     color:white;
     padding:12px 18px;
-    border-radius:13px;
-    font-size:13px;
+    border-radius:14px;
+    font-size:12px;
     font-weight:900;
-    box-shadow:0 7px 18px rgba(196,119,53,.25);
+    box-shadow:0 8px 20px rgba(196,119,53,.25);
+    transition:.2s;
 }
 
 .primary-btn:hover{
-    transform:translateY(-1px);
+    transform:translateY(-2px);
+    box-shadow:0 12px 25px rgba(196,119,53,.30);
 }
 
-/* =========================
+/* =========================================================
+   DASHBOARD STATS
+========================================================= */
+
+.dashboard-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    background:#fff;
+    border:1px solid rgba(18,59,74,.06);
+    border-radius:19px;
+    padding:17px;
+    box-shadow:var(--shadow);
+    display:flex;
+    align-items:center;
+    gap:13px;
+    transition:.2s;
+}
+
+.stat-card:hover{
+    transform:translateY(-2px);
+}
+
+.stat-icon{
+    width:48px;
+    height:48px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#edf3f2;
+    font-size:22px;
+}
+
+.stat-card:nth-child(2) .stat-icon{
+    background:#fff0df;
+}
+
+.stat-card:nth-child(3) .stat-icon{
+    background:#e8f0ed;
+}
+
+.stat-card:nth-child(4) .stat-icon{
+    background:#e8edf1;
+}
+
+.stat-info{
+    min-width:0;
+}
+
+.stat-info small{
+    display:block;
+    color:var(--gray);
+    font-size:10px;
+    font-weight:700;
+}
+
+.stat-info strong{
+    display:block;
+    color:var(--petroleum);
+    font-size:23px;
+    font-weight:900;
+    line-height:1.35;
+}
+
+/* =========================================================
    TOOLBAR
-========================= */
+========================================================= */
 
 .toolbar{
     background:white;
-    border-radius:17px;
-    padding:15px;
+    border-radius:18px;
+    padding:14px;
     box-shadow:var(--shadow);
     display:grid;
-    grid-template-columns:1fr 180px;
-    gap:12px;
+    grid-template-columns:1fr 180px 150px;
+    gap:10px;
     margin-bottom:20px;
 }
 
@@ -179,33 +252,72 @@ button{
     top:50%;
     transform:translateY(-50%);
     color:var(--gray);
+    pointer-events:none;
 }
 
 .search-box input,
 .toolbar select{
     width:100%;
+    height:46px;
     border:1px solid #e0e4e3;
     background:#fafafa;
     border-radius:12px;
-    padding:12px 40px 12px 12px;
+    padding:10px 40px 10px 12px;
     outline:none;
     font-size:12px;
     color:var(--dark);
+    transition:.2s;
 }
 
 .toolbar select{
-    padding:12px;
+    padding:10px 12px;
 }
 
 .search-box input:focus,
 .toolbar select:focus{
     border-color:var(--copper);
     background:white;
+    box-shadow:0 0 0 3px rgba(196,119,53,.08);
 }
 
-/* =========================
+.refresh-btn{
+    height:46px;
+    border:0;
+    border-radius:12px;
+    background:var(--petroleum);
+    color:white;
+    font-weight:800;
+}
+
+.refresh-btn:hover{
+    background:var(--dark);
+}
+
+/* =========================================================
+   RESULTS BAR
+========================================================= */
+
+.results-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:13px;
+    color:var(--gray);
+    font-size:11px;
+}
+
+.results-count{
+    font-weight:800;
+    color:var(--petroleum);
+}
+
+.last-update{
+    font-size:10px;
+}
+
+/* =========================================================
    PROJECT GRID
-========================= */
+========================================================= */
 
 .projects-grid{
     display:grid;
@@ -213,34 +325,43 @@ button{
     gap:18px;
 }
 
-/* =========================
+/* =========================================================
    PROJECT CARD
-========================= */
+========================================================= */
 
 .project-card{
     background:white;
-    border-radius:20px;
+    border-radius:21px;
     box-shadow:var(--shadow);
     overflow:hidden;
     border:1px solid rgba(18,59,74,.06);
     cursor:pointer;
     transition:.25s ease;
+    position:relative;
 }
 
 .project-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 15px 35px rgba(11,41,52,.15);
+    transform:translateY(-5px);
+    box-shadow:0 18px 42px rgba(11,41,52,.16);
 }
 
 .card-top{
-    background:linear-gradient(
-        135deg,
-        var(--petroleum),
-        var(--dark)
-    );
+    background:linear-gradient(135deg,var(--petroleum),var(--dark));
     color:white;
     padding:19px;
     position:relative;
+    overflow:hidden;
+}
+
+.card-top::before{
+    content:"";
+    position:absolute;
+    width:150px;
+    height:150px;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:50%;
+    left:-55px;
+    top:-70px;
 }
 
 .card-top::after{
@@ -248,10 +369,10 @@ button{
     position:absolute;
     width:100px;
     height:100px;
-    border:1px solid rgba(255,255,255,.08);
+    border:1px solid rgba(196,119,53,.15);
     border-radius:50%;
-    left:-30px;
-    top:-35px;
+    right:-35px;
+    bottom:-55px;
 }
 
 .card-top-content{
@@ -269,7 +390,7 @@ button{
 .project-name{
     font-size:17px;
     font-weight:900;
-    line-height:1.5;
+    line-height:1.55;
 }
 
 .status{
@@ -331,17 +452,21 @@ button{
     color:var(--dark);
     font-weight:800;
     text-align:left;
+    max-width:65%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
 .progress-wrap{
-    margin-top:12px;
+    margin-top:13px;
 }
 
 .progress-head{
     display:flex;
     justify-content:space-between;
     font-size:10px;
-    margin-bottom:5px;
+    margin-bottom:6px;
 }
 
 .progress-percent{
@@ -358,12 +483,9 @@ button{
 
 .progress-bar{
     height:100%;
-    background:linear-gradient(
-        90deg,
-        var(--copper),
-        #e3a366
-    );
+    background:linear-gradient(90deg,var(--copper),#e3a366);
     border-radius:20px;
+    transition:width .5s ease;
 }
 
 .card-footer{
@@ -383,6 +505,7 @@ button{
     padding:8px 12px;
     font-size:10px;
     font-weight:900;
+    transition:.2s;
 }
 
 .view-btn:hover{
@@ -394,9 +517,9 @@ button{
     font-size:9px;
 }
 
-/* =========================
+/* =========================================================
    EMPTY
-========================= */
+========================================================= */
 
 .empty{
     background:white;
@@ -422,9 +545,9 @@ button{
     font-size:12px;
 }
 
-/* =========================
+/* =========================================================
    LOADING
-========================= */
+========================================================= */
 
 .loading{
     background:white;
@@ -447,20 +570,18 @@ button{
 }
 
 @keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
+    to{transform:rotate(360deg)}
 }
 
-/* =========================
+/* =========================================================
    MODAL
-========================= */
+========================================================= */
 
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(5,25,32,.65);
-    backdrop-filter:blur(5px);
+    background:rgba(5,25,32,.68);
+    backdrop-filter:blur(6px);
     display:none;
     align-items:center;
     justify-content:center;
@@ -477,16 +598,12 @@ button{
     width:min(650px,100%);
     max-height:92vh;
     overflow-y:auto;
-    border-radius:22px;
+    border-radius:23px;
     box-shadow:0 25px 70px rgba(0,0,0,.25);
 }
 
 .modal-header{
-    background:linear-gradient(
-        135deg,
-        var(--dark),
-        var(--petroleum)
-    );
+    background:linear-gradient(135deg,var(--dark),var(--petroleum));
     color:white;
     padding:19px 20px;
     display:flex;
@@ -558,6 +675,7 @@ button{
 .form-group textarea:focus{
     border-color:var(--copper);
     background:white;
+    box-shadow:0 0 0 3px rgba(196,119,53,.07);
 }
 
 .modal-footer{
@@ -585,9 +703,14 @@ button{
     font-weight:900;
 }
 
-/* =========================
+.save-btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+/* =========================================================
    TOAST
-========================= */
+========================================================= */
 
 .toast{
     position:fixed;
@@ -603,6 +726,7 @@ button{
     opacity:0;
     transition:.3s;
     z-index:2000;
+    box-shadow:0 12px 30px rgba(0,0,0,.2);
 }
 
 .toast.show{
@@ -610,19 +734,23 @@ button{
     transform:translateX(-50%) translateY(0);
 }
 
-/* =========================
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
-@media(max-width:950px){
+@media(max-width:1000px){
 
     .projects-grid{
         grid-template-columns:repeat(2,1fr);
     }
 
+    .dashboard-stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
 }
 
-@media(max-width:650px){
+@media(max-width:700px){
 
     .container{
         width:94%;
@@ -634,7 +762,7 @@ button{
     }
 
     .page-title h2{
-        font-size:22px;
+        font-size:23px;
     }
 
     .primary-btn{
@@ -650,6 +778,40 @@ button{
         grid-template-columns:1fr;
     }
 
+    .results-bar{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:3px;
+    }
+
+}
+
+@media(max-width:520px){
+
+    .dashboard-stats{
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+    }
+
+    .stat-card{
+        padding:12px;
+        gap:8px;
+    }
+
+    .stat-icon{
+        width:40px;
+        height:40px;
+        font-size:18px;
+    }
+
+    .stat-info strong{
+        font-size:18px;
+    }
+
+    .stat-info small{
+        font-size:9px;
+    }
+
     .form-grid{
         grid-template-columns:1fr;
     }
@@ -659,6 +821,10 @@ button{
     }
 
     .modal-header h3{
+        font-size:16px;
+    }
+
+    .brand h1{
         font-size:16px;
     }
 
@@ -698,18 +864,11 @@ button{
 
 <main class="container">
 
-    <!-- HEADER -->
-
     <section class="page-header">
 
         <div class="page-title">
-
-            <h2>المشاريع</h2>
-
-            <p>
-                جميع مشاريع الشركة ومتابعة تقدمها
-            </p>
-
+            <h2>🏗️ المشاريع</h2>
+            <p>إدارة ومتابعة جميع مشاريع الشركة</p>
         </div>
 
         <button
@@ -717,6 +876,45 @@ button{
             onclick="openModal()">
             ＋ مشروع جديد
         </button>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <section class="dashboard-stats">
+
+        <div class="stat-card">
+            <div class="stat-icon">🏗️</div>
+            <div class="stat-info">
+                <small>إجمالي المشاريع</small>
+                <strong id="totalProjects">0</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🚧</div>
+            <div class="stat-info">
+                <small>المشاريع النشطة</small>
+                <strong id="activeProjects">0</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-info">
+                <small>قيد الانتظار</small>
+                <strong id="pendingProjects">0</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-info">
+                <small>المشاريع المكتملة</small>
+                <strong id="completedProjects">0</strong>
+            </div>
+        </div>
 
     </section>
 
@@ -732,7 +930,7 @@ button{
             <input
                 id="searchInput"
                 type="search"
-                placeholder="ابحث عن مشروع، موقع أو عميل..."
+                placeholder="ابحث عن مشروع، موقع، عميل أو مهندس..."
                 oninput="filterProjects()">
 
         </div>
@@ -742,29 +940,43 @@ button{
             id="statusFilter"
             onchange="filterProjects()">
 
-            <option value="all">
-                كل الحالات
-            </option>
-
-            <option value="active">
-                نشط
-            </option>
-
-            <option value="pending">
-                قيد الانتظار
-            </option>
-
-            <option value="completed">
-                مكتمل
-            </option>
-
-            <option value="cancelled">
-                ملغى
-            </option>
+            <option value="all">كل الحالات</option>
+            <option value="active">نشط</option>
+            <option value="pending">قيد الانتظار</option>
+            <option value="completed">مكتمل</option>
+            <option value="cancelled">ملغى</option>
 
         </select>
 
+
+        <button
+            class="refresh-btn"
+            onclick="loadProjects()">
+            🔄 تحديث
+        </button>
+
     </section>
+
+
+    <div class="results-bar">
+
+        <div>
+            عرض
+            <span
+                id="resultsCount"
+                class="results-count">
+                0
+            </span>
+            مشروع
+        </div>
+
+        <div
+            id="lastUpdate"
+            class="last-update">
+            آخر تحديث: —
+        </div>
+
+    </div>
 
 
     <!-- PROJECTS -->
@@ -788,9 +1000,9 @@ button{
 </main>
 
 
-<!-- =========================
+<!-- =======================================================
      NEW PROJECT MODAL
-========================= -->
+======================================================= -->
 
 <div
     id="projectModal"
@@ -829,7 +1041,6 @@ button{
 
                         <input
                             id="name"
-                            name="name"
                             required
                             placeholder="مثال: مشروع بناء 40 مسكن">
 
@@ -844,7 +1055,6 @@ button{
 
                         <input
                             id="location"
-                            name="location"
                             placeholder="المدينة / البلدية">
 
                     </div>
@@ -858,7 +1068,6 @@ button{
 
                         <input
                             id="client_name"
-                            name="client_name"
                             placeholder="اسم العميل">
 
                     </div>
@@ -872,7 +1081,6 @@ button{
 
                         <input
                             id="engineer_name"
-                            name="engineer_name"
                             placeholder="اسم المهندس">
 
                     </div>
@@ -886,7 +1094,6 @@ button{
 
                         <input
                             id="budget"
-                            name="budget"
                             type="number"
                             min="0"
                             step="0.01"
@@ -903,7 +1110,6 @@ button{
 
                         <input
                             id="start_date"
-                            name="start_date"
                             type="date">
 
                     </div>
@@ -917,7 +1123,6 @@ button{
 
                         <input
                             id="end_date"
-                            name="end_date"
                             type="date">
 
                     </div>
@@ -931,7 +1136,6 @@ button{
 
                         <input
                             id="progress"
-                            name="progress"
                             type="number"
                             min="0"
                             max="100"
@@ -946,9 +1150,7 @@ button{
                             الحالة
                         </label>
 
-                        <select
-                            id="status"
-                            name="status">
+                        <select id="status">
 
                             <option value="active">
                                 نشط
@@ -979,7 +1181,6 @@ button{
 
                         <textarea
                             id="notes"
-                            name="notes"
                             placeholder="اكتب أي ملاحظات خاصة بالمشروع..."></textarea>
 
                     </div>
@@ -1089,6 +1290,7 @@ function formatDate(value){
         return escapeHTML(value);
 
     }
+
 }
 
 
@@ -1103,6 +1305,7 @@ function showToast(message){
     setTimeout(()=>{
         toast.classList.remove("show");
     },2500);
+
 }
 
 
@@ -1161,6 +1364,55 @@ function getStatusInfo(status){
         text:"نشط",
         className:"active"
     };
+
+}
+
+
+/* =========================================================
+   UPDATE STATS
+========================================================= */
+
+function updateStats(){
+
+    $("totalProjects").textContent =
+        allProjects.length;
+
+
+    let active = 0;
+    let pending = 0;
+    let completed = 0;
+
+
+    allProjects.forEach(project=>{
+
+        const status =
+            getStatusInfo(project.status)
+                .className;
+
+
+        if(status === "active"){
+            active++;
+        }
+
+        if(status === "pending"){
+            pending++;
+        }
+
+        if(status === "completed"){
+            completed++;
+        }
+
+    });
+
+
+    $("activeProjects").textContent =
+        active;
+
+    $("pendingProjects").textContent =
+        pending;
+
+    $("completedProjects").textContent =
+        completed;
 
 }
 
@@ -1226,7 +1478,20 @@ async function loadProjects(){
         }
 
 
+        updateStats();
+
         filterProjects();
+
+
+        $("lastUpdate").textContent =
+            "آخر تحديث: " +
+            new Date().toLocaleTimeString(
+                "ar-DZ",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            );
 
 
     }catch(error){
@@ -1293,11 +1558,13 @@ function filterProjects(){
         allProjects.filter(project=>{
 
             const searchable = [
+
                 project.name,
                 project.location,
                 project.client_name,
                 project.engineer_name,
                 project.notes
+
             ]
             .filter(Boolean)
             .join(" ")
@@ -1315,11 +1582,9 @@ function filterProjects(){
             if(status !== "all"){
 
                 const projectStatus =
-                    String(
-                        project.status ||
-                        "active"
-                    )
-                    .toLowerCase();
+                    getStatusInfo(
+                        project.status
+                    ).className;
 
 
                 matchesStatus =
@@ -1334,6 +1599,10 @@ function filterProjects(){
             );
 
         });
+
+
+    $("resultsCount").textContent =
+        filtered.length;
 
 
     renderProjects(filtered);
@@ -1357,7 +1626,7 @@ function renderProjects(projects){
             <div class="empty">
 
                 <div class="empty-icon">
-                    🏗️
+                    🔎
                 </div>
 
                 <h3>
@@ -1559,7 +1828,8 @@ function renderProjects(projects){
     });
 
 
-    grid.innerHTML = html;
+    grid.innerHTML =
+        html;
 
 }
 
@@ -1577,8 +1847,14 @@ function openProject(id){
         );
 
         return;
+
     }
 
+
+    /*
+       صفحة تفاصيل المشروع الموجودة
+       في المشروع الحالي.
+    */
 
     window.location.href =
         "/project.html?id=" +
@@ -1596,8 +1872,11 @@ function openModal(){
     $("projectModal")
         .classList.add("show");
 
+
     setTimeout(()=>{
+
         $("name").focus();
+
     },100);
 
 }
@@ -1617,7 +1896,9 @@ $("projectModal")
         function(event){
 
             if(event.target === this){
+
                 closeModal();
+
             }
 
         }
@@ -1698,6 +1979,7 @@ async function createProject(event){
             "حفظ المشروع";
 
         return;
+
     }
 
 
@@ -1768,6 +2050,7 @@ async function createProject(event){
             "تعذر إنشاء المشروع."
         );
 
+
     }finally{
 
         saveBtn.disabled = false;
@@ -1800,9 +2083,7 @@ document.addEventListener(
     "keydown",
     function(event){
 
-        if(
-            event.key === "Escape"
-        ){
+        if(event.key === "Escape"){
 
             closeModal();
 
@@ -1810,6 +2091,39 @@ document.addEventListener(
 
     }
 );
+
+
+/* =========================================================
+   AUTO REFRESH
+========================================================= */
+
+let autoRefreshTimer =
+    setInterval(
+        async function(){
+
+            if(
+                document.visibilityState ===
+                "visible"
+            ){
+
+                try{
+
+                    await loadProjects();
+
+                }catch(error){
+
+                    console.warn(
+                        "AUTO REFRESH:",
+                        error
+                    );
+
+                }
+
+            }
+
+        },
+        120000
+    );
 
 
 /* =========================================================
@@ -1829,3 +2143,4 @@ document.addEventListener(
 
 </body>
 </html>
+```
