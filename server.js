@@ -1301,11 +1301,7 @@ app.post(
             };
 
 
-            const redirect =
-                user.role === "admin"
-                    ? "/admin.html"
-                    : "/engineer.html";
-
+            const redirect = "/index.html";
 
             res.json({
 
