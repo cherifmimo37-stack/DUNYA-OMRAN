@@ -2247,7 +2247,7 @@ async function openAddWorkerToProject(){
         return;
     }
 
-    modal.classList.add("active");
+    modal.classList.add("show");
 
     select.innerHTML = `
         <option value="">
@@ -2335,7 +2335,7 @@ function closeAddWorkerToProject(){
 
     if(modal){
 
-        modal.classList.remove("active");
+        modal.classList.remove("show");
 
     }
 
