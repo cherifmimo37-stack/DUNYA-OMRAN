@@ -1244,6 +1244,81 @@ app.delete("/api/workers/:id", async (req, res) => {
     }
 
 });
+/* =========================================================
+   ADD WORKER TO PROJECT
+========================================================= */
+
+app.post("/api/project-workers", async (req, res) => {
+
+    try {
+
+        const {
+            project_id,
+            worker_id,
+            role
+        } = req.body;
+
+        if (!project_id || !worker_id || !role) {
+
+            return res.status(400).json({
+                success: false,
+                message: "بيانات العامل والمشروع والدور مطلوبة"
+            });
+
+        }
+
+        const projectId = Number(project_id);
+        const workerId = Number(worker_id);
+
+        if (
+            !Number.isInteger(projectId) ||
+            !Number.isInteger(workerId)
+        ) {
+
+            return res.status(400).json({
+                success: false,
+                message: "رقم المشروع أو العامل غير صحيح"
+            });
+
+        }
+
+        const result = await pool.query(`
+            INSERT INTO project_workers (
+                project_id,
+                worker_id,
+                role
+            )
+            VALUES ($1, $2, $3)
+            ON CONFLICT (project_id, worker_id)
+            DO UPDATE SET role = EXCLUDED.role
+            RETURNING *
+        `, [
+            projectId,
+            workerId,
+            String(role).trim()
+        ]);
+
+        res.status(201).json({
+            success: true,
+            message: "تمت إضافة العامل للمشروع بنجاح",
+            projectWorker: result.rows[0]
+        });
+
+    } catch (error) {
+
+        console.error(
+            "ADD WORKER TO PROJECT ERROR:",
+            error
+        );
+
+        res.status(500).json({
+            success: false,
+            message: "تعذر إضافة العامل للمشروع"
+        });
+
+    }
+
+});
 
 /* =========================================================
    DELETE PROJECT
