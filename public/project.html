@@ -1878,10 +1878,14 @@ async function openAddWorkerToProject(){
 }
 
 
-const addWorkerForm =
-    document.getElementById("addWorkerForm");
+document.addEventListener("DOMContentLoaded", function(){
 
-if(addWorkerForm){
+    const addWorkerForm =
+        document.getElementById("addWorkerForm");
+
+    if(!addWorkerForm){
+        return;
+    }
 
     addWorkerForm.addEventListener(
         "submit",
@@ -1997,7 +2001,7 @@ if(addWorkerForm){
         }
     );
 
-}
+});
 /* =========================================================
    HELPERS
 ========================================================= */
