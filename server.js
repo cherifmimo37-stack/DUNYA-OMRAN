@@ -440,7 +440,539 @@ async function initDatabase() {
 
         `);
 
+/* =========================================================
+   PRO DATABASE TABLES
+========================================================= */
 
+/* ---------------------------------------------------------
+   EQUIPMENT
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS equipment (
+
+        id SERIAL PRIMARY KEY,
+
+        name VARCHAR(200) NOT NULL,
+
+        type VARCHAR(150),
+
+        registration VARCHAR(100),
+
+        brand VARCHAR(150),
+
+        model VARCHAR(150),
+
+        year INTEGER,
+
+        status VARCHAR(50) DEFAULT 'متاح',
+
+        current_project_id INTEGER
+            REFERENCES projects(id)
+            ON DELETE SET NULL,
+
+        purchase_price NUMERIC(14,2) DEFAULT 0,
+
+        notes TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   EQUIPMENT MAINTENANCE
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS equipment_maintenance (
+
+        id SERIAL PRIMARY KEY,
+
+        equipment_id INTEGER NOT NULL
+            REFERENCES equipment(id)
+            ON DELETE CASCADE,
+
+        maintenance_type VARCHAR(150),
+
+        description TEXT,
+
+        amount NUMERIC(14,2) DEFAULT 0,
+
+        maintenance_date DATE DEFAULT CURRENT_DATE,
+
+        next_date DATE,
+
+        notes TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   EQUIPMENT FUEL
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS equipment_fuel (
+
+        id SERIAL PRIMARY KEY,
+
+        equipment_id INTEGER NOT NULL
+            REFERENCES equipment(id)
+            ON DELETE CASCADE,
+
+        project_id INTEGER
+            REFERENCES projects(id)
+            ON DELETE SET NULL,
+
+        quantity NUMERIC(14,3) DEFAULT 0,
+
+        amount NUMERIC(14,2) DEFAULT 0,
+
+        fuel_date DATE DEFAULT CURRENT_DATE,
+
+        notes TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   CLIENTS
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS clients (
+
+        id SERIAL PRIMARY KEY,
+
+        name VARCHAR(200) NOT NULL,
+
+        phone VARCHAR(50),
+
+        email VARCHAR(150),
+
+        address VARCHAR(300),
+
+        company VARCHAR(200),
+
+        notes TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   SUPPLIERS
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS suppliers (
+
+        id SERIAL PRIMARY KEY,
+
+        name VARCHAR(200) NOT NULL,
+
+        phone VARCHAR(50),
+
+        email VARCHAR(150),
+
+        address VARCHAR(300),
+
+        company VARCHAR(200),
+
+        notes TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   INVOICES
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS invoices (
+
+        id SERIAL PRIMARY KEY,
+
+        invoice_number VARCHAR(100) UNIQUE NOT NULL,
+
+        project_id INTEGER
+            REFERENCES projects(id)
+            ON DELETE SET NULL,
+
+        client_id INTEGER
+            REFERENCES clients(id)
+            ON DELETE SET NULL,
+
+        invoice_date DATE DEFAULT CURRENT_DATE,
+
+        due_date DATE,
+
+        subtotal NUMERIC(14,2) DEFAULT 0,
+
+        tax NUMERIC(14,2) DEFAULT 0,
+
+        discount NUMERIC(14,2) DEFAULT 0,
+
+        total NUMERIC(14,2) DEFAULT 0,
+
+        paid NUMERIC(14,2) DEFAULT 0,
+
+        status VARCHAR(50) DEFAULT 'غير مدفوعة',
+
+        notes TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   INVOICE ITEMS
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS invoice_items (
+
+        id SERIAL PRIMARY KEY,
+
+        invoice_id INTEGER NOT NULL
+            REFERENCES invoices(id)
+            ON DELETE CASCADE,
+
+        description VARCHAR(300) NOT NULL,
+
+        quantity NUMERIC(14,3) DEFAULT 1,
+
+        unit_price NUMERIC(14,2) DEFAULT 0,
+
+        total NUMERIC(14,2) DEFAULT 0
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   CLIENT PAYMENTS
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS client_payments (
+
+        id SERIAL PRIMARY KEY,
+
+        client_id INTEGER
+            REFERENCES clients(id)
+            ON DELETE SET NULL,
+
+        project_id INTEGER
+            REFERENCES projects(id)
+            ON DELETE SET NULL,
+
+        invoice_id INTEGER
+            REFERENCES invoices(id)
+            ON DELETE SET NULL,
+
+        amount NUMERIC(14,2) NOT NULL,
+
+        payment_method VARCHAR(50),
+
+        payment_date DATE DEFAULT CURRENT_DATE,
+
+        reference VARCHAR(200),
+
+        notes TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   STOCK SUPPLIERS
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS material_purchases (
+
+        id SERIAL PRIMARY KEY,
+
+        material_id INTEGER NOT NULL
+            REFERENCES materials(id)
+            ON DELETE CASCADE,
+
+        supplier_id INTEGER
+            REFERENCES suppliers(id)
+            ON DELETE SET NULL,
+
+        quantity NUMERIC(14,3) NOT NULL,
+
+        unit_price NUMERIC(14,2) DEFAULT 0,
+
+        total NUMERIC(14,2) DEFAULT 0,
+
+        purchase_date DATE DEFAULT CURRENT_DATE,
+
+        invoice_number VARCHAR(100),
+
+        notes TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   USER ACCOUNTS
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS users (
+
+        id SERIAL PRIMARY KEY,
+
+        name VARCHAR(200) NOT NULL,
+
+        phone VARCHAR(50) UNIQUE,
+
+        email VARCHAR(150) UNIQUE,
+
+        password_hash TEXT,
+
+        role VARCHAR(50) DEFAULT 'admin',
+
+        active BOOLEAN DEFAULT TRUE,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   AUDIT LOG
+--------------------------------------------------------- */
+
+await pool.query(`
+
+    CREATE TABLE IF NOT EXISTS audit_logs (
+
+        id SERIAL PRIMARY KEY,
+
+        user_id INTEGER
+            REFERENCES users(id)
+            ON DELETE SET NULL,
+
+        action VARCHAR(100),
+
+        entity_type VARCHAR(100),
+
+        entity_id INTEGER,
+
+        description TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
+
+`);
+
+
+/* ---------------------------------------------------------
+   PROJECT CLIENT RELATION
+--------------------------------------------------------- */
+
+ALTER TABLE projects
+ADD COLUMN IF NOT EXISTS client_id INTEGER
+REFERENCES clients(id)
+ON DELETE SET NULL;
+
+
+/* ---------------------------------------------------------
+   PROJECT COST CACHE
+--------------------------------------------------------- */
+
+ALTER TABLE projects
+ADD COLUMN IF NOT EXISTS actual_cost NUMERIC(14,2)
+DEFAULT 0;
+
+
+/* ---------------------------------------------------------
+   PROJECT REVENUE CACHE
+--------------------------------------------------------- */
+
+ALTER TABLE projects
+ADD COLUMN IF NOT EXISTS total_revenue NUMERIC(14,2)
+DEFAULT 0;
+
+
+/* ---------------------------------------------------------
+   PROJECT ARCHIVE
+--------------------------------------------------------- */
+
+ALTER TABLE projects
+ADD COLUMN IF NOT EXISTS archived BOOLEAN
+DEFAULT FALSE;
+
+
+/* ---------------------------------------------------------
+   MATERIAL STOCK CACHE
+--------------------------------------------------------- */
+
+ALTER TABLE materials
+ADD COLUMN IF NOT EXISTS current_stock NUMERIC(14,3)
+DEFAULT 0;
+
+
+/* ---------------------------------------------------------
+   MATERIAL MINIMUM STOCK
+--------------------------------------------------------- */
+
+ALTER TABLE materials
+ADD COLUMN IF NOT EXISTS minimum_stock NUMERIC(14,3)
+DEFAULT 0;
+
+
+/* ---------------------------------------------------------
+   MATERIAL DEFAULT PRICE
+--------------------------------------------------------- */
+
+ALTER TABLE materials
+ADD COLUMN IF NOT EXISTS default_price NUMERIC(14,2)
+DEFAULT 0;
+
+
+/* ---------------------------------------------------------
+   WORKER ADDRESS
+--------------------------------------------------------- */
+
+ALTER TABLE workers
+ADD COLUMN IF NOT EXISTS address VARCHAR(300);
+
+
+/* ---------------------------------------------------------
+   WORKER NOTES
+--------------------------------------------------------- */
+
+ALTER TABLE workers
+ADD COLUMN IF NOT EXISTS notes TEXT;
+
+
+/* ---------------------------------------------------------
+   WORKER HIRE DATE
+--------------------------------------------------------- */
+
+ALTER TABLE workers
+ADD COLUMN IF NOT EXISTS hire_date DATE;
+
+
+/* ---------------------------------------------------------
+   WORKER ID CARD
+--------------------------------------------------------- */
+
+ALTER TABLE workers
+ADD COLUMN IF NOT EXISTS national_id VARCHAR(100);
+
+
+/* ---------------------------------------------------------
+   PROJECT UPDATED INDEX
+--------------------------------------------------------- */
+
+CREATE INDEX IF NOT EXISTS idx_projects_status
+ON projects(status);
+
+
+/* ---------------------------------------------------------
+   WORKER INDEX
+--------------------------------------------------------- */
+
+CREATE INDEX IF NOT EXISTS idx_workers_active
+ON workers(active);
+
+
+/* ---------------------------------------------------------
+   STOCK INDEX
+--------------------------------------------------------- */
+
+CREATE INDEX IF NOT EXISTS idx_stock_material
+ON stock_movements(material_id);
+
+
+/* ---------------------------------------------------------
+   EXPENSE INDEX
+--------------------------------------------------------- */
+
+CREATE INDEX IF NOT EXISTS idx_expenses_project
+ON expenses(project_id);
+
+
+/* ---------------------------------------------------------
+   PAYMENT INDEX
+--------------------------------------------------------- */
+
+CREATE INDEX IF NOT EXISTS idx_payments_project
+ON payments(project_id);
+
+
+/* ---------------------------------------------------------
+   NOTIFICATION INDEX
+--------------------------------------------------------- */
+
+CREATE INDEX IF NOT EXISTS idx_notifications_read
+ON notifications(is_read);
+
+
+/* ---------------------------------------------------------
+   AUDIT INDEX
+--------------------------------------------------------- */
+
+CREATE INDEX IF NOT EXISTS idx_audit_created
+ON audit_logs(created_at);
         console.log(
             "✅ PostgreSQL database initialized successfully"
         );
