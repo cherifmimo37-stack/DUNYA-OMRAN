@@ -1246,6 +1246,59 @@ app.delete("/api/workers/:id", async (req, res) => {
 });
 
 /* =========================================================
+   DELETE PROJECT
+========================================================= */
+
+app.delete("/api/projects/:id", async (req, res) => {
+
+    try {
+
+        const projectId = Number(req.params.id);
+
+        if (!Number.isInteger(projectId)) {
+
+            return res.status(400).json({
+                success: false,
+                message: "رقم المشروع غير صحيح"
+            });
+
+        }
+
+        const result = await pool.query(`
+            DELETE FROM projects
+            WHERE id = $1
+            RETURNING id, name
+        `, [projectId]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+                success: false,
+                message: "المشروع غير موجود"
+            });
+
+        }
+
+        res.json({
+            success: true,
+            message: "تم حذف المشروع بنجاح",
+            project: result.rows[0]
+        });
+
+    } catch (error) {
+
+        console.error("DELETE PROJECT ERROR:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "تعذر حذف المشروع"
+        });
+
+    }
+
+});
+
+/* =========================================================
    404 / FRONTEND
 ========================================================= */
 // ============================================================
