@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>تفاصيل المشروع | دنيا العمران والترقية</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+>
 
 <style>
-
-/* =========================================================
-   ROOT
-========================================================= */
 
 :root{
 
@@ -27,38 +25,28 @@
     --dark:#0B2934;
     --green:#3F6B63;
     --copper:#C47735;
+    --copper-dark:#A75E25;
     --ivory:#F5F3EE;
 
     --white:#ffffff;
-    --gray:#68757A;
-    --light:#eef1f0;
+    --muted:#6B7B82;
+    --border:#DDE4E5;
 
-    --red:#B94A48;
-    --blue:#286B85;
-    --gold:#C9A24A;
-
-    --success:#3F8064;
-    --warning:#B9822D;
+    --success:#2E7D5B;
+    --danger:#B83A3A;
+    --warning:#B87822;
+    --info:#28758A;
 
     --shadow:
         0 12px 35px rgba(11,41,52,.10);
 
-    --shadow2:
-        0 5px 18px rgba(11,41,52,.08);
-
-    --radius:20px;
+    --radius:18px;
 
 }
 
 
-/* =========================================================
-   RESET
-========================================================= */
-
 *{
     box-sizing:border-box;
-    margin:0;
-    padding:0;
 }
 
 
@@ -69,18 +57,21 @@ html{
 
 body{
 
-    font-family:"Cairo",sans-serif;
+    margin:0;
+
+    font-family:
+        "Cairo",
+        Arial,
+        sans-serif;
 
     background:
         linear-gradient(
             180deg,
-            #f5f3ee 0%,
-            #eef2f0 100%
+            #eef3f2 0%,
+            var(--ivory) 100%
         );
 
     color:var(--dark);
-
-    min-height:100vh;
 
 }
 
@@ -100,14 +91,12 @@ button{
 }
 
 
-/* =========================================================
-   TOPBAR
-========================================================= */
-
 .topbar{
 
     position:sticky;
+
     top:0;
+
     z-index:1000;
 
     background:
@@ -117,12 +106,11 @@ button{
             var(--petroleum)
         );
 
-    color:white;
-
-    padding:14px 22px;
+    color:#fff;
 
     box-shadow:
-        0 5px 25px rgba(0,0,0,.18);
+        0 8px 25px
+        rgba(0,0,0,.18);
 
 }
 
@@ -132,6 +120,11 @@ button{
     max-width:1450px;
 
     margin:auto;
+
+    min-height:74px;
+
+    padding:
+        10px 20px;
 
     display:flex;
 
@@ -152,50 +145,66 @@ button{
 
     gap:12px;
 
+    min-width:0;
+
 }
 
 
-.brand-logo{
+.brand-icon{
 
-    width:44px;
-    height:44px;
+    width:46px;
+
+    height:46px;
 
     border-radius:14px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    display:grid;
+
+    place-items:center;
 
     background:
         linear-gradient(
             135deg,
             var(--copper),
-            #e3a35d
+            #e0a15e
         );
 
-    color:white;
+    color:#fff;
 
-    font-size:22px;
+    font-size:23px;
 
     box-shadow:
-        0 6px 15px rgba(196,119,53,.28);
+        0 7px 20px
+        rgba(196,119,53,.28);
 
+}
+
+
+.brand-text{
+    min-width:0;
 }
 
 
 .brand-title{
 
-    font-size:16px;
+    font-size:17px;
+
     font-weight:900;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 
 }
 
 
-.brand-subtitle{
+.brand-sub{
 
     font-size:11px;
 
-    opacity:.68;
+    color:#cbd8dc;
 
 }
 
@@ -211,82 +220,61 @@ button{
 }
 
 
-.top-btn{
-
-    border:1px solid rgba(255,255,255,.14);
-
-    background:rgba(255,255,255,.08);
-
-    color:white;
-
-    padding:9px 14px;
-
-    border-radius:12px;
-
-    font-weight:800;
-
-    transition:.2s;
-
-}
-
-
-.top-btn:hover{
-
-    background:rgba(255,255,255,.16);
-
-    transform:translateY(-1px);
-
-}
-
-
-/* =========================================================
-   PAGE
-========================================================= */
-
 .page{
 
-    max-width:1450px;
+    width:
+        min(1450px, calc(100% - 30px));
 
-    margin:auto;
-
-    padding:22px;
+    margin:
+        24px auto 60px;
 
 }
 
-
-/* =========================================================
-   LOADING
-========================================================= */
 
 .loading{
 
-    min-height:60vh;
+    min-height:350px;
 
-    display:flex;
+    display:grid;
 
-    align-items:center;
+    place-items:center;
 
-    justify-content:center;
+}
 
-    flex-direction:column;
 
-    gap:15px;
+.loader-box{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:35px;
+
+    box-shadow:var(--shadow);
+
+    text-align:center;
 
 }
 
 
 .spinner{
 
-    width:52px;
-    height:52px;
+    width:46px;
 
-    border:5px solid #d8dfdd;
+    height:46px;
 
-    border-top-color:var(--copper);
+    margin:0 auto 15px;
+
+    border:
+        4px solid #e5ebec;
+
+    border-top-color:
+        var(--copper);
 
     border-radius:50%;
 
-    animation:spin 1s linear infinite;
+    animation:
+        spin .8s linear infinite;
 
 }
 
@@ -300,46 +288,26 @@ button{
 }
 
 
-.hidden{
-    display:none!important;
-}
-
-
-/* =========================================================
-   ERROR
-========================================================= */
-
 .error-box{
 
     background:#fff;
 
-    border:1px solid #efd1d0;
+    border:
+        1px solid #efd1d1;
 
-    color:#7c302f;
+    border-right:
+        5px solid var(--danger);
 
     border-radius:18px;
 
     padding:25px;
 
-    text-align:center;
-
     box-shadow:var(--shadow);
 
-}
-
-
-.error-icon{
-
-    font-size:42px;
-
-    margin-bottom:10px;
+    color:#7c2424;
 
 }
 
-
-/* =========================================================
-   HERO
-========================================================= */
 
 .project-hero{
 
@@ -351,40 +319,40 @@ button{
         linear-gradient(
             135deg,
             var(--dark),
-            var(--petroleum) 60%,
-            #1d5362
+            var(--petroleum)
         );
+
+    color:#fff;
 
     border-radius:26px;
 
-    color:white;
-
-    padding:28px;
+    padding:30px;
 
     box-shadow:
-        0 15px 45px rgba(11,41,52,.18);
-
-    margin-bottom:20px;
+        0 20px 45px
+        rgba(11,41,52,.18);
 
 }
 
 
-.project-hero:after{
+.project-hero::after{
 
     content:"";
 
     position:absolute;
 
-    width:280px;
-    height:280px;
+    width:300px;
+
+    height:300px;
 
     border-radius:50%;
 
-    background:
-        rgba(196,119,53,.10);
-
     left:-100px;
-    top:-120px;
+
+    bottom:-180px;
+
+    background:
+        rgba(196,119,53,.16);
 
 }
 
@@ -395,96 +363,80 @@ button{
 
     z-index:2;
 
-    display:flex;
+    display:grid;
 
-    justify-content:space-between;
+    grid-template-columns:
+        1fr 280px;
 
-    align-items:flex-start;
+    gap:30px;
 
-    gap:25px;
+    align-items:center;
 
 }
 
 
 .hero-title{
 
-    font-size:30px;
+    margin:0 0 8px;
+
+    font-size:
+        clamp(25px,4vw,40px);
 
     font-weight:900;
-
-    margin-bottom:7px;
 
 }
 
 
 .hero-location{
 
-    opacity:.75;
+    color:#d5e1e4;
 
     font-size:14px;
 
 }
 
 
-.status{
+.status-badge{
 
     display:inline-flex;
 
     align-items:center;
 
-    justify-content:center;
-
-    padding:7px 14px;
-
-    border-radius:30px;
-
-    font-size:12px;
-
-    font-weight:900;
+    gap:7px;
 
     margin-top:15px;
 
-}
+    padding:
+        7px 14px;
 
+    border-radius:30px;
 
-.status.active{
+    background:
+        rgba(255,255,255,.12);
 
-    background:#d9f1e6;
-    color:#246047;
-}
+    border:
+        1px solid
+        rgba(255,255,255,.18);
 
+    font-size:12px;
 
-.status.completed{
+    font-weight:800;
 
-    background:#d8efe1;
-    color:#236145;
-}
-
-
-.status.pending{
-
-    background:#fff0ce;
-    color:#815d17;
-}
-
-
-.status.cancelled{
-
-    background:#f5d9d8;
-    color:#863b39;
 }
 
 
 .hero-progress{
 
-    min-width:260px;
-
     background:
-        rgba(255,255,255,.08);
+        rgba(255,255,255,.09);
 
-    padding:17px;
+    border:
+        1px solid
+        rgba(255,255,255,.13);
 
-    border-radius:18px;
+    border-radius:20px;
+
+    padding:20px;
 
 }
 
@@ -497,61 +449,58 @@ button{
 
     align-items:center;
 
-    margin-bottom:9px;
+    margin-bottom:10px;
 
 }
 
 
-.progress-number{
+.progress-percent{
 
-    font-size:22px;
+    font-size:30px;
 
     font-weight:900;
 
-    color:#e8c986;
+    color:#e5c28f;
 
 }
 
 
 .progress-track{
 
-    height:11px;
-
-    border-radius:20px;
+    height:12px;
 
     background:
         rgba(255,255,255,.13);
+
+    border-radius:20px;
 
     overflow:hidden;
 
 }
 
 
-.progress-bar{
+.progress-fill{
 
     height:100%;
-
-    width:0;
 
     background:
         linear-gradient(
             90deg,
             var(--copper),
-            #e8c986
+            #e6b16f
         );
 
     border-radius:20px;
 
-    transition:width .7s ease;
+    transition:
+        width .5s ease;
 
 }
 
 
-/* =========================================================
-   QUICK ACTIONS
-========================================================= */
-
 .quick-actions{
+
+    margin-top:18px;
 
     display:grid;
 
@@ -560,154 +509,230 @@ button{
 
     gap:10px;
 
-    margin-bottom:20px;
-
 }
 
 
-.quick-btn{
+.btn{
 
     border:0;
 
-    background:white;
+    border-radius:12px;
 
-    color:var(--dark);
-
-    border-radius:16px;
-
-    padding:15px 8px;
-
-    box-shadow:var(--shadow2);
+    padding:
+        10px 14px;
 
     font-weight:800;
 
-    transition:.2s;
+    font-size:12px;
+
+    transition:
+        .2s ease;
 
 }
 
 
-.quick-btn span{
+.btn:hover{
 
-    display:block;
-
-    font-size:24px;
-
-    margin-bottom:5px;
+    transform:
+        translateY(-2px);
 
 }
 
 
-.quick-btn small{
+.btn-primary{
 
-    color:var(--gray);
+    background:var(--petroleum);
 
-    font-weight:700;
-
-}
-
-
-.quick-btn:hover{
-
-    transform:translateY(-3px);
-
-    box-shadow:
-        0 12px 25px rgba(11,41,52,.13);
+    color:#fff;
 
 }
 
 
-.quick-btn.primary{
+.btn-copper{
 
-    background:
-        linear-gradient(
-            135deg,
-            var(--petroleum),
-            var(--green)
-        );
+    background:var(--copper);
 
-    color:white;
+    color:#fff;
 
 }
 
 
-.quick-btn.primary small{
+.btn-green{
 
-    color:rgba(255,255,255,.75);
+    background:var(--green);
+
+    color:#fff;
 
 }
 
 
-/* =========================================================
-   STATS
-========================================================= */
+.btn-dark{
 
-.stats-grid{
+    background:var(--dark);
+
+    color:#fff;
+
+}
+
+
+.btn-light{
+
+    background:#fff;
+
+    color:var(--petroleum);
+
+    border:
+        1px solid var(--border);
+
+}
+
+
+.btn-danger{
+
+    background:var(--danger);
+
+    color:#fff;
+
+}
+
+
+.btn-edit{
+
+    background:#eaf0f1;
+
+    color:var(--petroleum);
+
+}
+
+
+.btn-delete{
+
+    background:#fae9e9;
+
+    color:var(--danger);
+
+}
+
+
+.section{
+
+    margin-top:22px;
+
+}
+
+
+.section-title{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-bottom:12px;
+
+}
+
+
+.section-title h2{
+
+    margin:0;
+
+    font-size:20px;
+
+    font-weight:900;
+
+}
+
+
+.section-title span{
+
+    font-size:12px;
+
+    color:var(--muted);
+
+}
+
+
+.stats{
 
     display:grid;
 
     grid-template-columns:
         repeat(6,1fr);
 
-    gap:13px;
-
-    margin-bottom:20px;
+    gap:14px;
 
 }
 
 
-.stat-card{
+.stat{
 
-    background:white;
+    background:#fff;
 
-    border-radius:18px;
+    border:
+        1px solid var(--border);
 
-    padding:18px;
+    border-radius:
+        var(--radius);
 
-    box-shadow:var(--shadow2);
+    padding:20px;
 
-    border:1px solid rgba(18,59,74,.05);
-
-}
-
-
-.stat-label{
-
-    color:var(--gray);
-
-    font-size:12px;
-
-    font-weight:800;
-
-}
-
-
-.stat-value{
-
-    font-size:21px;
-
-    font-weight:900;
-
-    margin-top:6px;
-
-    color:var(--dark);
+    box-shadow:
+        0 7px 25px
+        rgba(11,41,52,.06);
 
 }
 
 
 .stat-icon{
 
-    font-size:23px;
+    width:40px;
 
-    margin-bottom:7px;
+    height:40px;
+
+    border-radius:12px;
+
+    display:grid;
+
+    place-items:center;
+
+    background:#edf3f3;
+
+    font-size:20px;
+
+    margin-bottom:10px;
 
 }
 
 
-/* =========================================================
-   FINANCE
-========================================================= */
+.stat-label{
 
-.finance-grid{
+    color:var(--muted);
+
+    font-size:11px;
+
+    font-weight:700;
+
+}
+
+
+.stat-value{
+
+    margin-top:3px;
+
+    font-size:21px;
+
+    font-weight:900;
+
+    color:var(--dark);
+
+}
+
+
+.finance{
 
     display:grid;
 
@@ -716,121 +741,142 @@ button{
 
     gap:14px;
 
-    margin-bottom:20px;
-
 }
 
 
 .finance-card{
 
-    background:white;
+    background:#fff;
 
-    border-radius:20px;
+    border-radius:18px;
 
-    padding:20px;
+    padding:22px;
 
-    box-shadow:var(--shadow2);
+    border:
+        1px solid var(--border);
 
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-
-.finance-card:before{
-
-    content:"";
-
-    position:absolute;
-
-    right:0;
-    top:0;
-
-    width:5px;
-    height:100%;
-
-    background:var(--copper);
+    box-shadow:
+        0 7px 25px
+        rgba(11,41,52,.06);
 
 }
 
 
-.finance-title{
+.finance-label{
 
-    color:var(--gray);
+    color:var(--muted);
 
     font-size:12px;
-
-    font-weight:800;
 
 }
 
 
 .finance-value{
 
-    font-size:24px;
+    margin-top:8px;
+
+    font-size:23px;
 
     font-weight:900;
 
-    margin-top:6px;
+}
+
+
+.finance-card:nth-child(2)
+.finance-value{
+
+    color:var(--copper);
 
 }
 
 
-.finance-sub{
+.finance-card:nth-child(3)
+.finance-value{
 
-    font-size:11px;
-
-    color:var(--gray);
-
-    margin-top:5px;
+    color:var(--success);
 
 }
 
 
-/* =========================================================
-   SECTION GRID
-========================================================= */
+.finance-card:nth-child(4)
+.finance-value{
 
-.grid{
+    color:var(--info);
+
+}
+
+
+.info-grid{
 
     display:grid;
 
     grid-template-columns:
-        repeat(2,minmax(0,1fr));
+        repeat(3,1fr);
 
-    gap:18px;
+    gap:12px;
+
+}
+
+
+.info-card{
+
+    background:#fff;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:16px;
+
+    padding:17px;
+
+}
+
+
+.info-label{
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    margin-bottom:4px;
+
+}
+
+
+.info-value{
+
+    font-weight:800;
+
+    word-break:break-word;
 
 }
 
 
 .card{
 
-    background:white;
+    background:#fff;
 
-    border-radius:var(--radius);
+    border:
+        1px solid var(--border);
 
-    box-shadow:var(--shadow2);
+    border-radius:20px;
+
+    box-shadow:
+        0 7px 25px
+        rgba(11,41,52,.06);
 
     overflow:hidden;
 
-    border:1px solid rgba(18,59,74,.05);
-
 }
 
 
-.card.full{
+.card-head{
 
-    grid-column:1/-1;
+    padding:
+        17px 20px;
 
-}
-
-
-.card-header{
-
-    padding:17px 20px;
-
-    border-bottom:1px solid #edf0ef;
+    border-bottom:
+        1px solid #edf0f1;
 
     display:flex;
 
@@ -838,33 +884,18 @@ button{
 
     align-items:center;
 
-    gap:12px;
+    gap:10px;
 
 }
 
 
-.card-title{
+.card-head h3{
 
-    font-size:17px;
+    margin:0;
+
+    font-size:16px;
 
     font-weight:900;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-}
-
-
-.card-actions{
-
-    display:flex;
-
-    gap:7px;
-
-    flex-wrap:wrap;
 
 }
 
@@ -876,152 +907,19 @@ button{
 }
 
 
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.btn{
-
-    border:0;
-
-    border-radius:11px;
-
-    padding:9px 13px;
-
-    font-weight:800;
-
-    font-size:12px;
-
-    transition:.2s;
-
-}
-
-
-.btn:hover{
-
-    transform:translateY(-1px);
-
-}
-
-
-.btn-edit{
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--copper),
-            #d99552
-        );
-
-    color:white;
-
-}
-
-
-.btn-delete{
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--red),
-            #d16460
-        );
-
-    color:white;
-
-}
-
-
-.btn-green{
-
-    background:var(--green);
-
-    color:white;
-
-}
-
-
-.btn-dark{
-
-    background:var(--petroleum);
-
-    color:white;
-
-}
-
-
-.btn-light{
-
-    background:#eef2f1;
-
-    color:var(--dark);
-
-}
-
-
-.btn-danger{
-
-    background:#f7dfdd;
-
-    color:#873a37;
-
-}
-
-
-/* =========================================================
-   INFO
-========================================================= */
-
-.info-grid{
+.grid-2{
 
     display:grid;
 
     grid-template-columns:
         repeat(2,1fr);
 
-    gap:12px;
+    gap:18px;
 
 }
 
-
-.info-item{
-
-    background:#f7f8f7;
-
-    padding:13px;
-
-    border-radius:13px;
-
-}
-
-
-.info-label{
-
-    color:var(--gray);
-
-    font-size:11px;
-
-    font-weight:800;
-
-}
-
-
-.info-value{
-
-    margin-top:4px;
-
-    font-weight:800;
-
-}
-
-
-/* =========================================================
-   TABLE
-========================================================= */
 
 .table-wrap{
-
-    width:100%;
 
     overflow-x:auto;
 
@@ -1041,15 +939,15 @@ table{
 
 th{
 
-    background:#f2f5f4;
+    background:#f3f6f6;
 
     color:var(--petroleum);
 
-    font-size:12px;
-
-    padding:12px;
+    font-size:11px;
 
     text-align:right;
+
+    padding:12px;
 
     white-space:nowrap;
 
@@ -1060,7 +958,8 @@ td{
 
     padding:12px;
 
-    border-bottom:1px solid #edf0ef;
+    border-bottom:
+        1px solid #edf0f1;
 
     font-size:12px;
 
@@ -1069,43 +968,77 @@ td{
 }
 
 
-tr:hover td{
+tr:last-child td{
 
-    background:#fbfcfb;
+    border-bottom:0;
 
 }
 
 
-/* =========================================================
-   EMPTY
-========================================================= */
+.low-stock{
+
+    background:#fff9ef;
+
+}
+
+
+.low-stock-badge{
+
+    display:inline-block;
+
+    padding:
+        4px 8px;
+
+    border-radius:8px;
+
+    background:#fff0d7;
+
+    color:#9a5d12;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
 
 .empty{
 
+    padding:35px 20px;
+
     text-align:center;
 
-    padding:35px 15px;
+    color:var(--muted);
 
-    color:var(--gray);
-
-    font-weight:700;
-
-    background:#fafbfa;
+    background:#fafcfc;
 
     border-radius:14px;
+
+    border:
+        1px dashed #ccd7d9;
+
+    font-size:13px;
 
 }
 
 
-/* =========================================================
-   PROGRESS STAGES
-========================================================= */
+.notes{
+
+    line-height:1.9;
+
+    white-space:pre-wrap;
+
+    color:#43545b;
+
+}
+
 
 .stage{
 
-    padding:14px;
+    padding:15px;
 
-    background:#f7f9f8;
+    border:
+        1px solid var(--border);
 
     border-radius:15px;
 
@@ -1143,22 +1076,22 @@ tr:hover td{
 
 .stage-percent{
 
-    font-weight:900;
-
     color:var(--copper);
+
+    font-weight:900;
 
 }
 
 
 .stage-track{
 
-    height:8px;
-
-    background:#dfe5e3;
+    height:9px;
 
     border-radius:20px;
 
     overflow:hidden;
+
+    background:#edf1f1;
 
 }
 
@@ -1167,29 +1100,26 @@ tr:hover td{
 
     height:100%;
 
+    border-radius:20px;
+
     background:
         linear-gradient(
             90deg,
-            var(--green),
+            var(--petroleum),
             var(--copper)
         );
-
-    border-radius:20px;
 
 }
 
 
-/* =========================================================
-   REPORT
-========================================================= */
-
 .report{
 
-    padding:15px;
-
-    border:1px solid #e8ecea;
+    border:
+        1px solid var(--border);
 
     border-radius:16px;
+
+    padding:17px;
 
     margin-bottom:10px;
 
@@ -1211,7 +1141,7 @@ tr:hover td{
 
     gap:10px;
 
-    margin-bottom:8px;
+    margin-bottom:9px;
 
 }
 
@@ -1225,52 +1155,60 @@ tr:hover td{
 
 .report-date{
 
-    font-size:11px;
+    color:var(--muted);
 
-    color:var(--gray);
+    font-size:11px;
 
 }
 
 
 .report-text{
 
-    color:#425258;
+    color:#43545b;
+
+    line-height:1.8;
 
     font-size:13px;
 
-    line-height:1.9;
-
 }
 
-
-/* =========================================================
-   APPOINTMENT
-========================================================= */
 
 .appointment{
 
     display:flex;
 
+    align-items:center;
+
     gap:14px;
 
-    padding:13px;
+    border:
+        1px solid var(--border);
 
-    border:1px solid #e7ecea;
+    border-radius:15px;
 
-    border-radius:16px;
+    padding:12px;
 
     margin-bottom:10px;
 
-    align-items:center;
+}
+
+
+.appointment:last-child{
+
+    margin-bottom:0;
 
 }
 
 
 .date-box{
 
+    width:58px;
+
     min-width:58px;
 
-    text-align:center;
+    height:58px;
+
+    border-radius:14px;
 
     background:
         linear-gradient(
@@ -1279,11 +1217,13 @@ tr:hover td{
             var(--green)
         );
 
-    color:white;
+    color:#fff;
 
-    border-radius:13px;
+    display:grid;
 
-    padding:8px;
+    place-items:center;
+
+    align-content:center;
 
 }
 
@@ -1294,14 +1234,16 @@ tr:hover td{
 
     font-weight:900;
 
+    line-height:1;
+
 }
 
 
 .date-month{
 
-    font-size:10px;
+    font-size:9px;
 
-    opacity:.8;
+    margin-top:3px;
 
 }
 
@@ -1310,57 +1252,59 @@ tr:hover td{
 
     font-weight:900;
 
+    margin-bottom:4px;
+
 }
 
 
 .appointment-time{
 
-    color:var(--gray);
+    color:var(--muted);
 
-    font-size:12px;
-
-    margin-top:4px;
+    font-size:11px;
 
 }
 
-
-/* =========================================================
-   CHAT
-========================================================= */
 
 .message{
 
     display:flex;
 
-    gap:11px;
+    gap:12px;
 
-    padding:12px;
+    padding:13px;
 
-    border-bottom:1px solid #edf0ef;
+    border-bottom:
+        1px solid #edf0f1;
+
+}
+
+
+.message:last-child{
+
+    border-bottom:0;
 
 }
 
 
 .message-avatar{
 
-    width:40px;
-    height:40px;
+    width:38px;
+
+    height:38px;
+
+    min-width:38px;
 
     border-radius:50%;
 
+    display:grid;
+
+    place-items:center;
+
     background:
-        linear-gradient(
-            135deg,
-            var(--petroleum),
-            var(--copper)
-        );
+        var(--petroleum);
 
-    color:white;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
+    color:#fff;
 
     font-weight:900;
 
@@ -1371,34 +1315,32 @@ tr:hover td{
 
     font-weight:900;
 
-    font-size:13px;
+    font-size:12px;
 
 }
 
 
 .message-text{
 
-    font-size:13px;
-
     margin-top:3px;
+
+    line-height:1.7;
+
+    font-size:12px;
 
 }
 
 
 .message-date{
 
-    color:var(--gray);
+    color:var(--muted);
 
     font-size:10px;
 
-    margin-top:4px;
+    margin-top:3px;
 
 }
 
-
-/* =========================================================
-   NOTIFICATION
-========================================================= */
 
 .notification{
 
@@ -1406,20 +1348,40 @@ tr:hover td{
 
     gap:12px;
 
-    padding:13px;
+    padding:14px;
+
+    border:
+        1px solid var(--border);
 
     border-radius:14px;
-
-    background:#f8faf9;
 
     margin-bottom:9px;
 
 }
 
 
+.notification:last-child{
+
+    margin-bottom:0;
+
+}
+
+
 .notification-icon{
 
-    font-size:22px;
+    width:38px;
+
+    height:38px;
+
+    min-width:38px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:12px;
+
+    background:#fff2dd;
 
 }
 
@@ -1428,53 +1390,21 @@ tr:hover td{
 
     font-weight:900;
 
+    font-size:12px;
+
 }
 
 
 .notification-text{
 
-    color:var(--gray);
+    color:var(--muted);
 
-    font-size:12px;
+    font-size:11px;
 
     margin-top:3px;
 
 }
 
-
-/* =========================================================
-   LOW STOCK
-========================================================= */
-
-.low-stock{
-
-    background:#fff2dd!important;
-
-}
-
-
-.low-stock-badge{
-
-    display:inline-block;
-
-    background:#f3d28e;
-
-    color:#684b15;
-
-    padding:4px 8px;
-
-    border-radius:20px;
-
-    font-size:10px;
-
-    font-weight:900;
-
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
 
 .modal-overlay{
 
@@ -1482,12 +1412,7 @@ tr:hover td{
 
     inset:0;
 
-    background:
-        rgba(5,20,25,.65);
-
-    backdrop-filter:blur(5px);
-
-    z-index:5000;
+    z-index:2000;
 
     display:none;
 
@@ -1495,7 +1420,13 @@ tr:hover td{
 
     justify-content:center;
 
-    padding:18px;
+    padding:15px;
+
+    background:
+        rgba(4,20,26,.66);
+
+    backdrop-filter:
+        blur(5px);
 
 }
 
@@ -1509,23 +1440,28 @@ tr:hover td{
 
 .modal{
 
-    width:min(680px,100%);
+    width:
+        min(620px,100%);
 
-    max-height:92vh;
+    max-height:
+        calc(100vh - 30px);
 
-    overflow:auto;
+    overflow-y:auto;
 
-    background:white;
+    background:#fff;
 
-    border-radius:23px;
+    border-radius:22px;
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,.28);
+        0 25px 80px
+        rgba(0,0,0,.28);
 
 }
 
 
-.modal-header{
+.modal-head{
+
+    padding:18px 20px;
 
     background:
         linear-gradient(
@@ -1534,9 +1470,7 @@ tr:hover td{
             var(--petroleum)
         );
 
-    color:white;
-
-    padding:18px 20px;
+    color:#fff;
 
     display:flex;
 
@@ -1547,40 +1481,31 @@ tr:hover td{
 }
 
 
-.modal-title{
+.modal-head h3{
 
-    font-weight:900;
+    margin:0;
 
-    font-size:18px;
-
-}
-
-
-.modal-subtitle{
-
-    font-size:11px;
-
-    opacity:.7;
-
-    margin-top:2px;
+    font-size:17px;
 
 }
 
 
 .modal-close{
 
-    width:38px;
-    height:38px;
+    width:34px;
+
+    height:34px;
 
     border:0;
 
-    border-radius:50%;
+    border-radius:10px;
 
-    background:rgba(255,255,255,.12);
+    background:
+        rgba(255,255,255,.12);
 
-    color:white;
+    color:#fff;
 
-    font-size:25px;
+    font-size:19px;
 
 }
 
@@ -1606,220 +1531,154 @@ tr:hover td{
 
 .form-group{
 
-    margin-bottom:14px;
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
 
 }
 
 
 .form-group.full{
 
-    grid-column:1/-1;
+    grid-column:
+        1 / -1;
 
 }
 
 
-label{
+.form-group label{
 
-    display:block;
+    font-size:11px;
 
-    font-size:12px;
+    font-weight:800;
 
-    font-weight:900;
-
-    margin-bottom:6px;
+    color:var(--petroleum);
 
 }
 
 
-input,
-select,
-textarea{
+.form-group input,
+.form-group select,
+.form-group textarea{
 
     width:100%;
 
-    border:1px solid #dbe2df;
+    border:
+        1px solid #ccd7d9;
 
-    border-radius:12px;
+    border-radius:11px;
 
-    padding:11px 12px;
-
-    background:#fbfcfb;
-
-    color:var(--dark);
+    padding:
+        11px 12px;
 
     outline:none;
 
-    font-size:13px;
+    background:#fbfcfc;
+
+    color:var(--dark);
 
 }
 
 
-input:focus,
-select:focus,
-textarea:focus{
+.form-group textarea{
 
-    border-color:var(--copper);
-
-    box-shadow:
-        0 0 0 3px rgba(196,119,53,.10);
-
-}
-
-
-textarea{
+    min-height:100px;
 
     resize:vertical;
 
 }
 
 
-.modal-actions{
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
 
-    display:flex;
+    border-color:
+        var(--copper);
 
-    justify-content:flex-end;
-
-    gap:8px;
-
-    padding-top:8px;
+    box-shadow:
+        0 0 0 3px
+        rgba(196,119,53,.10);
 
 }
 
 
-/* =========================================================
-   TOAST
-========================================================= */
+.modal-footer{
+
+    padding:
+        0 20px 20px;
+
+    display:flex;
+
+    justify-content:flex-start;
+
+    gap:8px;
+
+}
+
 
 .toast{
 
     position:fixed;
 
-    left:20px;
+    bottom:22px;
 
-    bottom:20px;
+    right:22px;
 
-    z-index:9000;
+    z-index:3000;
+
+    max-width:420px;
 
     background:
         var(--dark);
 
-    color:white;
+    color:#fff;
 
-    padding:13px 18px;
+    padding:
+        13px 17px;
 
-    border-radius:14px;
+    border-radius:13px;
 
     box-shadow:
-        0 12px 35px rgba(0,0,0,.2);
-
-    font-size:13px;
-
-    font-weight:800;
+        0 15px 40px
+        rgba(0,0,0,.25);
 
     transform:
-        translateY(100px);
+        translateY(30px);
 
     opacity:0;
 
     pointer-events:none;
 
-    transition:.3s;
+    transition:.25s ease;
+
+    font-size:12px;
+
+    font-weight:700;
 
 }
 
 
 .toast.show{
 
-    transform:translateY(0);
+    transform:
+        translateY(0);
 
     opacity:1;
 
 }
 
 
-/* =========================================================
-   PRINT
-========================================================= */
-
-@media print{
-
-    .topbar,
-    .quick-actions,
-    .card-actions,
-    button{
-
-        display:none!important;
-
-    }
-
-
-    body{
-
-        background:white;
-
-    }
-
-
-    .page{
-
-        max-width:none;
-
-        padding:0;
-
-    }
-
-
-    .card,
-    .project-hero,
-    .finance-card,
-    .stat-card{
-
-        box-shadow:none;
-
-        border:1px solid #ddd;
-
-    }
-
-
-    .grid{
-
-        display:block;
-
-    }
-
-
-    .card{
-
-        margin-bottom:15px;
-
-        break-inside:avoid;
-
-    }
-
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
 @media(max-width:1100px){
 
-    .stats-grid{
+    .stats{
 
         grid-template-columns:
             repeat(3,1fr);
 
     }
-
-
-    .finance-grid{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-    }
-
 
     .quick-actions{
 
@@ -1835,90 +1694,71 @@ textarea{
 
     .hero-content{
 
-        flex-direction:column;
-
-    }
-
-
-    .hero-progress{
-
-        width:100%;
-
-        min-width:0;
-
-    }
-
-
-    .grid{
-
         grid-template-columns:1fr;
 
     }
 
-
-    .card.full{
-
-        grid-column:auto;
-
-    }
-
-
-    .stats-grid{
+    .finance{
 
         grid-template-columns:
             repeat(2,1fr);
 
     }
 
-
-    .quick-actions{
+    .info-grid{
 
         grid-template-columns:
-            repeat(3,1fr);
+            repeat(2,1fr);
+
+    }
+
+    .grid-2{
+
+        grid-template-columns:1fr;
 
     }
 
 }
 
 
-@media(max-width:560px){
+@media(max-width:600px){
 
     .page{
 
-        padding:12px;
+        width:
+            calc(100% - 18px);
+
+        margin-top:12px;
 
     }
 
+    .topbar-inner{
 
-    .topbar{
-
-        padding:10px 12px;
+        padding:
+            9px;
 
     }
 
-
-    .brand-subtitle{
+    .brand-sub{
 
         display:none;
 
     }
 
+    .top-actions{
 
-    .top-actions .top-btn{
-
-        padding:7px 9px;
-
-        font-size:11px;
+        gap:5px;
 
     }
 
+    .top-actions .btn{
 
-    .hero-title{
+        padding:
+            8px 10px;
 
-        font-size:23px;
+        font-size:10px;
 
     }
-
 
     .project-hero{
 
@@ -1928,15 +1768,6 @@ textarea{
 
     }
 
-
-    .stats-grid,
-    .finance-grid{
-
-        grid-template-columns:1fr 1fr;
-
-    }
-
-
     .quick-actions{
 
         grid-template-columns:
@@ -1944,14 +1775,30 @@ textarea{
 
     }
 
+    .stats{
 
-    .info-grid,
-    .form-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .finance{
 
         grid-template-columns:1fr;
 
     }
 
+    .info-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
 
     .form-group.full{
 
@@ -1959,37 +1806,67 @@ textarea{
 
     }
 
+    .hero-title{
 
-    .card-body{
-
-        padding:14px;
-
-    }
-
-
-    .card-header{
-
-        padding:14px;
+        font-size:25px;
 
     }
 
 }
 
 
-/* =========================================================
-   END CSS
-========================================================= */
+@media print{
+
+    .topbar,
+    .quick-actions,
+    .btn,
+    button,
+    .modal-overlay,
+    .toast{
+
+        display:none !important;
+
+    }
+
+    body{
+
+        background:#fff;
+
+    }
+
+    .page{
+
+        width:100%;
+
+        margin:0;
+
+    }
+
+    .card,
+    .stat,
+    .finance-card{
+
+        box-shadow:none;
+
+        break-inside:avoid;
+
+    }
+
+    .project-hero{
+
+        box-shadow:none;
+
+    }
+
+}
 
 </style>
 
 </head>
 
+
 <body>
 
-
-<!-- =======================================================
-     TOPBAR
-======================================================= -->
 
 <header class="topbar">
 
@@ -1997,17 +1874,17 @@ textarea{
 
         <div class="brand">
 
-            <div class="brand-logo">
+            <div class="brand-icon">
                 🏗️
             </div>
 
-            <div>
+            <div class="brand-text">
 
                 <div class="brand-title">
                     دنيا العمران والترقية
                 </div>
 
-                <div class="brand-subtitle">
+                <div class="brand-sub">
                     إدارة ومتابعة المشاريع
                 </div>
 
@@ -2019,20 +1896,23 @@ textarea{
         <div class="top-actions">
 
             <button
-                class="top-btn"
-                onclick="goBack()">
-                ← المشاريع
+                class="btn btn-light"
+                onclick="goBack()"
+            >
+                ↩️ رجوع
             </button>
 
             <button
-                class="top-btn"
-                onclick="loadProject()">
+                class="btn btn-light"
+                onclick="loadProject()"
+            >
                 🔄 تحديث
             </button>
 
             <button
-                class="top-btn"
-                onclick="window.print()">
+                class="btn btn-copper"
+                onclick="window.print()"
+            >
                 🖨️ طباعة
             </button>
 
@@ -2043,63 +1923,54 @@ textarea{
 </header>
 
 
-<!-- =======================================================
-     PAGE
-======================================================= -->
-
 <main class="page">
 
 
-    <!-- LOADING -->
+    <div id="loading" class="loading">
 
-    <div
-        id="loading"
-        class="loading">
+        <div class="loader-box">
 
-        <div class="spinner"></div>
+            <div class="spinner"></div>
 
-        <strong>
-            جاري تحميل بيانات المشروع...
-        </strong>
+            <strong>
+                جاري تحميل بيانات المشروع...
+            </strong>
+
+        </div>
 
     </div>
 
 
-    <!-- ERROR -->
-
     <div
         id="errorBox"
-        class="error-box hidden">
+        class="error-box"
+        style="display:none"
+    >
 
-        <div class="error-icon">
-            ⚠️
-        </div>
+        <strong>
+            ❌ تعذر تحميل المشروع
+        </strong>
 
-        <h3>
-            تعذر تحميل المشروع
-        </h3>
-
-        <p
+        <div
             id="errorMessage"
-            style="margin:10px 0 18px;">
-        </p>
+            style="margin-top:8px"
+        ></div>
 
         <button
             class="btn btn-dark"
-            onclick="loadProject()">
-            🔄 إعادة المحاولة
+            style="margin-top:15px"
+            onclick="loadProject()"
+        >
+            🔄 المحاولة من جديد
         </button>
 
     </div>
 
 
-    <!-- ===================================================
-         CONTENT
-    ==================================================== -->
-
     <div
         id="projectContent"
-        class="hidden">
+        style="display:none"
+    >
 
 
         <!-- HERO -->
@@ -2110,22 +1981,25 @@ textarea{
 
                 <div>
 
-                    <div
+                    <h1
                         id="projectName"
-                        class="hero-title">
-                        مشروع
-                    </div>
+                        class="hero-title"
+                    >
+                        المشروع
+                    </h1>
 
                     <div
                         id="projectLocation"
-                        class="hero-location">
+                        class="hero-location"
+                    >
                         📍 —
                     </div>
 
                     <div
                         id="projectStatus"
-                        class="status active">
-                        نشط
+                        class="status-badge"
+                    >
+                        ● نشط
                     </div>
 
                 </div>
@@ -2141,7 +2015,8 @@ textarea{
 
                         <span
                             id="progressPercent"
-                            class="progress-number">
+                            class="progress-percent"
+                        >
                             0%
                         </span>
 
@@ -2151,8 +2026,9 @@ textarea{
 
                         <div
                             id="progressBar"
-                            class="progress-bar">
-                        </div>
+                            class="progress-fill"
+                            style="width:0%"
+                        ></div>
 
                     </div>
 
@@ -2163,1097 +2039,967 @@ textarea{
         </section>
 
 
-        <!-- =================================================
-             QUICK ACTIONS
-        ================================================== -->
+        <!-- QUICK ACTIONS -->
 
-        <section class="quick-actions">
+        <div class="quick-actions">
 
             <button
-                class="quick-btn primary"
-                onclick="openEditProject()">
-
-                <span>✏️</span>
-
-                تعديل المشروع
-
-                <small>
-                    المعلومات الأساسية
-                </small>
-
+                class="btn btn-primary"
+                onclick="openEditProject()"
+            >
+                ✏️ تعديل المشروع
             </button>
-
 
             <button
-                class="quick-btn"
-                onclick="openAddWorkerToProject()">
-
-                <span>👷</span>
-
-                إضافة عامل
-
-                <small>
-                    فريق المشروع
-                </small>
-
+                class="btn btn-green"
+                onclick="openAddWorkerToProject()"
+            >
+                👷 إضافة عامل
             </button>
-
 
             <button
-                class="quick-btn"
-                onclick="openExpenseModal()">
-
-                <span>💰</span>
-
-                إضافة مصروف
-
-                <small>
-                    مالية المشروع
-                </small>
-
+                class="btn btn-copper"
+                onclick="openExpenseModal()"
+            >
+                💰 إضافة مصروف
             </button>
-
 
             <button
-                class="quick-btn"
-                onclick="openStageModal()">
-
-                <span>🧱</span>
-
-                إضافة مرحلة
-
-                <small>
-                    تقدم الأشغال
-                </small>
-
+                class="btn btn-primary"
+                onclick="openStageModal()"
+            >
+                🧱 إضافة مرحلة
             </button>
-
 
             <button
-                class="quick-btn"
-                onclick="openReportModal()">
-
-                <span>📋</span>
-
-                تقرير يومي
-
-                <small>
-                    أعمال اليوم
-                </small>
-
+                class="btn btn-green"
+                onclick="openReportModal()"
+            >
+                📋 تقرير يومي
             </button>
-
 
             <button
-                class="quick-btn"
-                onclick="openAppointmentModal()">
-
-                <span>📅</span>
-
-                موعد
-
-                <small>
-                    برنامج المشروع
-                </small>
-
+                class="btn btn-copper"
+                onclick="openAppointmentModal()"
+            >
+                📅 موعد
             </button>
-
 
             <button
-                class="quick-btn"
-                onclick="openDocumentModal()">
-
-                <span>📄</span>
-
-                وثيقة
-
-                <small>
-                    ملفات المشروع
-                </small>
-
+                class="btn btn-dark"
+                onclick="openDocumentModal()"
+            >
+                📄 وثيقة
             </button>
 
-        </section>
+        </div>
 
 
-        <!-- =================================================
-             STATS
-        ================================================== -->
+        <!-- STATS -->
 
-        <section class="stats-grid">
+        <section class="section">
 
-            <div class="stat-card">
+            <div class="section-title">
 
-                <div class="stat-icon">
-                    👷
-                </div>
+                <h2>📊 ملخص المشروع</h2>
 
-                <div class="stat-label">
-                    العمال
-                </div>
-
-                <div
-                    id="workersCount"
-                    class="stat-value">
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    📦
-                </div>
-
-                <div class="stat-label">
-                    المواد
-                </div>
-
-                <div
-                    id="materialsCount"
-                    class="stat-value">
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    💰
-                </div>
-
-                <div class="stat-label">
-                    المصاريف
-                </div>
-
-                <div
-                    id="expensesTotal"
-                    class="stat-value">
-                    0 دج
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    📅
-                </div>
-
-                <div class="stat-label">
-                    المواعيد
-                </div>
-
-                <div
-                    id="appointmentsCount"
-                    class="stat-value">
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    📊
-                </div>
-
-                <div class="stat-label">
-                    نسبة الإنجاز
-                </div>
-
-                <div
-                    id="statProgress"
-                    class="stat-value">
-                    0%
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    ⏱️
-                </div>
-
-                <div class="stat-label">
-                    آخر تحديث
-                </div>
-
-                <div
-                    id="lastUpdate"
-                    class="stat-value"
-                    style="font-size:14px;">
+                <span id="lastUpdate">
                     —
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             FINANCE
-        ================================================== -->
-
-        <section class="finance-grid">
-
-            <div class="finance-card">
-
-                <div class="finance-title">
-                    💳 ميزانية المشروع
-                </div>
-
-                <div
-                    id="financeBudget"
-                    class="finance-value">
-                    0 دج
-                </div>
-
-                <div class="finance-sub">
-                    الميزانية الإجمالية
-                </div>
+                </span>
 
             </div>
 
 
-            <div class="finance-card">
+            <div class="stats">
 
-                <div class="finance-title">
-                    💸 المصاريف
-                </div>
+                <div class="stat">
 
-                <div
-                    id="financeExpenses"
-                    class="finance-value">
-                    0 دج
-                </div>
-
-                <div class="finance-sub">
-                    إجمالي المصاريف
-                </div>
-
-            </div>
-
-
-            <div class="finance-card">
-
-                <div class="finance-title">
-                    💰 المتبقي
-                </div>
-
-                <div
-                    id="financeRemaining"
-                    class="finance-value">
-                    0 دج
-                </div>
-
-                <div class="finance-sub">
-                    الميزانية بعد المصاريف
-                </div>
-
-            </div>
-
-
-            <div class="finance-card">
-
-                <div class="finance-title">
-                    📈 الاستهلاك
-                </div>
-
-                <div
-                    id="financeConsumption"
-                    class="finance-value">
-                    0%
-                </div>
-
-                <div class="finance-sub">
-                    نسبة استهلاك الميزانية
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             GRID
-        ================================================== -->
-
-        <section class="grid">
-
-
-            <!-- PROJECT INFO -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div class="card-title">
-                        🏗️ معلومات المشروع
+                    <div class="stat-icon">
+                        👷
                     </div>
 
-                    <div class="card-actions">
-
-                        <button
-                            class="btn btn-edit"
-                            onclick="openEditProject()">
-                            ✏️ تعديل
-                        </button>
-
-                        <button
-                            class="btn btn-delete"
-                            onclick="confirmDeleteProject()">
-                            🗑️ حذف
-                        </button>
-
+                    <div class="stat-label">
+                        العمال
                     </div>
-
-                </div>
-
-                <div class="card-body">
-
-                    <div class="info-grid">
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-                                صاحب المشروع
-                            </div>
-
-                            <div
-                                id="clientName"
-                                class="info-value">
-                                —
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-                                المهندس
-                            </div>
-
-                            <div
-                                id="engineerName"
-                                class="info-value">
-                                —
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-                                الميزانية
-                            </div>
-
-                            <div
-                                id="budget"
-                                class="info-value">
-                                —
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-                                الحالة
-                            </div>
-
-                            <div
-                                id="infoStatus"
-                                class="info-value">
-                                —
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-                                تاريخ البداية
-                            </div>
-
-                            <div
-                                id="startDate"
-                                class="info-value">
-                                —
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-                                تاريخ النهاية
-                            </div>
-
-                            <div
-                                id="endDate"
-                                class="info-value">
-                                —
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- NOTES -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div class="card-title">
-                        📝 ملاحظات المشروع
-                    </div>
-
-                </div>
-
-                <div class="card-body">
 
                     <div
-                        id="projectNotes"
-                        style="
-                            line-height:2;
-                            color:#425258;
-                            white-space:pre-wrap;
-                        ">
-                        لا توجد ملاحظات.
+                        id="workersCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        📦
+                    </div>
+
+                    <div class="stat-label">
+                        المواد
+                    </div>
+
+                    <div
+                        id="materialsCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        💰
+                    </div>
+
+                    <div class="stat-label">
+                        إجمالي المصاريف
+                    </div>
+
+                    <div
+                        id="expensesTotal"
+                        class="stat-value"
+                    >
+                        0 دج
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        📅
+                    </div>
+
+                    <div class="stat-label">
+                        المواعيد
+                    </div>
+
+                    <div
+                        id="appointmentsCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        📈
+                    </div>
+
+                    <div class="stat-label">
+                        الإنجاز
+                    </div>
+
+                    <div
+                        id="statProgress"
+                        class="stat-value"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        🏗️
+                    </div>
+
+                    <div class="stat-label">
+                        حالة المشروع
+                    </div>
+
+                    <div
+                        id="statStatus"
+                        class="stat-value"
+                    >
+                        —
                     </div>
 
                 </div>
 
             </div>
 
+        </section>
 
-            <!-- STAGES -->
+
+        <!-- FINANCE -->
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h2>💰 الوضعية المالية</h2>
+
+                <span>
+                    ملخص الميزانية
+                </span>
+
+            </div>
+
+
+            <div class="finance">
+
+                <div class="finance-card">
+
+                    <div class="finance-label">
+                        الميزانية
+                    </div>
+
+                    <div
+                        id="financeBudget"
+                        class="finance-value"
+                    >
+                        0 دج
+                    </div>
+
+                </div>
+
+
+                <div class="finance-card">
+
+                    <div class="finance-label">
+                        المصاريف
+                    </div>
+
+                    <div
+                        id="financeExpenses"
+                        class="finance-value"
+                    >
+                        0 دج
+                    </div>
+
+                </div>
+
+
+                <div class="finance-card">
+
+                    <div class="finance-label">
+                        المتبقي
+                    </div>
+
+                    <div
+                        id="financeRemaining"
+                        class="finance-value"
+                    >
+                        0 دج
+                    </div>
+
+                </div>
+
+
+                <div class="finance-card">
+
+                    <div class="finance-label">
+                        نسبة الاستهلاك
+                    </div>
+
+                    <div
+                        id="financeConsumption"
+                        class="finance-value"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECT INFO -->
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h2>📌 معلومات المشروع</h2>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        العميل / المالك
+                    </div>
+
+                    <div
+                        id="clientName"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        المهندس
+                    </div>
+
+                    <div
+                        id="engineerName"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        الميزانية
+                    </div>
+
+                    <div
+                        id="budget"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        الحالة
+                    </div>
+
+                    <div
+                        id="infoStatus"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        تاريخ البداية
+                    </div>
+
+                    <div
+                        id="startDate"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-label">
+                        تاريخ النهاية
+                    </div>
+
+                    <div
+                        id="endDate"
+                        class="info-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- NOTES -->
+
+        <section class="section">
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        🧱 مراحل المشروع
-                    </div>
+                    <h3>📝 ملاحظات المشروع</h3>
+
+                </div>
+
+                <div
+                    id="projectNotes"
+                    class="card-body notes"
+                >
+                    لا توجد ملاحظات.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- STAGES -->
+
+        <section class="section">
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <h3>🧱 مراحل المشروع</h3>
 
                     <button
-                        class="btn btn-green"
-                        onclick="openStageModal()">
-                        ＋ مرحلة
+                        class="btn btn-copper"
+                        onclick="openStageModal()"
+                    >
+                        + إضافة مرحلة
                     </button>
 
                 </div>
 
                 <div
                     id="stagesContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل المراحل...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
+        </section>
 
-            <!-- WORKERS -->
+
+        <!-- WORKERS + MATERIALS -->
+
+        <section class="section grid-2">
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        👷 فريق المشروع
-                    </div>
+                    <h3>👷 فريق العمل</h3>
 
                     <button
                         class="btn btn-green"
-                        onclick="openAddWorkerToProject()">
-                        ＋ إضافة عامل
+                        onclick="openAddWorkerToProject()"
+                    >
+                        + عامل
                     </button>
 
                 </div>
 
                 <div
                     id="workersContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل العمال...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
 
-            <!-- MATERIALS -->
+            <div class="card">
 
-            <div class="card full">
+                <div class="card-head">
 
-                <div class="card-header">
-
-                    <div class="card-title">
-                        📦 مواد المشروع
-                    </div>
+                    <h3>📦 المواد</h3>
 
                 </div>
 
                 <div
                     id="materialsContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل المواد...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
-
-            <!-- STOCK -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div class="card-title">
-                        📦 حركة المخزن
-                    </div>
-
-                </div>
-
-                <div
-                    id="stockContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل المخزن...
-                    </div>
-
-                </div>
-
-            </div>
+        </section>
 
 
-            <!-- EXPENSES -->
+        <!-- EXPENSES + PAYMENTS -->
+
+        <section class="section grid-2">
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        💰 المصاريف
-                    </div>
+                    <h3>💸 المصاريف</h3>
 
                     <button
-                        class="btn btn-green"
-                        onclick="openExpenseModal()">
-                        ＋ مصروف
+                        class="btn btn-copper"
+                        onclick="openExpenseModal()"
+                    >
+                        + مصروف
                     </button>
 
                 </div>
 
                 <div
                     id="expensesContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل المصاريف...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
-
-            <!-- ATTENDANCE -->
-
-            <div class="card full">
-
-                <div class="card-header">
-
-                    <div class="card-title">
-                        🕘 الحضور والغياب
-                    </div>
-
-                </div>
-
-                <div
-                    id="attendanceContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل الحضور...
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- WORKER PAYMENTS -->
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        💵 دفعات العمال
-                    </div>
+                    <h3>💵 دفعات العمال</h3>
 
                 </div>
 
                 <div
                     id="workerPaymentsContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل الدفعات...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
+        </section>
 
-            <!-- EQUIPMENT -->
+
+        <!-- ATTENDANCE + STOCK -->
+
+        <section class="section grid-2">
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        🚜 المعدات
-                    </div>
+                    <h3>🕘 الحضور والغياب</h3>
 
                 </div>
 
                 <div
-                    id="equipmentContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل المعدات...
-                    </div>
-
-                </div>
+                    id="attendanceContainer"
+                    class="card-body"
+                ></div>
 
             </div>
 
 
-            <!-- REPORTS -->
+            <div class="card">
+
+                <div class="card-head">
+
+                    <h3>📦 حركات المخزن</h3>
+
+                </div>
+
+                <div
+                    id="stockContainer"
+                    class="card-body"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- REPORTS -->
+
+        <section class="section">
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        📋 التقارير اليومية
-                    </div>
+                    <h3>📋 التقارير اليومية</h3>
 
                     <button
                         class="btn btn-green"
-                        onclick="openReportModal()">
-                        ＋ تقرير
+                        onclick="openReportModal()"
+                    >
+                        + تقرير
                     </button>
 
                 </div>
 
                 <div
                     id="reportsContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل التقارير...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
+        </section>
 
-            <!-- APPOINTMENTS -->
+
+        <!-- APPOINTMENTS + MEETINGS -->
+
+        <section class="section grid-2">
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        📅 المواعيد
-                    </div>
+                    <h3>📅 المواعيد</h3>
 
                     <button
-                        class="btn btn-green"
-                        onclick="openAppointmentModal()">
-                        ＋ موعد
+                        class="btn btn-copper"
+                        onclick="openAppointmentModal()"
+                    >
+                        + موعد
                     </button>
 
                 </div>
 
                 <div
                     id="appointmentsContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل المواعيد...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
 
-            <!-- MEETINGS -->
-
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        🤝 الاجتماعات
-                    </div>
+                    <h3>🤝 الاجتماعات</h3>
 
                 </div>
 
                 <div
                     id="meetingsContainer"
-                    class="card-body">
+                    class="card-body"
+                ></div>
 
-                    <div class="empty">
-                        جاري تحميل الاجتماعات...
-                    </div>
+            </div>
+
+        </section>
+
+
+        <!-- EQUIPMENT + DOCUMENTS -->
+
+        <section class="section grid-2">
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <h3>🚜 المعدات</h3>
 
                 </div>
+
+                <div
+                    id="equipmentContainer"
+                    class="card-body"
+                ></div>
 
             </div>
 
 
-            <!-- DOCUMENTS -->
-
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        📄 وثائق المشروع
-                    </div>
+                    <h3>📄 الوثائق</h3>
 
                     <button
-                        class="btn btn-green"
-                        onclick="openDocumentModal()">
-                        ＋ وثيقة
+                        class="btn btn-dark"
+                        onclick="openDocumentModal()"
+                    >
+                        + وثيقة
                     </button>
 
                 </div>
 
                 <div
                     id="documentsContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل الوثائق...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
+        </section>
 
-            <!-- CHAT -->
+
+        <!-- CHAT + NOTIFICATIONS -->
+
+        <section class="section grid-2">
 
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        💬 غرفة المشروع
-                    </div>
+                    <h3>💬 غرفة المشروع</h3>
 
                 </div>
 
                 <div
                     id="messagesContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل الرسائل...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
 
-            <!-- NOTIFICATIONS -->
-
             <div class="card">
 
-                <div class="card-header">
+                <div class="card-head">
 
-                    <div class="card-title">
-                        🔔 إشعارات المشروع
-                    </div>
+                    <h3>🔔 إشعارات المشروع</h3>
 
                 </div>
 
                 <div
                     id="notificationsContainer"
-                    class="card-body">
-
-                    <div class="empty">
-                        جاري تحميل الإشعارات...
-                    </div>
-
-                </div>
+                    class="card-body"
+                ></div>
 
             </div>
 
+        </section>
+
+
+        <!-- DELETE -->
+
+        <section
+            class="section"
+            style="text-align:left"
+        >
+
+            <button
+                class="btn btn-danger"
+                onclick="confirmDeleteProject()"
+            >
+                🗑️ حذف المشروع
+            </button>
 
         </section>
+
 
     </div>
 
 </main>
 
 
-<!-- =======================================================
-     TOAST
-======================================================= -->
-
-<div
-    id="toast"
-    class="toast">
-</div>
-
-
-<!-- =======================================================
+<!-- =====================================================
      EDIT PROJECT MODAL
-======================================================= -->
+===================================================== -->
 
 <div
     id="editProjectModal"
-    class="modal-overlay">
+    class="modal-overlay"
+>
 
     <div class="modal">
 
-        <div class="modal-header">
+        <div class="modal-head">
 
-            <div>
-
-                <div class="modal-title">
-                    ✏️ تعديل المشروع
-                </div>
-
-                <div class="modal-subtitle">
-                    تعديل المعلومات الأساسية
-                </div>
-
-            </div>
+            <h3>✏️ تعديل المشروع</h3>
 
             <button
                 class="modal-close"
-                onclick="closeEditProject()">
+                onclick="closeEditProject()"
+            >
                 ×
             </button>
 
         </div>
 
 
-        <form
-            id="editProjectForm"
-            class="modal-body">
+        <form id="editProjectForm">
 
-            <div class="form-grid">
+            <div class="modal-body">
 
-                <div class="form-group">
+                <div class="form-grid">
 
-                    <label>
-                        اسم المشروع
-                    </label>
+                    <div class="form-group">
 
-                    <input
-                        id="editProjectName"
-                        required>
+                        <label>
+                            اسم المشروع
+                        </label>
 
-                </div>
+                        <input
+                            id="editProjectName"
+                            required
+                        >
 
-
-                <div class="form-group">
-
-                    <label>
-                        الموقع
-                    </label>
-
-                    <input
-                        id="editProjectLocation">
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        صاحب المشروع
-                    </label>
+                        <label>
+                            الموقع
+                        </label>
 
-                    <input
-                        id="editProjectOwner">
+                        <input
+                            id="editProjectLocation"
+                        >
 
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        المهندس
-                    </label>
-
-                    <input
-                        id="editProjectEngineer">
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        الميزانية
-                    </label>
+                        <label>
+                            العميل / المالك
+                        </label>
 
-                    <input
-                        type="number"
-                        min="0"
-                        id="editProjectBudget">
+                        <input
+                            id="editProjectOwner"
+                        >
 
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        نسبة الإنجاز
-                    </label>
-
-                    <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        id="editProjectProgress">
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        تاريخ البداية
-                    </label>
+                        <label>
+                            المهندس
+                        </label>
 
-                    <input
-                        type="date"
-                        id="editProjectStartDate">
+                        <input
+                            id="editProjectEngineer"
+                        >
 
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        تاريخ النهاية
-                    </label>
-
-                    <input
-                        type="date"
-                        id="editProjectEndDate">
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        الحالة
-                    </label>
+                        <label>
+                            الميزانية
+                        </label>
 
-                    <select id="editProjectStatus">
+                        <input
+                            id="editProjectBudget"
+                            type="number"
+                            min="0"
+                        >
 
-                        <option value="planned">
-                            مخطط
-                        </option>
-
-                        <option value="active">
-                            قيد الإنجاز
-                        </option>
-
-                        <option value="completed">
-                            مكتمل
-                        </option>
-
-                        <option value="paused">
-                            متوقف
-                        </option>
-
-                    </select>
-
-                </div>
+                    </div>
 
 
-                <div
-                    class="form-group full">
+                    <div class="form-group">
 
-                    <label>
-                        الملاحظات
-                    </label>
+                        <label>
+                            نسبة الإنجاز
+                        </label>
 
-                    <textarea
-                        id="editProjectNotes"
-                        rows="4">
-                    </textarea>
+                        <input
+                            id="editProjectProgress"
+                            type="number"
+                            min="0"
+                            max="100"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            تاريخ البداية
+                        </label>
+
+                        <input
+                            id="editProjectStartDate"
+                            type="date"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            تاريخ النهاية
+                        </label>
+
+                        <input
+                            id="editProjectEndDate"
+                            type="date"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            الحالة
+                        </label>
+
+                        <select id="editProjectStatus">
+
+                            <option value="planned">
+                                مخطط
+                            </option>
+
+                            <option value="active">
+                                نشط
+                            </option>
+
+                            <option value="completed">
+                                مكتمل
+                            </option>
+
+                            <option value="paused">
+                                متوقف
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            الملاحظات
+                        </label>
+
+                        <textarea
+                            id="editProjectNotes"
+                        ></textarea>
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="btn btn-light"
-                    onclick="closeEditProject()">
-                    إلغاء
-                </button>
+            <div class="modal-footer">
 
                 <button
                     type="submit"
-                    class="btn btn-edit">
+                    class="btn btn-primary"
+                >
                     💾 حفظ التعديلات
                 </button>
 
+                <button
+                    type="button"
+                    class="btn btn-light"
+                    onclick="closeEditProject()"
+                >
+                    إلغاء
+                </button>
+
             </div>
 
         </form>
@@ -3263,89 +3009,75 @@ textarea{
 </div>
 
 
-<!-- =======================================================
-     ADD WORKER MODAL
-======================================================= -->
+<!-- ADD WORKER -->
 
 <div
     id="addWorkerModal"
-    class="modal-overlay">
+    class="modal-overlay"
+>
 
     <div class="modal">
 
-        <div class="modal-header">
+        <div class="modal-head">
 
-            <div>
-
-                <div class="modal-title">
-                    👷 إضافة عامل للمشروع
-                </div>
-
-                <div class="modal-subtitle">
-                    اختر العامل وحدد دوره
-                </div>
-
-            </div>
+            <h3>👷 إضافة عامل للمشروع</h3>
 
             <button
                 class="modal-close"
-                onclick="closeAddWorkerToProject()">
+                onclick="closeAddWorkerToProject()"
+            >
                 ×
             </button>
 
         </div>
 
 
-        <form
-            id="addWorkerForm"
-            class="modal-body">
+        <form id="addWorkerForm">
 
-            <div class="form-group">
+            <div class="modal-body">
 
-                <label>
-                    العامل
-                </label>
+                <div class="form-grid">
 
-                <select
-                    id="projectWorkerSelect"
-                    required>
+                    <div class="form-group full">
 
-                    <option value="">
-                        جاري تحميل العمال...
-                    </option>
+                        <label>
+                            العامل
+                        </label>
 
-                </select>
+                        <select
+                            id="projectWorkerSelect"
+                            required
+                        ></select>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            الدور في المشروع
+                        </label>
+
+                        <input
+                            id="projectWorkerRole"
+                            placeholder="مثال: بنّاء، كهربائي، رئيس فريق..."
+                            required
+                        >
+
+                    </div>
+
+                </div>
 
             </div>
 
 
-            <div class="form-group">
-
-                <label>
-                    دوره في المشروع
-                </label>
-
-                <input
-                    id="projectWorkerRole"
-                    placeholder="مثال: بنّاء، كهربائي، مراقب..."
-                    required>
-
-            </div>
-
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="btn btn-light"
-                    onclick="closeAddWorkerToProject()">
-                    إلغاء
-                </button>
+            <div class="modal-footer">
 
                 <button
                     class="btn btn-green"
-                    type="submit">
-                    👷 إضافة العامل
+                    type="submit"
+                >
+                    ✅ إضافة العامل
                 </button>
 
             </div>
@@ -3357,113 +3089,104 @@ textarea{
 </div>
 
 
-<!-- =======================================================
-     EXPENSE MODAL
-======================================================= -->
+<!-- EXPENSE -->
 
 <div
     id="expenseModal"
-    class="modal-overlay">
+    class="modal-overlay"
+>
 
     <div class="modal">
 
-        <div class="modal-header">
+        <div class="modal-head">
 
-            <div>
-
-                <div class="modal-title">
-                    💰 إضافة مصروف
-                </div>
-
-                <div class="modal-subtitle">
-                    تسجيل مصروف جديد للمشروع
-                </div>
-
-            </div>
+            <h3>💰 تسجيل مصروف</h3>
 
             <button
                 class="modal-close"
-                onclick="closeModal('expenseModal')">
+                onclick="closeModal('expenseModal')"
+            >
                 ×
             </button>
 
         </div>
 
 
-        <form
-            id="expenseForm"
-            class="modal-body">
+        <form id="expenseForm">
 
-            <div class="form-grid">
+            <div class="modal-body">
 
-                <div class="form-group">
+                <div class="form-grid">
 
-                    <label>
-                        الوصف
-                    </label>
+                    <div class="form-group full">
 
-                    <input
-                        id="expenseDescription"
-                        required>
+                        <label>
+                            وصف المصروف
+                        </label>
 
-                </div>
+                        <input
+                            id="expenseDescription"
+                            required
+                            placeholder="مثال: شراء إسمنت..."
+                        >
 
-
-                <div class="form-group">
-
-                    <label>
-                        الفئة
-                    </label>
-
-                    <input
-                        id="expenseCategory"
-                        placeholder="مواد، نقل، أجور...">
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        المبلغ
-                    </label>
+                        <label>
+                            الفئة
+                        </label>
 
-                    <input
-                        type="number"
-                        min="0"
-                        id="expenseAmount"
-                        required>
+                        <input
+                            id="expenseCategory"
+                            placeholder="مواد / نقل / أجور..."
+                        >
 
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        التاريخ
-                    </label>
+                        <label>
+                            المبلغ بالدينار
+                        </label>
 
-                    <input
-                        type="date"
-                        id="expenseDate">
+                        <input
+                            id="expenseAmount"
+                            type="number"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            التاريخ
+                        </label>
+
+                        <input
+                            id="expenseDate"
+                            type="date"
+                        >
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <div class="modal-actions">
+            <div class="modal-footer">
 
                 <button
-                    type="button"
-                    class="btn btn-light"
-                    onclick="closeModal('expenseModal')">
-                    إلغاء
-                </button>
-
-                <button
-                    class="btn btn-edit"
-                    type="submit">
+                    class="btn btn-copper"
+                    type="submit"
+                >
                     💾 تسجيل المصروف
                 </button>
 
@@ -3476,129 +3199,116 @@ textarea{
 </div>
 
 
-<!-- =======================================================
-     STAGE MODAL
-======================================================= -->
+<!-- STAGE -->
 
 <div
     id="stageModal"
-    class="modal-overlay">
+    class="modal-overlay"
+>
 
     <div class="modal">
 
-        <div class="modal-header">
+        <div class="modal-head">
 
-            <div>
-
-                <div class="modal-title">
-                    🧱 إضافة مرحلة
-                </div>
-
-                <div class="modal-subtitle">
-                    متابعة تقدم مراحل المشروع
-                </div>
-
-            </div>
+            <h3>🧱 إضافة مرحلة</h3>
 
             <button
                 class="modal-close"
-                onclick="closeModal('stageModal')">
+                onclick="closeModal('stageModal')"
+            >
                 ×
             </button>
 
         </div>
 
 
-        <form
-            id="stageForm"
-            class="modal-body">
+        <form id="stageForm">
 
-            <div class="form-grid">
+            <div class="modal-body">
 
-                <div class="form-group">
+                <div class="form-grid">
 
-                    <label>
-                        اسم المرحلة
-                    </label>
+                    <div class="form-group full">
 
-                    <input
-                        id="stageName"
-                        placeholder="مثال: الأساسات"
-                        required>
+                        <label>
+                            اسم المرحلة
+                        </label>
 
-                </div>
+                        <input
+                            id="stageName"
+                            required
+                            placeholder="مثال: الأساسات"
+                        >
 
-
-                <div class="form-group">
-
-                    <label>
-                        نسبة الإنجاز
-                    </label>
-
-                    <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        id="stageProgress"
-                        value="0">
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        الحالة
-                    </label>
+                        <label>
+                            نسبة الإنجاز
+                        </label>
 
-                    <select id="stageStatus">
+                        <input
+                            id="stageProgress"
+                            type="number"
+                            min="0"
+                            max="100"
+                            value="0"
+                        >
 
-                        <option value="active">
-                            قيد الإنجاز
-                        </option>
-
-                        <option value="planned">
-                            مخططة
-                        </option>
-
-                        <option value="completed">
-                            مكتملة
-                        </option>
-
-                    </select>
-
-                </div>
+                    </div>
 
 
-                <div class="form-group full">
+                    <div class="form-group">
 
-                    <label>
-                        ملاحظات
-                    </label>
+                        <label>
+                            الحالة
+                        </label>
 
-                    <textarea
-                        id="stageNotes"
-                        rows="3">
-                    </textarea>
+                        <select id="stageStatus">
+
+                            <option value="planned">
+                                مخطط
+                            </option>
+
+                            <option value="active">
+                                قيد الإنجاز
+                            </option>
+
+                            <option value="completed">
+                                مكتملة
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            ملاحظات
+                        </label>
+
+                        <textarea
+                            id="stageNotes"
+                        ></textarea>
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <div class="modal-actions">
+            <div class="modal-footer">
 
                 <button
-                    type="button"
-                    class="btn btn-light"
-                    onclick="closeModal('stageModal')">
-                    إلغاء
-                </button>
-
-                <button
-                    class="btn btn-green"
-                    type="submit">
-                    🧱 إضافة المرحلة
+                    class="btn btn-primary"
+                    type="submit"
+                >
+                    💾 إضافة المرحلة
                 </button>
 
             </div>
@@ -3610,102 +3320,89 @@ textarea{
 </div>
 
 
-<!-- =======================================================
-     REPORT MODAL
-======================================================= -->
+<!-- REPORT -->
 
 <div
     id="reportModal"
-    class="modal-overlay">
+    class="modal-overlay"
+>
 
     <div class="modal">
 
-        <div class="modal-header">
+        <div class="modal-head">
 
-            <div>
-
-                <div class="modal-title">
-                    📋 تقرير يومي
-                </div>
-
-                <div class="modal-subtitle">
-                    تسجيل أعمال اليوم
-                </div>
-
-            </div>
+            <h3>📋 التقرير اليومي</h3>
 
             <button
                 class="modal-close"
-                onclick="closeModal('reportModal')">
+                onclick="closeModal('reportModal')"
+            >
                 ×
             </button>
 
         </div>
 
 
-        <form
-            id="reportForm"
-            class="modal-body">
+        <form id="reportForm">
 
-            <div class="form-grid">
+            <div class="modal-body">
 
-                <div class="form-group">
+                <div class="form-grid">
 
-                    <label>
-                        التاريخ
-                    </label>
+                    <div class="form-group">
 
-                    <input
-                        type="date"
-                        id="reportDate">
+                        <label>
+                            التاريخ
+                        </label>
 
-                </div>
+                        <input
+                            id="reportDate"
+                            type="date"
+                        >
 
-
-                <div class="form-group">
-
-                    <label>
-                        العامل / الفريق
-                    </label>
-
-                    <input
-                        id="reportWorker"
-                        placeholder="اسم العامل أو الفريق">
-
-                </div>
+                    </div>
 
 
-                <div class="form-group full">
+                    <div class="form-group">
 
-                    <label>
-                        الأعمال المنجزة
-                    </label>
+                        <label>
+                            العامل / الفريق
+                        </label>
 
-                    <textarea
-                        id="reportDescription"
-                        rows="5"
-                        required
-                        placeholder="اكتب تفاصيل الأعمال المنجزة اليوم...">
-                    </textarea>
+                        <input
+                            id="reportWorker"
+                            placeholder="اسم العامل أو الفريق"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            تفاصيل الأعمال
+                        </label>
+
+                        <textarea
+                            id="reportDescription"
+                            required
+                            placeholder="اكتب الأعمال المنجزة اليوم..."
+                        ></textarea>
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="btn btn-light"
-                    onclick="closeModal('reportModal')">
-                    إلغاء
-                </button>
+            <div class="modal-footer">
 
                 <button
                     class="btn btn-green"
-                    type="submit">
-                    📋 حفظ التقرير
+                    type="submit"
+                >
+                    💾 حفظ التقرير
                 </button>
 
             </div>
@@ -3717,114 +3414,103 @@ textarea{
 </div>
 
 
-<!-- =======================================================
-     APPOINTMENT MODAL
-======================================================= -->
+<!-- APPOINTMENT -->
 
 <div
     id="appointmentModal"
-    class="modal-overlay">
+    class="modal-overlay"
+>
 
     <div class="modal">
 
-        <div class="modal-header">
+        <div class="modal-head">
 
-            <div>
-
-                <div class="modal-title">
-                    📅 إضافة موعد
-                </div>
-
-                <div class="modal-subtitle">
-                    إضافة موعد إلى برنامج المشروع
-                </div>
-
-            </div>
+            <h3>📅 إضافة موعد</h3>
 
             <button
                 class="modal-close"
-                onclick="closeModal('appointmentModal')">
+                onclick="closeModal('appointmentModal')"
+            >
                 ×
             </button>
 
         </div>
 
 
-        <form
-            id="appointmentForm"
-            class="modal-body">
+        <form id="appointmentForm">
 
-            <div class="form-grid">
+            <div class="modal-body">
 
-                <div class="form-group">
+                <div class="form-grid">
 
-                    <label>
-                        عنوان الموعد
-                    </label>
+                    <div class="form-group full">
 
-                    <input
-                        id="appointmentTitle"
-                        required>
+                        <label>
+                            عنوان الموعد
+                        </label>
 
-                </div>
+                        <input
+                            id="appointmentTitle"
+                            required
+                            placeholder="مثال: اجتماع مع العميل"
+                        >
 
-
-                <div class="form-group">
-
-                    <label>
-                        التاريخ
-                    </label>
-
-                    <input
-                        type="date"
-                        id="appointmentDate"
-                        required>
-
-                </div>
+                    </div>
 
 
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label>
-                        الوقت
-                    </label>
+                        <label>
+                            التاريخ
+                        </label>
 
-                    <input
-                        type="time"
-                        id="appointmentTime">
+                        <input
+                            id="appointmentDate"
+                            type="date"
+                            required
+                        >
 
-                </div>
+                    </div>
 
 
-                <div class="form-group full">
+                    <div class="form-group">
 
-                    <label>
-                        الوصف
-                    </label>
+                        <label>
+                            الوقت
+                        </label>
 
-                    <textarea
-                        id="appointmentDescription"
-                        rows="3">
-                    </textarea>
+                        <input
+                            id="appointmentTime"
+                            type="time"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            التفاصيل
+                        </label>
+
+                        <textarea
+                            id="appointmentDescription"
+                        ></textarea>
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <div class="modal-actions">
+            <div class="modal-footer">
 
                 <button
-                    type="button"
-                    class="btn btn-light"
-                    onclick="closeModal('appointmentModal')">
-                    إلغاء
-                </button>
-
-                <button
-                    class="btn btn-green"
-                    type="submit">
-                    📅 حفظ الموعد
+                    class="btn btn-copper"
+                    type="submit"
+                >
+                    💾 حفظ الموعد
                 </button>
 
             </div>
@@ -3836,114 +3522,102 @@ textarea{
 </div>
 
 
-<!-- =======================================================
-     DOCUMENT MODAL
-======================================================= -->
+<!-- DOCUMENT -->
 
 <div
     id="documentModal"
-    class="modal-overlay">
+    class="modal-overlay"
+>
 
     <div class="modal">
 
-        <div class="modal-header">
+        <div class="modal-head">
 
-            <div>
-
-                <div class="modal-title">
-                    📄 إضافة وثيقة
-                </div>
-
-                <div class="modal-subtitle">
-                    حفظ مرجع وثيقة المشروع
-                </div>
-
-            </div>
+            <h3>📄 إضافة وثيقة</h3>
 
             <button
                 class="modal-close"
-                onclick="closeModal('documentModal')">
+                onclick="closeModal('documentModal')"
+            >
                 ×
             </button>
 
         </div>
 
 
-        <form
-            id="documentForm"
-            class="modal-body">
+        <form id="documentForm">
 
-            <div class="form-grid">
+            <div class="modal-body">
 
-                <div class="form-group">
+                <div class="form-grid">
 
-                    <label>
-                        اسم الوثيقة
-                    </label>
+                    <div class="form-group">
 
-                    <input
-                        id="documentName"
-                        required>
+                        <label>
+                            اسم الوثيقة
+                        </label>
 
-                </div>
+                        <input
+                            id="documentName"
+                            required
+                        >
 
-
-                <div class="form-group">
-
-                    <label>
-                        النوع
-                    </label>
-
-                    <input
-                        id="documentType"
-                        placeholder="عقد، مخطط، فاتورة...">
-
-                </div>
+                    </div>
 
 
-                <div class="form-group full">
+                    <div class="form-group">
 
-                    <label>
-                        رابط الوثيقة
-                    </label>
+                        <label>
+                            النوع
+                        </label>
 
-                    <input
-                        id="documentUrl"
-                        type="url"
-                        placeholder="https://...">
+                        <input
+                            id="documentType"
+                            placeholder="عقد / مخطط / فاتورة..."
+                        >
 
-                </div>
+                    </div>
 
 
-                <div class="form-group full">
+                    <div class="form-group full">
 
-                    <label>
-                        وصف
-                    </label>
+                        <label>
+                            رابط الوثيقة
+                        </label>
 
-                    <textarea
-                        id="documentDescription"
-                        rows="3">
-                    </textarea>
+                        <input
+                            id="documentUrl"
+                            type="url"
+                            placeholder="https://..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            الوصف
+                        </label>
+
+                        <textarea
+                            id="documentDescription"
+                        ></textarea>
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <div class="modal-actions">
+            <div class="modal-footer">
 
                 <button
-                    type="button"
-                    class="btn btn-light"
-                    onclick="closeModal('documentModal')">
-                    إلغاء
-                </button>
-
-                <button
-                    class="btn btn-green"
-                    type="submit">
-                    📄 حفظ الوثيقة
+                    class="btn btn-dark"
+                    type="submit"
+                >
+                    💾 حفظ الوثيقة
                 </button>
 
             </div>
@@ -3953,12 +3627,15 @@ textarea{
     </div>
 
 </div>
+
+
+<div id="toast" class="toast"></div>
 
 
 <script>
 
 /* =========================================================
-   GLOBALS
+   GLOBAL
 ========================================================= */
 
 const params =
@@ -3985,40 +3662,38 @@ function $(id){
 
 function escapeHTML(value){
 
-    if(
-        value === null ||
-        value === undefined
-    ){
-        return "";
-    }
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    return String(
+        value ?? ""
+    )
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
 function formatMoney(value){
 
-    const n =
+    const number =
         Number(value || 0);
 
-    return (
-        n.toLocaleString("ar-DZ")
-        + " دج"
-    );
+    return number.toLocaleString(
+        "ar-DZ"
+    ) + " دج";
 
 }
 
 
 function formatNumber(value){
 
-    return Number(value || 0)
-        .toLocaleString("ar-DZ");
+    const number =
+        Number(value || 0);
+
+    return number.toLocaleString(
+        "ar-DZ"
+    );
 
 }
 
@@ -4037,15 +3712,15 @@ function formatDate(value){
             d.getTime()
         )
     ){
-        return escapeHTML(value);
+        return "—";
     }
 
     return d.toLocaleDateString(
         "ar-DZ",
         {
             year:"numeric",
-            month:"long",
-            day:"numeric"
+            month:"2-digit",
+            day:"2-digit"
         }
     );
 
@@ -4066,15 +3741,15 @@ function formatDateTime(value){
             d.getTime()
         )
     ){
-        return escapeHTML(value);
+        return "—";
     }
 
     return d.toLocaleString(
         "ar-DZ",
         {
             year:"numeric",
-            month:"short",
-            day:"numeric",
+            month:"2-digit",
+            day:"2-digit",
             hour:"2-digit",
             minute:"2-digit"
         }
@@ -4087,6 +3762,15 @@ function normalizeDateInput(value){
 
     if(!value){
         return "";
+    }
+
+    if(
+        typeof value === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ){
+
+        return value;
+
     }
 
     const d =
@@ -4113,9 +3797,14 @@ function normalizeDateInput(value){
 }
 
 
-function pickArray(data,keys){
+function pickArray(
+    data,
+    keys=[]
+){
 
-    if(Array.isArray(data)){
+    if(
+        Array.isArray(data)
+    ){
         return data;
     }
 
@@ -4128,7 +3817,9 @@ function pickArray(data,keys){
                 data?.[key]
             )
         ){
+
             return data[key];
+
         }
 
     }
@@ -4158,27 +3849,29 @@ async function safeFetch(
             data =
                 await response.json();
 
-        }catch(e){}
+        }catch{
+
+            data = {};
+
+        }
 
         return {
-            ok:response.ok,
-            data:data,
-            status:response.status
+            ok:
+                response.ok &&
+                (
+                    data.success !== false
+                ),
+            response,
+            data
         };
 
     }catch(error){
 
-        console.error(
-            "FETCH ERROR:",
-            url,
-            error
-        );
-
         return {
             ok:false,
+            response:null,
             data:{},
-            status:0,
-            error:error
+            error
         };
 
     }
@@ -4186,7 +3879,9 @@ async function safeFetch(
 }
 
 
-function showToast(message){
+function showToast(
+    message
+){
 
     const toast =
         $("toast");
@@ -4198,32 +3893,30 @@ function showToast(message){
     toast.textContent =
         message;
 
-    toast.classList.add("show");
-
-    clearTimeout(
-        window.toastTimer
+    toast.classList.add(
+        "show"
     );
 
-    window.toastTimer =
+    clearTimeout(
+        window.__toastTimer
+    );
+
+    window.__toastTimer =
         setTimeout(
             ()=>{
-                toast.classList.remove("show");
+                toast.classList.remove(
+                    "show"
+                );
             },
-            2800
+            3000
         );
 
 }
 
 
-function goBack(){
-
-    window.location.href =
-        "/projects.html";
-
-}
-
-
-function closeModal(id){
+function closeModal(
+    id
+){
 
     const modal =
         $(id);
@@ -4242,16 +3935,36 @@ function closeModal(id){
 }
 
 
-/* =========================================================
-   STATUS
-========================================================= */
+function goBack(){
 
-function getStatusInfo(status){
+    if(
+        document.referrer &&
+        document.referrer.includes(
+            window.location.host
+        )
+    ){
+
+        history.back();
+
+        return;
+
+    }
+
+    window.location.href =
+        "/projects.html";
+
+}
+
+
+function getStatusInfo(
+    status
+){
 
     const value =
         String(
             status || ""
         ).toLowerCase();
+
 
     if(
         value.includes("completed") ||
@@ -4261,46 +3974,42 @@ function getStatusInfo(status){
 
         return {
             text:"مكتمل",
-            className:"completed"
+            icon:"✓"
         };
 
     }
 
-    if(
-        value.includes("pending") ||
-        value.includes("planned") ||
-        value.includes("مخطط") ||
-        value.includes("انتظار") ||
-        value.includes("قيد")
-    ){
-
-        return {
-            text:
-                value.includes("planned")
-                    ? "مخطط"
-                    : "قيد الإنجاز",
-            className:"pending"
-        };
-
-    }
 
     if(
-        value.includes("cancel") ||
-        value.includes("ملغ") ||
         value.includes("paused") ||
-        value.includes("متوقف")
+        value.includes("متوقف") ||
+        value.includes("ملغ")
     ){
 
         return {
             text:"متوقف",
-            className:"cancelled"
+            icon:"⏸"
         };
 
     }
 
+
+    if(
+        value.includes("planned") ||
+        value.includes("مخطط")
+    ){
+
+        return {
+            text:"مخطط",
+            icon:"○"
+        };
+
+    }
+
+
     return {
-        text:status || "نشط",
-        className:"active"
+        text:"نشط",
+        icon:"●"
     };
 
 }
@@ -4314,110 +4023,87 @@ async function loadProject(){
 
     if(!projectId){
 
-        $("loading")
-            .classList.add("hidden");
+        $("loading").style.display =
+            "none";
 
-        $("errorBox")
-            .classList.remove("hidden");
+        $("errorBox").style.display =
+            "block";
 
-        $("errorMessage")
-            .textContent =
-                "لم يتم تحديد رقم المشروع.";
+        $("errorMessage").textContent =
+            "رقم المشروع غير موجود في الرابط.";
 
         return;
 
     }
 
 
-    $("loading")
-        .classList.remove("hidden");
+    $("loading").style.display =
+        "grid";
 
-    $("errorBox")
-        .classList.add("hidden");
+    $("projectContent").style.display =
+        "none";
 
-    $("projectContent")
-        .classList.add("hidden");
-
-
-    try{
-
-        const response =
-            await fetch(
-                "/api/projects/" +
-                encodeURIComponent(
-                    projectId
-                ) +
-                "/full"
-            );
+    $("errorBox").style.display =
+        "none";
 
 
-        let data = {};
-
-        try{
-
-            data =
-                await response.json();
-
-        }catch(e){}
-
-
-        if(
-            !response.ok ||
-            !data.success
-        ){
-
-            throw new Error(
-                data.message ||
-                "تعذر تحميل المشروع."
-            );
-
-        }
-
-
-        renderProject(data);
-
-
-        await loadSupplementalData();
-
-
-        $("loading")
-            .classList.add("hidden");
-
-        $("projectContent")
-            .classList.remove("hidden");
-
-
-    }catch(error){
-
-        console.error(
-            "LOAD PROJECT ERROR:",
-            error
+    const result =
+        await safeFetch(
+            "/api/projects/" +
+            encodeURIComponent(
+                projectId
+            ) +
+            "/full"
         );
 
-        $("loading")
-            .classList.add("hidden");
 
-        $("errorBox")
-            .classList.remove("hidden");
+    if(
+        !result.ok
+    ){
 
-        $("errorMessage")
-            .textContent =
-                error.message ||
-                "حدث خطأ أثناء تحميل المشروع.";
+        $("loading").style.display =
+            "none";
+
+        $("errorBox").style.display =
+            "block";
+
+        $("errorMessage").textContent =
+            result.data?.message ||
+            result.error?.message ||
+            "تعذر الاتصال بالخادم أو المشروع غير موجود.";
+
+        return;
 
     }
+
+
+    renderProject(
+        result.data
+    );
+
+
+    await loadSupplementalData();
+
+
+    $("loading").style.display =
+        "none";
+
+    $("projectContent").style.display =
+        "block";
 
 }
 
 
-/* =========================================================
-   RENDER PROJECT
-========================================================= */
-
-function renderProject(data){
+function renderProject(
+    data
+){
 
     const project =
-        data.project || {};
+        data.project ||
+        data.data?.project ||
+        data ||
+        {};
+
 
     currentProject =
         project;
@@ -4447,7 +4133,10 @@ function renderProject(data){
     const reports =
         pickArray(
             data,
-            ["reports","dailyReports"]
+            [
+                "reports",
+                "dailyReports"
+            ]
         );
 
     const appointments =
@@ -4491,6 +4180,24 @@ function renderProject(data){
         );
 
 
+    const progress =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(
+                    project.progress || 0
+                )
+            )
+        );
+
+
+    const status =
+        getStatusInfo(
+            project.status
+        );
+
+
     $("projectName")
         .textContent =
             project.name ||
@@ -4506,38 +4213,11 @@ function renderProject(data){
             );
 
 
-    const status =
-        getStatusInfo(
-            project.status
-        );
-
-
     $("projectStatus")
         .textContent =
+            status.icon +
+            " " +
             status.text;
-
-
-    $("projectStatus")
-        .className =
-            "status " +
-            status.className;
-
-
-    $("infoStatus")
-        .textContent =
-            status.text;
-
-
-    const progress =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                Number(
-                    project.progress || 0
-                )
-            )
-        );
 
 
     $("progressPercent")
@@ -4550,20 +4230,18 @@ function renderProject(data){
             progress + "%";
 
 
-    $("statProgress")
-        .textContent =
-            progress + "%";
-
-
     $("clientName")
         .textContent =
             project.client_name ||
+            project.owner_name ||
+            project.client ||
             "—";
 
 
     $("engineerName")
         .textContent =
             project.engineer_name ||
+            project.engineer ||
             "—";
 
 
@@ -4572,6 +4250,11 @@ function renderProject(data){
             formatMoney(
                 project.budget
             );
+
+
+    $("infoStatus")
+        .textContent =
+            status.text;
 
 
     $("startDate")
@@ -4594,31 +4277,20 @@ function renderProject(data){
             "لا توجد ملاحظات مسجلة.";
 
 
-    $("workersCount")
-        .textContent =
-            formatNumber(
-                workers.length
-            );
-
-
-    $("materialsCount")
-        .textContent =
-            formatNumber(
-                materials.length
-            );
-
-
-    $("appointmentsCount")
-        .textContent =
-            formatNumber(
-                appointments.length
-            );
-
-
     const totalExpenses =
         calculateExpenses(
             expenses
         );
+
+
+    $("workersCount")
+        .textContent =
+            workers.length;
+
+
+    $("materialsCount")
+        .textContent =
+            materials.length;
 
 
     $("expensesTotal")
@@ -4626,6 +4298,21 @@ function renderProject(data){
             formatMoney(
                 totalExpenses
             );
+
+
+    $("appointmentsCount")
+        .textContent =
+            appointments.length;
+
+
+    $("statProgress")
+        .textContent =
+            progress + "%";
+
+
+    $("statStatus")
+        .textContent =
+            status.text;
 
 
     updateFinance(
@@ -4677,6 +4364,7 @@ function renderProject(data){
 
     $("lastUpdate")
         .textContent =
+            "آخر تحديث: " +
             formatDateTime(
                 project.updated_at ||
                 project.created_at ||
@@ -4820,6 +4508,14 @@ function renderWorkers(
     workers.forEach(
         worker=>{
 
+            const workerId =
+                Number(
+                    worker.id ||
+                    worker.worker_id ||
+                    0
+                );
+
+
             html += `
 
                 <tr>
@@ -4828,6 +4524,7 @@ function renderWorkers(
                         <strong>
                             ${escapeHTML(
                                 worker.name ||
+                                worker.worker_name ||
                                 "—"
                             )}
                         </strong>
@@ -4849,10 +4546,8 @@ function renderWorkers(
 
                     <td>
                         ${
-                            worker.salary !==
-                            null &&
-                            worker.salary !==
-                            undefined
+                            worker.salary !== null &&
+                            worker.salary !== undefined
                                 ? formatMoney(
                                     worker.salary
                                 )
@@ -4869,8 +4564,7 @@ function renderWorkers(
 
                     <td>
                         ${
-                            worker.active ===
-                            false
+                            worker.active === false
                                 ? "غير نشط"
                                 : "نشط"
                         }
@@ -4887,24 +4581,26 @@ function renderWorkers(
                             <button
                                 class="btn btn-edit"
                                 onclick="editProjectWorker(
-                                    ${Number(worker.id)},
+                                    ${workerId},
                                     '${escapeHTML(
-                                        worker.role ||
-                                        ""
+                                        worker.role || ""
                                     )}'
-                                )">
+                                )"
+                            >
                                 ✏️
                             </button>
 
                             <button
                                 class="btn btn-delete"
                                 onclick="removeProjectWorker(
-                                    ${Number(worker.id)},
+                                    ${workerId},
                                     '${escapeHTML(
                                         worker.name ||
+                                        worker.worker_name ||
                                         ""
                                     )}'
-                                )">
+                                )"
+                            >
                                 🗑️
                             </button>
 
@@ -5086,10 +4782,6 @@ function closeAddWorkerToProject(){
 
 }
 
-
-/* =========================================================
-   ADD WORKER SUBMIT
-========================================================= */
 
 $("addWorkerForm")
     .addEventListener(
@@ -5465,7 +5157,8 @@ function renderMaterials(
                 );
 
             const remaining =
-                quantity - used;
+                quantity -
+                used;
 
 
             const minimum =
@@ -5524,10 +5217,8 @@ function renderMaterials(
 
                     <td>
                         ${
-                            item.unit_price !==
-                            null &&
-                            item.unit_price !==
-                            undefined
+                            item.unit_price !== null &&
+                            item.unit_price !== undefined
                                 ? formatMoney(
                                     item.unit_price
                                 )
@@ -5552,7 +5243,7 @@ function renderMaterials(
                                   `
                                 : `
                                     <span style="
-                                        color:#3F8064;
+                                        color:#2E7D5B;
                                         font-weight:800;
                                     ">
                                         ✓ جيد
@@ -5691,7 +5382,6 @@ function renderExpenses(
     html += `
             </tbody>
         </table>
-
         </div>
     `;
 
@@ -6848,8 +6538,8 @@ async function loadStages(){
                             class="stage-fill"
                             style="
                                 width:${progress}%;
-                            ">
-                        </div>
+                            "
+                        ></div>
 
                     </div>
 
@@ -7004,7 +6694,6 @@ async function loadEquipment(){
     html += `
             </tbody>
         </table>
-
         </div>
     `;
 
@@ -7139,7 +6828,8 @@ async function loadDocuments(){
                                         style="
                                             display:inline-block;
                                             text-decoration:none;
-                                        ">
+                                        "
+                                    >
                                         🔗 فتح
                                     </a>
                                   `
@@ -7159,7 +6849,6 @@ async function loadDocuments(){
     html += `
             </tbody>
         </table>
-
         </div>
     `;
 
@@ -7297,7 +6986,6 @@ async function loadWorkerPayments(){
     html += `
             </tbody>
         </table>
-
         </div>
     `;
 
@@ -7517,6 +7205,20 @@ $("stageForm")
             }
 
 
+            if(
+                payload.progress < 0 ||
+                payload.progress > 100
+            ){
+
+                showToast(
+                    "⚠️ نسبة المرحلة يجب أن تكون بين 0 و100."
+                );
+
+                return;
+
+            }
+
+
             try{
 
                 const response =
@@ -7729,6 +7431,12 @@ $("reportForm")
 ========================================================= */
 
 function openAppointmentModal(){
+
+    $("appointmentDate")
+        .value =
+            normalizeDateInput(
+                new Date()
+            );
 
     $("appointmentModal")
         .classList.add("show");
@@ -8055,10 +7763,12 @@ document.addEventListener(
                 )
                 .forEach(
                     modal=>{
+
                         modal.classList
                             .remove(
                                 "show"
                             );
+
                     }
                 );
 
@@ -8087,4 +7797,5 @@ document.addEventListener(
 </script>
 
 </body>
+
 </html>
