@@ -1763,91 +1763,241 @@ tr:last-child td{
 const params = new URLSearchParams(window.location.search);
 
 const projectId = params.get("id");
-    /* =========================================================
+/* =========================================================
    ADD WORKER TO PROJECT
 ========================================================= */
 
-const addWorkerForm = document.getElementById("addWorkerForm");
+let currentProjectId = projectId;
 
-if (addWorkerForm) {
+async function openAddWorkerToProject(){
 
-    addWorkerForm.addEventListener("submit", async function (event) {
+    const modal =
+        $("addWorkerModal");
 
-        event.preventDefault();
+    const select =
+        $("projectWorkerSelect");
 
-        if (!projectId) {
+    if(!modal || !select){
+        return;
+    }
 
-            alert("لم يتم تحديد رقم المشروع");
+    /* حفظ رقم المشروع لحظة فتح النافذة */
+    currentProjectId = projectId;
+
+    if(!currentProjectId){
+
+        alert("لم يتم تحديد رقم المشروع");
+
+        return;
+    }
+
+    modal.classList.add("show");
+
+    select.innerHTML = `
+        <option value="">
+            جاري تحميل العمال...
+        </option>
+    `;
+
+    try{
+
+        const response =
+            await fetch("/api/workers");
+
+        const data =
+            await response.json();
+
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message ||
+                "تعذر تحميل العمال"
+            );
+
+        }
+
+        const workers =
+            Array.isArray(data.workers)
+                ? data.workers
+                : [];
+
+        if(!workers.length){
+
+            select.innerHTML = `
+                <option value="">
+                    لا يوجد عمال مسجلون
+                </option>
+            `;
 
             return;
         }
 
-        const workerId =
-            document.getElementById("projectWorkerSelect").value;
+        select.innerHTML = `
+            <option value="">
+                اختر العامل
+            </option>
+        `;
 
-        const role =
-            document.getElementById("projectWorkerRole").value.trim();
+        workers.forEach(worker => {
 
-        if (!workerId || !role) {
+            if(worker.active === false){
+                return;
+            }
 
-            alert("يرجى اختيار العامل وتحديد دوره");
+            const option =
+                document.createElement("option");
 
-            return;
-        }
+            option.value =
+                worker.id;
 
-        try {
+            option.textContent =
+                worker.name +
+                (
+                    worker.job
+                        ? " — " + worker.job
+                        : ""
+                );
 
-            const response = await fetch("/api/project-workers", {
+            select.appendChild(option);
 
-                method: "POST",
+        });
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+    }catch(error){
 
-                body: JSON.stringify({
-                    project_id: Number(projectId),
-                    worker_id: Number(workerId),
-                    role: role
-                })
+        console.error(
+            "LOAD WORKERS ERROR:",
+            error
+        );
 
-            });
+        select.innerHTML = `
+            <option value="">
+                ❌ تعذر تحميل العمال
+            </option>
+        `;
+    }
+}
 
-            const data = await response.json();
 
-            if (!response.ok || !data.success) {
+const addWorkerForm =
+    document.getElementById("addWorkerForm");
 
-                throw new Error(
-                    data.message || "تعذر إضافة العامل للمشروع"
+if(addWorkerForm){
+
+    addWorkerForm.addEventListener(
+        "submit",
+        async function(event){
+
+            event.preventDefault();
+
+            const savedProjectId =
+                currentProjectId || projectId;
+
+            if(!savedProjectId){
+
+                alert(
+                    "لم يتم تحديد رقم المشروع"
+                );
+
+                return;
+            }
+
+            const workerId =
+                document
+                    .getElementById(
+                        "projectWorkerSelect"
+                    )
+                    .value;
+
+            const role =
+                document
+                    .getElementById(
+                        "projectWorkerRole"
+                    )
+                    .value
+                    .trim();
+
+            if(!workerId || !role){
+
+                alert(
+                    "يرجى اختيار العامل وتحديد دوره"
+                );
+
+                return;
+            }
+
+            try{
+
+                const response =
+                    await fetch(
+                        "/api/project-workers",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                project_id:
+                                    Number(
+                                        savedProjectId
+                                    ),
+
+                                worker_id:
+                                    Number(
+                                        workerId
+                                    ),
+
+                                role:
+                                    role
+
+                            })
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                if(
+                    !response.ok ||
+                    !data.success
+                ){
+
+                    throw new Error(
+                        data.message ||
+                        "تعذر إضافة العامل للمشروع"
+                    );
+
+                }
+
+                alert(
+                    "تمت إضافة العامل للمشروع بنجاح ✅"
+                );
+
+                closeAddWorkerToProject();
+
+                await loadProject();
+
+            }catch(error){
+
+                console.error(
+                    "ADD WORKER TO PROJECT ERROR:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "تعذر إضافة العامل للمشروع"
                 );
 
             }
 
-            alert("تمت إضافة العامل للمشروع بنجاح ✅");
-
-            closeAddWorkerToProject();
-
-            await loadProject();
-
-        } catch (error) {
-
-            console.error(
-                "ADD WORKER TO PROJECT ERROR:",
-                error
-            );
-
-            alert(
-                error.message ||
-                "تعذر إضافة العامل للمشروع"
-            );
-
         }
-
-    });
+    );
 
 }
-
-
 /* =========================================================
    HELPERS
 ========================================================= */
