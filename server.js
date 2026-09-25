@@ -234,6 +234,71 @@ async function initDatabase() {
 
     try {
 
+
+    /* ---------------------------------------------------------
+       AUTHENTICATION TABLES
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+
+            username TEXT NOT NULL UNIQUE,
+
+            password_hash TEXT NOT NULL,
+
+            full_name TEXT NOT NULL,
+
+            role TEXT NOT NULL DEFAULT 'engineer',
+
+            active BOOLEAN NOT NULL DEFAULT TRUE,
+
+            created_at TIMESTAMPTZ
+                NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+            last_login TIMESTAMPTZ
+        )
+    `);
+
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS auth_tokens (
+            id SERIAL PRIMARY KEY,
+
+            user_id INTEGER NOT NULL
+                REFERENCES users(id)
+                ON DELETE CASCADE,
+
+            token_hash TEXT NOT NULL UNIQUE,
+
+            expires_at TIMESTAMPTZ NOT NULL,
+
+            created_at TIMESTAMPTZ
+                NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+
+    await pool.query(`
+        CREATE INDEX IF NOT EXISTS
+        idx_auth_tokens_user_id
+        ON auth_tokens(user_id)
+    `);
+
+
+    await pool.query(`
+        CREATE INDEX IF NOT EXISTS
+        idx_auth_tokens_expires_at
+        ON auth_tokens(expires_at)
+    `);
+
+
+    /* ---------------------------------------------------------
+       PROJECTS
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS projects (
         /* ---------------------------------------------------------
            PROJECTS
         --------------------------------------------------------- */
@@ -700,6 +765,117 @@ async function initDatabase() {
             ON projects(status)
         `);
 
+                /* =========================================================
+           CREATE INITIAL ADMIN
+        ========================================================= */
+
+        const adminUsername =
+            cleanText(
+                process.env.ADMIN_USERNAME
+            );
+
+        const adminPassword =
+            String(
+                process.env.ADMIN_PASSWORD || ""
+            );
+
+        const adminName =
+            cleanText(
+                process.env.ADMIN_NAME ||
+                "مدير النظام"
+            );
+
+
+        if (
+            adminUsername &&
+            adminPassword
+        ) {
+
+            if (adminPassword.length < 8) {
+
+                console.warn(
+                    "⚠️ ADMIN_PASSWORD يجب أن تكون 8 أحرف على الأقل"
+                );
+
+            } else {
+
+                const existingAdmin =
+                    await pool.query(
+                        `
+                        SELECT id
+                        FROM users
+                        WHERE LOWER(username) =
+                              LOWER($1)
+                        LIMIT 1
+                        `,
+                        [adminUsername]
+                    );
+
+
+                if (
+                    existingAdmin.rows.length === 0
+                ) {
+
+                    const passwordHash =
+                        await hashPassword(
+                            adminPassword
+                        );
+
+
+                    await pool.query(
+                        `
+                        INSERT INTO users
+                        (
+                            username,
+                            password_hash,
+                            full_name,
+                            role,
+                            active
+                        )
+
+                        VALUES
+                        (
+                            $1,
+                            $2,
+                            $3,
+                            'admin',
+                            TRUE
+                        )
+                        `,
+                        [
+                            adminUsername,
+                            passwordHash,
+                            adminName
+                        ]
+                    );
+
+
+                    console.log(
+                        "👑 تم إنشاء حساب المدير:",
+                        adminUsername
+                    );
+
+                } else {
+
+                    console.log(
+                        "👑 حساب المدير موجود مسبقاً:",
+                        adminUsername
+                    );
+                }
+            }
+
+        } else {
+
+            console.warn(
+                "⚠️ ADMIN_USERNAME أو ADMIN_PASSWORD غير موجودين في Render"
+            );
+        }
+
+
+        console.log(
+            "✅ PostgreSQL database initialized successfully"
+        );
+
         await pool.query(`
             CREATE INDEX IF NOT EXISTS idx_projects_client
             ON projects(client_id)
@@ -770,6 +946,502 @@ async function initDatabase() {
     }
 }
 
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+async function getAuthenticatedUser(req) {
+
+    try {
+
+        const header =
+            String(
+                req.headers.authorization || ""
+            );
+
+
+        if (
+            !header.startsWith("Bearer ")
+        ) {
+
+            return null;
+        }
+
+
+        const token =
+            header
+                .slice(7)
+                .trim();
+
+
+        if (!token) {
+
+            return null;
+        }
+
+
+        const tokenHash =
+            hashToken(token);
+
+
+        const result =
+            await pool.query(
+                `
+                SELECT
+                    u.id,
+                    u.username,
+                    u.full_name,
+                    u.role,
+                    u.active,
+                    u.created_at,
+                    u.last_login
+
+                FROM auth_tokens t
+
+                INNER JOIN users u
+                    ON u.id = t.user_id
+
+                WHERE
+                    t.token_hash = $1
+
+                    AND t.expires_at >
+                        CURRENT_TIMESTAMP
+
+                    AND u.active = TRUE
+
+                LIMIT 1
+                `,
+                [tokenHash]
+            );
+
+
+        return result.rows[0] || null;
+
+
+    } catch (error) {
+
+        console.error(
+            "AUTH USER ERROR:",
+            error
+        );
+
+        return null;
+    }
+}
+
+
+
+async function requireAuth(
+    req,
+    res,
+    next
+) {
+
+    try {
+
+        const user =
+            await getAuthenticatedUser(
+                req
+            );
+
+
+        if (!user) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "يجب تسجيل الدخول أولاً"
+
+            });
+        }
+
+
+        req.user = user;
+
+
+        next();
+
+
+    } catch (error) {
+
+        console.error(
+            "AUTH MIDDLEWARE ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر التحقق من تسجيل الدخول"
+
+        });
+    }
+}
+
+
+
+function requireRole(...roles) {
+
+    return (
+        req,
+        res,
+        next
+    ) => {
+
+        if (
+            !req.user ||
+            !roles.includes(
+                req.user.role
+            )
+        ) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "ليس لديك صلاحية لهذا الإجراء"
+
+            });
+        }
+
+
+        next();
+    };
+}
+
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+app.post(
+    "/api/login",
+    async (req, res) => {
+
+        try {
+
+            const username =
+                cleanText(
+                    req.body.username
+                );
+
+
+            const password =
+                String(
+                    req.body.password || ""
+                );
+
+
+            if (
+                !username ||
+                !password
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "أدخل اسم المستخدم وكلمة المرور"
+
+                });
+            }
+
+
+            const result =
+                await pool.query(
+                    `
+                    SELECT
+                        id,
+                        username,
+                        password_hash,
+                        full_name,
+                        role,
+                        active,
+                        created_at,
+                        last_login
+
+                    FROM users
+
+                    WHERE
+                        LOWER(username) =
+                        LOWER($1)
+
+                    LIMIT 1
+                    `,
+                    [username]
+                );
+
+
+            if (
+                result.rows.length === 0
+            ) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "اسم المستخدم أو كلمة المرور غير صحيحة"
+
+                });
+            }
+
+
+            const user =
+                result.rows[0];
+
+
+            if (!user.active) {
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message:
+                        "هذا الحساب غير مفعل"
+
+                });
+            }
+
+
+            const valid =
+                await verifyPassword(
+                    password,
+                    user.password_hash
+                );
+
+
+            if (!valid) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "اسم المستخدم أو كلمة المرور غير صحيحة"
+
+                });
+            }
+
+
+            const token =
+                createAuthToken();
+
+
+            const tokenHash =
+                hashToken(token);
+
+
+            await pool.query(
+                `
+                DELETE FROM auth_tokens
+
+                WHERE
+                    expires_at <=
+                    CURRENT_TIMESTAMP
+                `
+            );
+
+
+            await pool.query(
+                `
+                INSERT INTO auth_tokens
+                (
+                    user_id,
+                    token_hash,
+                    expires_at
+                )
+
+                VALUES
+                (
+                    $1,
+                    $2,
+                    CURRENT_TIMESTAMP +
+                    INTERVAL '7 days'
+                )
+                `,
+                [
+                    user.id,
+                    tokenHash
+                ]
+            );
+
+
+            await pool.query(
+                `
+                UPDATE users
+
+                SET
+                    last_login =
+                    CURRENT_TIMESTAMP
+
+                WHERE id = $1
+                `,
+                [user.id]
+            );
+
+
+            const safeUser = {
+
+                id:
+                    user.id,
+
+                username:
+                    user.username,
+
+                full_name:
+                    user.full_name,
+
+                role:
+                    user.role,
+
+                active:
+                    user.active
+            };
+
+
+            const redirect =
+                user.role === "admin"
+                    ? "/admin.html"
+                    : "/engineer.html";
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "تم تسجيل الدخول بنجاح",
+
+                token,
+
+                user:
+                    safeUser,
+
+                redirect
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "LOGIN ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "حدث خطأ أثناء تسجيل الدخول"
+
+            });
+        }
+    }
+);
+
+
+
+/* =========================================================
+   CURRENT USER
+========================================================= */
+
+app.get(
+    "/api/me",
+    requireAuth,
+    (req, res) => {
+
+        res.json({
+
+            success: true,
+
+            user:
+                req.user
+
+        });
+    }
+);
+
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+app.post(
+    "/api/logout",
+    requireAuth,
+    async (req, res) => {
+
+        try {
+
+            const header =
+                String(
+                    req.headers.authorization || ""
+                );
+
+
+            const token =
+                header
+                    .slice(7)
+                    .trim();
+
+
+            if (token) {
+
+                await pool.query(
+                    `
+                    DELETE FROM auth_tokens
+
+                    WHERE
+                        token_hash = $1
+                    `,
+                    [
+                        hashToken(token)
+                    ]
+                );
+            }
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "تم تسجيل الخروج بنجاح"
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "LOGOUT ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تسجيل الخروج"
+
+            });
+        }
+    }
+);
 /* =========================================================
    HEALTH
 ========================================================= */
