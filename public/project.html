@@ -1449,19 +1449,25 @@ tr:last-child td{
             <!-- WORKERS -->
             <div class="card full">
 
-                <div class="card-header">
+               <div class="card-header">
 
-                    <div class="card-title">
+    <div class="card-title">
 
-                        <span class="card-title-icon">
-                            👷
-                        </span>
+        <span class="card-title-icon">
+            👷
+        </span>
 
-                        العمال المشاركون
+        العمال المشاركون
 
-                    </div>
+    </div>
 
-                </div>
+    <button
+        class="btn btn-edit"
+        onclick="openAddWorkerToProject()">
+        ➕ إضافة عامل
+    </button>
+
+</div>
 
                 <div
                     id="workersContainer"
@@ -2228,7 +2234,112 @@ function renderProject(data){
 
 }
 
+/* =========================================================
+   ADD WORKER TO PROJECT
+========================================================= */
 
+async function openAddWorkerToProject(){
+
+    const modal = $("addWorkerModal");
+    const select = $("projectWorkerSelect");
+
+    if(!modal || !select){
+        return;
+    }
+
+    modal.classList.add("active");
+
+    select.innerHTML = `
+        <option value="">
+            جاري تحميل العمال...
+        </option>
+    `;
+
+    try{
+
+        const response = await fetch("/api/workers");
+
+        const data = await response.json();
+
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message || "تعذر تحميل العمال"
+            );
+
+        }
+
+        const workers =
+            Array.isArray(data.workers)
+                ? data.workers
+                : [];
+
+        if(!workers.length){
+
+            select.innerHTML = `
+                <option value="">
+                    لا يوجد عمال مسجلون
+                </option>
+            `;
+
+            return;
+        }
+
+        select.innerHTML = `
+            <option value="">
+                اختر العامل
+            </option>
+        `;
+
+        workers.forEach(worker => {
+
+            if(worker.active === false){
+                return;
+            }
+
+            const option =
+                document.createElement("option");
+
+            option.value = worker.id;
+
+            option.textContent =
+                worker.name +
+                (worker.job
+                    ? " — " + worker.job
+                    : "");
+
+            select.appendChild(option);
+
+        });
+
+    }catch(error){
+
+        console.error(
+            "LOAD WORKERS ERROR:",
+            error
+        );
+
+        select.innerHTML = `
+            <option value="">
+                ❌ تعذر تحميل العمال
+            </option>
+        `;
+    }
+}
+
+
+function closeAddWorkerToProject(){
+
+    const modal =
+        $("addWorkerModal");
+
+    if(modal){
+
+        modal.classList.remove("active");
+
+    }
+
+}
 /* =========================================================
    WORKERS
 ========================================================= */
@@ -3875,5 +3986,98 @@ document.addEventListener(
     </div>
 
 </div>
+   <!-- =====================================================
+     نافذة إضافة عامل للمشروع
+===================================================== -->
+
+<div id="addWorkerModal" class="modal-overlay">
+
+    <div class="edit-project-modal">
+
+        <div class="edit-modal-header">
+
+            <div>
+                <div class="edit-modal-title">
+                    👷 إضافة عامل للمشروع
+                </div>
+
+                <div class="edit-modal-subtitle">
+                    اختر العامل وحدد دوره في المشروع
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="edit-modal-close"
+                onclick="closeAddWorkerToProject()">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="addWorkerForm">
+
+            <div class="edit-form-group">
+
+                <label>
+                    العامل
+                </label>
+
+                <select
+                    id="projectWorkerSelect"
+                    required>
+
+                    <option value="">
+                        جاري تحميل العمال...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="edit-form-group">
+
+                <label>
+                    الدور في المشروع
+                </label>
+
+                <input
+                    type="text"
+                    id="projectWorkerRole"
+                    placeholder="مثال: بنّاء، كهربائي، مراقب..."
+                    required>
+
+            </div>
+
+
+            <div class="edit-modal-actions">
+
+                <button
+                    type="button"
+                    class="edit-btn-cancel"
+                    onclick="closeAddWorkerToProject()">
+
+                    إلغاء
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="edit-btn-save">
+
+                    👷 إضافة العامل
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div> 
 </body>
 </html>
