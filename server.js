@@ -3,7 +3,127 @@ const path = require("path");
 const { Pool } = require("pg");
 const crypto = require("crypto");
 const { promisify } = require("util");
+/* =========================================================
+   DATABASE INITIALIZATION
+========================================================= */
 
+async function initDatabase() {
+
+    if (!process.env.DUNYA_DATABASE_URL) {
+
+        console.log(
+            "⚠️ DUNYA_DATABASE_URL غير موجودة"
+        );
+
+        return;
+    }
+
+    try {
+
+
+    /* ---------------------------------------------------------
+       AUTHENTICATION TABLES
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+
+            username TEXT NOT NULL UNIQUE,
+
+            password_hash TEXT NOT NULL,
+
+            full_name TEXT NOT NULL,
+
+            role TEXT NOT NULL DEFAULT 'engineer',
+
+            active BOOLEAN NOT NULL DEFAULT TRUE,
+
+            created_at TIMESTAMPTZ
+                NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+            last_login TIMESTAMPTZ
+        )
+    `);
+
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS auth_tokens (
+            id SERIAL PRIMARY KEY,
+
+            user_id INTEGER NOT NULL
+                REFERENCES users(id)
+                ON DELETE CASCADE,
+
+            token_hash TEXT NOT NULL UNIQUE,
+
+            expires_at TIMESTAMPTZ NOT NULL,
+
+            created_at TIMESTAMPTZ
+                NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+
+    await pool.query(`
+        CREATE INDEX IF NOT EXISTS
+        idx_auth_tokens_user_id
+        ON auth_tokens(user_id)
+    `);
+
+
+    await pool.query(`
+        CREATE INDEX IF NOT EXISTS
+        idx_auth_tokens_expires_at
+        ON auth_tokens(expires_at)
+    `);
+
+       /* =========================================================
+   PROJECT ENGINEERS
+   ربط المشاريع بالمهندسين
+========================================================= */
+
+await pool.query(`
+    CREATE TABLE IF NOT EXISTS project_engineers (
+        id SERIAL PRIMARY KEY,
+
+        project_id INTEGER NOT NULL
+            REFERENCES projects(id)
+            ON DELETE CASCADE,
+
+        engineer_id INTEGER NOT NULL
+            REFERENCES users(id)
+            ON DELETE CASCADE,
+
+        assigned_at TIMESTAMPTZ
+            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+        assigned_by INTEGER
+            REFERENCES users(id)
+            ON DELETE SET NULL,
+
+        UNIQUE (
+            project_id,
+            engineer_id
+        )
+    )
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS
+    idx_project_engineers_project
+    ON project_engineers(project_id)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS
+    idx_project_engineers_engineer
+    ON project_engineers(engineer_id)
+`);
+       
+        /* ---------------------------------------------------------
+           PROJECTS
+        --------------------------------------------------------- */
 const scryptAsync = promisify(crypto.scrypt);
 
 const app = express();
@@ -313,7 +433,50 @@ async function initDatabase() {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+/* =========================================================
+   PROJECT ENGINEERS
+   ربط المشاريع بحسابات المهندسين
+========================================================= */
 
+await pool.query(`
+    CREATE TABLE IF NOT EXISTS project_engineers (
+        id SERIAL PRIMARY KEY,
+
+        project_id INTEGER NOT NULL
+            REFERENCES projects(id)
+            ON DELETE CASCADE,
+
+        engineer_id INTEGER NOT NULL
+            REFERENCES users(id)
+            ON DELETE CASCADE,
+
+        assigned_at TIMESTAMPTZ
+            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+        assigned_by INTEGER
+            REFERENCES users(id)
+            ON DELETE SET NULL,
+
+        UNIQUE (
+            project_id,
+            engineer_id
+        )
+    )
+`);
+
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS
+    idx_project_engineers_project
+    ON project_engineers(project_id)
+`);
+
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS
+    idx_project_engineers_engineer
+    ON project_engineers(engineer_id)
+`);
         /* ---------------------------------------------------------
            WORKERS
         --------------------------------------------------------- */
