@@ -1763,6 +1763,89 @@ tr:last-child td{
 const params = new URLSearchParams(window.location.search);
 
 const projectId = params.get("id");
+    /* =========================================================
+   ADD WORKER TO PROJECT
+========================================================= */
+
+const addWorkerForm = document.getElementById("addWorkerForm");
+
+if (addWorkerForm) {
+
+    addWorkerForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        if (!projectId) {
+
+            alert("لم يتم تحديد رقم المشروع");
+
+            return;
+        }
+
+        const workerId =
+            document.getElementById("projectWorkerSelect").value;
+
+        const role =
+            document.getElementById("projectWorkerRole").value.trim();
+
+        if (!workerId || !role) {
+
+            alert("يرجى اختيار العامل وتحديد دوره");
+
+            return;
+        }
+
+        try {
+
+            const response = await fetch("/api/project-workers", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    project_id: Number(projectId),
+                    worker_id: Number(workerId),
+                    role: role
+                })
+
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.message || "تعذر إضافة العامل للمشروع"
+                );
+
+            }
+
+            alert("تمت إضافة العامل للمشروع بنجاح ✅");
+
+            closeAddWorkerToProject();
+
+            await loadProject();
+
+        } catch (error) {
+
+            console.error(
+                "ADD WORKER TO PROJECT ERROR:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "تعذر إضافة العامل للمشروع"
+            );
+
+        }
+
+    });
+
+}
 
 
 /* =========================================================
