@@ -629,7 +629,17 @@ tr:last-child td{
 .btn-edit:active {
     transform: translateY(0);
 }
-    
+    .btn-delete{
+    background:linear-gradient(135deg,#b42318,#8f1d14);
+    color:#fff;
+    border:none;
+    box-shadow:0 6px 18px rgba(180,35,24,.22);
+}
+
+.btn-delete:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(180,35,24,.30);
+}
 /* =========================
    BUTTONS
 ========================= */
@@ -1306,6 +1316,7 @@ tr:last-child td{
         onclick="openEditProject()">
         ✏️ تعديل
     </button>
+              <button class="btn btn-delete" onclick="confirmDeleteProject()">🗑️ حذف</button>      
 
 </div>
 
@@ -2023,6 +2034,7 @@ function renderProject(data){
 
     const project =
         data.project || {};
+    
     window.currentProject = project;
 
     const workers =
@@ -3100,6 +3112,62 @@ document.addEventListener(
         loadProject();
     }
 );
+
+    async function confirmDeleteProject(){
+
+    if(!projectId){
+        showToast("❌ رقم المشروع غير موجود");
+        return;
+    }
+
+    const projectName =
+        window.currentProject?.name || "هذا المشروع";
+
+    const confirmed = confirm(
+        "⚠️ هل أنت متأكد من حذف المشروع؟\n\n" +
+        "المشروع: " + projectName + "\n\n" +
+        "سيتم حذف البيانات المرتبطة بالمشروع أيضاً.\n" +
+        "هذا الإجراء لا يمكن التراجع عنه."
+    );
+
+    if(!confirmed){
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            "/api/projects/" + encodeURIComponent(projectId),
+            {
+                method: "DELETE"
+            }
+        );
+
+        const result = await response.json();
+
+        if(!response.ok || !result.success){
+
+            throw new Error(
+                result.message || "تعذر حذف المشروع"
+            );
+
+        }
+
+        showToast("✅ تم حذف المشروع بنجاح");
+
+        setTimeout(()=>{
+            window.location.href = "/projects.html";
+        }, 900);
+
+    }catch(error){
+
+        console.error("DELETE PROJECT ERROR:", error);
+
+        showToast(
+            "❌ " + (error.message || "تعذر حذف المشروع")
+        );
+    }
+}
 
     /* =========================================================
    EDIT PROJECT
