@@ -2642,16 +2642,40 @@ function renderWorkers(workers){
                     }
                 </td>
 
-                <td>
-                    ${escapeHTML(worker.role || "عامل")}
-                </td>
+               <td>
+    ${escapeHTML(worker.role || "عامل")}
+</td>
 
-                <td>
-                    ${worker.active === false
-                        ? "غير نشط"
-                        : "نشط"}
-                </td>
+<td>
+    ${worker.active === false
+        ? "غير نشط"
+        : "نشط"}
+</td>
 
+<td>
+    <div style="
+        display:flex;
+        gap:8px;
+        justify-content:center;
+        flex-wrap:wrap;
+    ">
+
+        <button
+            class="btn btn-edit"
+            type="button"
+            onclick="editProjectWorker(${worker.id}, '${escapeHTML(worker.role || "")}')">
+            ✏️ تعديل
+        </button>
+
+        <button
+            class="btn btn-delete"
+            type="button"
+            onclick="removeProjectWorker(${worker.id}, '${escapeHTML(worker.name || "")}')">
+            🗑️ إزالة
+        </button>
+
+    </div>
+</td>
             </tr>
         `;
 
