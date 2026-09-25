@@ -26,6 +26,7 @@ const pool = new Pool({
         : false
 });
 
+
 /* =========================================================
    DATABASE INITIALIZATION
 ========================================================= */
@@ -33,9 +34,13 @@ const pool = new Pool({
 async function initDatabase() {
 
     if (!process.env.DUNYA_DATABASE_URL) {
-    console.log("⚠️ DUNYA_DATABASE_URL غير موجودة");
-    return;
-}
+
+        console.log(
+            "⚠️ DUNYA_DATABASE_URL غير موجودة"
+        );
+
+        return;
+    }
 
     try {
 
@@ -436,7 +441,9 @@ async function initDatabase() {
         `);
 
 
-        console.log("✅ PostgreSQL database initialized successfully");
+        console.log(
+            "✅ PostgreSQL database initialized successfully"
+        );
 
     } catch (error) {
 
@@ -446,6 +453,7 @@ async function initDatabase() {
         );
 
     }
+
 }
 
 
@@ -509,29 +517,42 @@ app.get("/api/dashboard", async (req, res) => {
                 "SELECT COUNT(*) FROM projects"
             );
 
+
         const workers =
             await pool.query(
                 "SELECT COUNT(*) FROM workers WHERE active = TRUE"
             );
+
 
         const materials =
             await pool.query(
                 "SELECT COUNT(*) FROM materials"
             );
 
+
         const appointments =
             await pool.query(`
+
                 SELECT COUNT(*)
+
                 FROM appointments
+
                 WHERE appointment_date = CURRENT_DATE
+
             `);
+
 
         const expenses =
             await pool.query(`
+
                 SELECT COALESCE(SUM(amount),0)
+
                 FROM expenses
+
                 WHERE expense_date = CURRENT_DATE
+
             `);
+
 
         res.json({
 
@@ -552,7 +573,9 @@ app.get("/api/dashboard", async (req, res) => {
                     Number(appointments.rows[0].count),
 
                 todayExpenses:
-                    Number(expenses.rows[0].coalesce || 0),
+                    Number(
+                        expenses.rows[0].coalesce || 0
+                    ),
 
                 stockValue: 0
 
@@ -568,7 +591,8 @@ app.get("/api/dashboard", async (req, res) => {
 
             success: false,
 
-            message: "خطأ في تحميل بيانات لوحة التحكم"
+            message:
+                "خطأ في تحميل بيانات لوحة التحكم"
 
         });
 
@@ -578,7 +602,7 @@ app.get("/api/dashboard", async (req, res) => {
 
 
 /* =========================================================
-   PROJECTS
+   PROJECTS - GET ALL
 ========================================================= */
 
 app.get("/api/projects", async (req, res) => {
@@ -587,10 +611,15 @@ app.get("/api/projects", async (req, res) => {
 
         const result =
             await pool.query(`
+
                 SELECT *
+
                 FROM projects
+
                 ORDER BY created_at DESC
+
             `);
+
 
         res.json({
 
@@ -601,6 +630,11 @@ app.get("/api/projects", async (req, res) => {
         });
 
     } catch (error) {
+
+        console.error(
+            "GET PROJECTS ERROR:",
+            error
+        );
 
         res.status(500).json({
 
@@ -614,6 +648,10 @@ app.get("/api/projects", async (req, res) => {
 
 });
 
+
+/* =========================================================
+   CREATE PROJECT
+========================================================= */
 
 app.post("/api/projects", async (req, res) => {
 
@@ -635,17 +673,30 @@ app.post("/api/projects", async (req, res) => {
         } = req.body;
 
 
-        if (!name || !name.trim()) {
+        if (
+            !name ||
+            !String(name).trim()
+        ) {
 
             return res.status(400).json({
 
                 success: false,
 
-                message: "اسم المشروع مطلوب"
+                message:
+                    "اسم المشروع مطلوب"
 
             });
 
         }
+
+
+        const safeProgress = Math.min(
+            100,
+            Math.max(
+                0,
+                Number(progress) || 0
+            )
+        );
 
 
         const result =
@@ -668,7 +719,8 @@ app.post("/api/projects", async (req, res) => {
 
                 VALUES (
 
-                    $1,$2,$3,$4,$5,$6,$7,$8,$9,$10
+                    $1,$2,$3,$4,$5,
+                    $6,$7,$8,$9,$10
 
                 )
 
@@ -676,15 +728,24 @@ app.post("/api/projects", async (req, res) => {
 
             `, [
 
-                name.trim(),
+                String(name).trim(),
+
                 location || null,
+
                 client_name || null,
+
                 engineer_name || null,
+
                 start_date || null,
+
                 end_date || null,
+
                 Number(budget) || 0,
-                Number(progress) || 0,
+
+                safeProgress,
+
                 status || "جاري",
+
                 notes || null
 
             ]);
@@ -700,19 +761,24 @@ app.post("/api/projects", async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "CREATE PROJECT ERROR:",
+            error
+        );
 
         res.status(500).json({
 
             success: false,
 
-            message: "تعذر إنشاء المشروع"
+            message:
+                "تعذر إنشاء المشروع"
 
         });
 
     }
 
 });
+
 
 /* =========================================================
    UPDATE PROJECT
@@ -722,7 +788,9 @@ app.put("/api/projects/:id", async (req, res) => {
 
     try {
 
-        const projectId = Number(req.params.id);
+        const projectId =
+            Number(req.params.id);
+
 
         if (!Number.isInteger(projectId)) {
 
@@ -730,7 +798,8 @@ app.put("/api/projects/:id", async (req, res) => {
 
                 success: false,
 
-                message: "رقم المشروع غير صحيح"
+                message:
+                    "رقم المشروع غير صحيح"
 
             });
 
@@ -753,26 +822,31 @@ app.put("/api/projects/:id", async (req, res) => {
         } = req.body;
 
 
-        if (!name || !String(name).trim()) {
+        if (
+            !name ||
+            !String(name).trim()
+        ) {
 
             return res.status(400).json({
 
                 success: false,
 
-                message: "اسم المشروع مطلوب"
+                message:
+                    "اسم المشروع مطلوب"
 
             });
 
         }
 
 
-        const safeProgress = Math.min(
-            100,
-            Math.max(
-                0,
-                Number(progress) || 0
-            )
-        );
+        const safeProgress =
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    Number(progress) || 0
+                )
+            );
 
 
         const result =
@@ -783,15 +857,26 @@ app.put("/api/projects/:id", async (req, res) => {
                 SET
 
                     name = $1,
+
                     location = $2,
+
                     client_name = $3,
+
                     engineer_name = $4,
+
                     start_date = $5,
+
                     end_date = $6,
+
                     budget = $7,
+
                     progress = $8,
+
                     status = $9,
-                    notes = $10
+
+                    notes = $10,
+
+                    updated_at = CURRENT_TIMESTAMP
 
                 WHERE id = $11
 
@@ -830,7 +915,8 @@ app.put("/api/projects/:id", async (req, res) => {
 
                 success: false,
 
-                message: "المشروع غير موجود"
+                message:
+                    "المشروع غير موجود"
 
             });
 
@@ -841,12 +927,13 @@ app.put("/api/projects/:id", async (req, res) => {
 
             success: true,
 
-            message: "تم تحديث المشروع بنجاح",
+            message:
+                "تم تحديث المشروع بنجاح",
 
-            project: result.rows[0]
+            project:
+                result.rows[0]
 
         });
-
 
     } catch (error) {
 
@@ -855,18 +942,19 @@ app.put("/api/projects/:id", async (req, res) => {
             error
         );
 
-
         res.status(500).json({
 
             success: false,
 
-            message: "تعذر تحديث المشروع"
+            message:
+                "تعذر تحديث المشروع"
 
         });
 
     }
 
 });
+
 
 /* =========================================================
    SINGLE PROJECT
@@ -880,10 +968,35 @@ app.get("/api/projects/:id", async (req, res) => {
             Number(req.params.id);
 
 
+        if (!Number.isInteger(projectId)) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "رقم المشروع غير صحيح"
+
+            });
+
+        }
+
+
         const project =
             await pool.query(
-                "SELECT * FROM projects WHERE id = $1",
+
+                `
+
+                SELECT *
+
+                FROM projects
+
+                WHERE id = $1
+
+                `,
+
                 [projectId]
+
             );
 
 
@@ -893,7 +1006,8 @@ app.get("/api/projects/:id", async (req, res) => {
 
                 success: false,
 
-                message: "المشروع غير موجود"
+                message:
+                    "المشروع غير موجود"
 
             });
 
@@ -904,8 +1018,11 @@ app.get("/api/projects/:id", async (req, res) => {
             await pool.query(`
 
                 SELECT
+
                     w.*,
+
                     pw.role,
+
                     pw.joined_at
 
                 FROM project_workers pw
@@ -924,8 +1041,11 @@ app.get("/api/projects/:id", async (req, res) => {
             await pool.query(`
 
                 SELECT
+
                     pm.*,
+
                     m.name,
+
                     m.unit
 
                 FROM project_materials pm
@@ -963,7 +1083,9 @@ app.get("/api/projects/:id", async (req, res) => {
 
                 WHERE project_id = $1
 
-                ORDER BY report_date DESC, created_at DESC
+                ORDER BY
+                    report_date DESC,
+                    created_at DESC
 
             `, [projectId]);
 
@@ -977,7 +1099,9 @@ app.get("/api/projects/:id", async (req, res) => {
 
                 WHERE project_id = $1
 
-                ORDER BY appointment_date DESC, appointment_time DESC
+                ORDER BY
+                    appointment_date DESC,
+                    appointment_time DESC
 
             `, [projectId]);
 
@@ -986,70 +1110,111 @@ app.get("/api/projects/:id", async (req, res) => {
 
             success: true,
 
-            project: project.rows[0],
+            project:
+                project.rows[0],
 
-            workers: workers.rows,
+            workers:
+                workers.rows,
 
-            materials: materials.rows,
+            materials:
+                materials.rows,
 
-            expenses: expenses.rows,
+            expenses:
+                expenses.rows,
 
-            reports: reports.rows,
+            reports:
+                reports.rows,
 
-            appointments: appointments.rows
+            appointments:
+                appointments.rows
 
         });
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "GET SINGLE PROJECT ERROR:",
+            error
+        );
 
         res.status(500).json({
 
             success: false,
 
-            message: error.message
+            message:
+                error.message
 
         });
 
     }
 
 });
+
 
 /* =========================================================
    WORKERS
 ========================================================= */
 
-// GET ALL WORKERS
+
+/* =========================================================
+   GET ALL WORKERS
+========================================================= */
+
 app.get("/api/workers", async (req, res) => {
 
     try {
 
-        const result = await pool.query(`
-            SELECT
-                id,
-                name,
-                phone,
-                job,
-                salary,
-                active,
-                created_at
-            FROM workers
-            ORDER BY created_at DESC, name ASC
-        `);
+        const result =
+            await pool.query(`
+
+                SELECT
+
+                    id,
+
+                    name,
+
+                    phone,
+
+                    job,
+
+                    salary,
+
+                    active,
+
+                    created_at
+
+                FROM workers
+
+                ORDER BY
+                    created_at DESC,
+                    name ASC
+
+            `);
+
 
         res.json({
+
             success: true,
-            workers: result.rows
+
+            workers:
+                result.rows
+
         });
 
     } catch (error) {
 
-        console.error("GET WORKERS ERROR:", error);
+        console.error(
+            "GET WORKERS ERROR:",
+            error
+        );
 
         res.status(500).json({
+
             success: false,
-            message: "تعذر تحميل العمال"
+
+            message:
+                "تعذر تحميل العمال"
+
         });
 
     }
@@ -1057,58 +1222,111 @@ app.get("/api/workers", async (req, res) => {
 });
 
 
-// ADD WORKER
+/* =========================================================
+   ADD WORKER
+========================================================= */
+
 app.post("/api/workers", async (req, res) => {
 
     try {
 
         const {
+
             name,
             phone,
             job,
             salary,
             active
+
         } = req.body;
 
-        if (!name || !String(name).trim()) {
+
+        if (
+            !name ||
+            !String(name).trim()
+        ) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "اسم العامل مطلوب"
+
+                message:
+                    "اسم العامل مطلوب"
+
             });
 
         }
 
-        const result = await pool.query(`
-            INSERT INTO workers (
-                name,
-                phone,
-                job,
-                salary,
-                active
-            )
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING *
-        `, [
-            String(name).trim(),
-            phone ? String(phone).trim() : null,
-            job ? String(job).trim() : null,
-            Number(salary) || 0,
-            active !== false
-        ]);
+
+        const result =
+            await pool.query(`
+
+                INSERT INTO workers (
+
+                    name,
+
+                    phone,
+
+                    job,
+
+                    salary,
+
+                    active
+
+                )
+
+                VALUES (
+                    $1,
+                    $2,
+                    $3,
+                    $4,
+                    $5
+                )
+
+                RETURNING *
+
+            `, [
+
+                String(name).trim(),
+
+                phone
+                    ? String(phone).trim()
+                    : null,
+
+                job
+                    ? String(job).trim()
+                    : null,
+
+                Number(salary) || 0,
+
+                active !== false
+
+            ]);
+
 
         res.status(201).json({
+
             success: true,
-            worker: result.rows[0]
+
+            worker:
+                result.rows[0]
+
         });
 
     } catch (error) {
 
-        console.error("ADD WORKER ERROR:", error);
+        console.error(
+            "ADD WORKER ERROR:",
+            error
+        );
 
         res.status(500).json({
+
             success: false,
-            message: "تعذر إضافة العامل"
+
+            message:
+                "تعذر إضافة العامل"
+
         });
 
     }
@@ -1116,79 +1334,139 @@ app.post("/api/workers", async (req, res) => {
 });
 
 
-// UPDATE WORKER
+/* =========================================================
+   UPDATE WORKER
+========================================================= */
+
 app.put("/api/workers/:id", async (req, res) => {
 
     try {
 
-        const workerId = Number(req.params.id);
+        const workerId =
+            Number(req.params.id);
+
 
         if (!Number.isInteger(workerId)) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "رقم العامل غير صحيح"
+
+                message:
+                    "رقم العامل غير صحيح"
+
             });
 
         }
 
+
         const {
+
             name,
             phone,
             job,
             salary,
             active
+
         } = req.body;
 
-        if (!name || !String(name).trim()) {
+
+        if (
+            !name ||
+            !String(name).trim()
+        ) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "اسم العامل مطلوب"
+
+                message:
+                    "اسم العامل مطلوب"
+
             });
 
         }
 
-        const result = await pool.query(`
-            UPDATE workers
-            SET
-                name = $1,
-                phone = $2,
-                job = $3,
-                salary = $4,
-                active = $5
-            WHERE id = $6
-            RETURNING *
-        `, [
-            String(name).trim(),
-            phone ? String(phone).trim() : null,
-            job ? String(job).trim() : null,
-            Number(salary) || 0,
-            active !== false,
-            workerId
-        ]);
+
+        const result =
+            await pool.query(`
+
+                UPDATE workers
+
+                SET
+
+                    name = $1,
+
+                    phone = $2,
+
+                    job = $3,
+
+                    salary = $4,
+
+                    active = $5
+
+                WHERE id = $6
+
+                RETURNING *
+
+            `, [
+
+                String(name).trim(),
+
+                phone
+                    ? String(phone).trim()
+                    : null,
+
+                job
+                    ? String(job).trim()
+                    : null,
+
+                Number(salary) || 0,
+
+                active !== false,
+
+                workerId
+
+            ]);
+
 
         if (!result.rows.length) {
 
             return res.status(404).json({
+
                 success: false,
-                message: "العامل غير موجود"
+
+                message:
+                    "العامل غير موجود"
+
             });
 
         }
 
+
         res.json({
+
             success: true,
-            worker: result.rows[0]
+
+            worker:
+                result.rows[0]
+
         });
 
     } catch (error) {
 
-        console.error("UPDATE WORKER ERROR:", error);
+        console.error(
+            "UPDATE WORKER ERROR:",
+            error
+        );
 
         res.status(500).json({
+
             success: false,
-            message: "تعذر تعديل العامل"
+
+            message:
+                "تعذر تعديل العامل"
+
         });
 
     }
@@ -1196,54 +1474,88 @@ app.put("/api/workers/:id", async (req, res) => {
 });
 
 
-// DELETE WORKER
+/* =========================================================
+   DELETE WORKER
+========================================================= */
+
 app.delete("/api/workers/:id", async (req, res) => {
 
     try {
 
-        const workerId = Number(req.params.id);
+        const workerId =
+            Number(req.params.id);
+
 
         if (!Number.isInteger(workerId)) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "رقم العامل غير صحيح"
+
+                message:
+                    "رقم العامل غير صحيح"
+
             });
 
         }
 
-        const result = await pool.query(`
-            DELETE FROM workers
-            WHERE id = $1
-            RETURNING id
-        `, [workerId]);
+
+        const result =
+            await pool.query(`
+
+                DELETE FROM workers
+
+                WHERE id = $1
+
+                RETURNING id
+
+            `, [workerId]);
+
 
         if (!result.rows.length) {
 
             return res.status(404).json({
+
                 success: false,
-                message: "العامل غير موجود"
+
+                message:
+                    "العامل غير موجود"
+
             });
 
         }
 
+
         res.json({
+
             success: true,
-            message: "تم حذف العامل بنجاح"
+
+            message:
+                "تم حذف العامل بنجاح"
+
         });
 
     } catch (error) {
 
-        console.error("DELETE WORKER ERROR:", error);
+        console.error(
+            "DELETE WORKER ERROR:",
+            error
+        );
 
         res.status(500).json({
+
             success: false,
-            message: "تعذر حذف العامل"
+
+            message:
+                "تعذر حذف العامل"
+
         });
 
     }
 
 });
+
+
 /* =========================================================
    ADD WORKER TO PROJECT
 ========================================================= */
@@ -1253,85 +1565,39 @@ app.post("/api/project-workers", async (req, res) => {
     try {
 
         const {
+
             project_id,
             worker_id,
             role
+
         } = req.body;
 
-        if (!project_id || !worker_id || !role) {
-
-            return res.status(400).json({
-                success: false,
-                message: "بيانات العامل والمشروع والدور مطلوبة"
-            });
-
-           /* =========================================================
-   REMOVE WORKER FROM PROJECT
-========================================================= */
-
-app.delete("/api/project-workers/:workerId", async (req, res) => {
-
-    try {
-
-        const workerId = Number(req.params.workerId);
-        const projectId = Number(req.query.project_id);
 
         if (
-            !Number.isInteger(workerId) ||
-            !Number.isInteger(projectId)
+            !project_id ||
+            !worker_id ||
+            !role ||
+            !String(role).trim()
         ) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "رقم العامل أو المشروع غير صحيح"
+
+                message:
+                    "بيانات العامل والمشروع والدور مطلوبة"
+
             });
 
         }
 
-        const result = await pool.query(`
-            DELETE FROM project_workers
-            WHERE worker_id = $1
-              AND project_id = $2
-            RETURNING *
-        `, [
-            workerId,
-            projectId
-        ]);
 
-        if (!result.rows.length) {
+        const projectId =
+            Number(project_id);
 
-            return res.status(404).json({
-                success: false,
-                message: "العامل غير مرتبط بهذا المشروع"
-            });
+        const workerId =
+            Number(worker_id);
 
-        }
-
-        res.json({
-            success: true,
-            message: "تمت إزالة العامل من المشروع بنجاح"
-        });
-
-    } catch (error) {
-
-        console.error(
-            "REMOVE WORKER FROM PROJECT ERROR:",
-            error
-        );
-
-        res.status(500).json({
-            success: false,
-            message: "تعذر إزالة العامل من المشروع"
-        });
-
-    }
-
-});
-
-        }
-
-        const projectId = Number(project_id);
-        const workerId = Number(worker_id);
 
         if (
             !Number.isInteger(projectId) ||
@@ -1339,32 +1605,133 @@ app.delete("/api/project-workers/:workerId", async (req, res) => {
         ) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "رقم المشروع أو العامل غير صحيح"
+
+                message:
+                    "رقم المشروع أو العامل غير صحيح"
+
             });
 
         }
 
-        const result = await pool.query(`
-            INSERT INTO project_workers (
-                project_id,
-                worker_id,
-                role
-            )
-            VALUES ($1, $2, $3)
-            ON CONFLICT (project_id, worker_id)
-            DO UPDATE SET role = EXCLUDED.role
-            RETURNING *
-        `, [
-            projectId,
-            workerId,
-            String(role).trim()
-        ]);
+
+        /* -------------------------------------------------
+           CHECK PROJECT
+        ------------------------------------------------- */
+
+        const project =
+            await pool.query(`
+
+                SELECT id
+
+                FROM projects
+
+                WHERE id = $1
+
+            `, [projectId]);
+
+
+        if (!project.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "المشروع غير موجود"
+
+            });
+
+        }
+
+
+        /* -------------------------------------------------
+           CHECK WORKER
+        ------------------------------------------------- */
+
+        const worker =
+            await pool.query(`
+
+                SELECT id
+
+                FROM workers
+
+                WHERE id = $1
+
+            `, [workerId]);
+
+
+        if (!worker.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "العامل غير موجود"
+
+            });
+
+        }
+
+
+        /* -------------------------------------------------
+           ADD / UPDATE PROJECT WORKER
+        ------------------------------------------------- */
+
+        const result =
+            await pool.query(`
+
+                INSERT INTO project_workers (
+
+                    project_id,
+
+                    worker_id,
+
+                    role
+
+                )
+
+                VALUES (
+
+                    $1,
+
+                    $2,
+
+                    $3
+
+                )
+
+                ON CONFLICT (project_id, worker_id)
+
+                DO UPDATE SET
+
+                    role = EXCLUDED.role
+
+                RETURNING *
+
+            `, [
+
+                projectId,
+
+                workerId,
+
+                String(role).trim()
+
+            ]);
+
 
         res.status(201).json({
+
             success: true,
-            message: "تمت إضافة العامل للمشروع بنجاح",
-            projectWorker: result.rows[0]
+
+            message:
+                "تمت إضافة العامل للمشروع بنجاح",
+
+            projectWorker:
+                result.rows[0]
+
         });
 
     } catch (error) {
@@ -1375,13 +1742,244 @@ app.delete("/api/project-workers/:workerId", async (req, res) => {
         );
 
         res.status(500).json({
+
             success: false,
-            message: "تعذر إضافة العامل للمشروع"
+
+            message:
+                "تعذر إضافة العامل للمشروع"
+
         });
 
     }
 
 });
+
+
+/* =========================================================
+   UPDATE WORKER ROLE IN PROJECT
+========================================================= */
+
+app.put(
+    "/api/project-workers/:workerId",
+    async (req, res) => {
+
+        try {
+
+            const workerId =
+                Number(req.params.workerId);
+
+            const projectId =
+                Number(req.query.project_id);
+
+            const {
+                role
+            } = req.body;
+
+
+            if (
+                !Number.isInteger(workerId) ||
+                !Number.isInteger(projectId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم العامل أو المشروع غير صحيح"
+
+                });
+
+            }
+
+
+            if (
+                !role ||
+                !String(role).trim()
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "دور العامل مطلوب"
+
+                });
+
+            }
+
+
+            const result =
+                await pool.query(`
+
+                    UPDATE project_workers
+
+                    SET role = $1
+
+                    WHERE worker_id = $2
+
+                    AND project_id = $3
+
+                    RETURNING *
+
+                `, [
+
+                    String(role).trim(),
+
+                    workerId,
+
+                    projectId
+
+                ]);
+
+
+            if (!result.rows.length) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "العامل غير مرتبط بهذا المشروع"
+
+                });
+
+            }
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "تم تعديل دور العامل بنجاح",
+
+                projectWorker:
+                    result.rows[0]
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "UPDATE PROJECT WORKER ERROR:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تعديل دور العامل"
+
+            });
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   REMOVE WORKER FROM PROJECT
+========================================================= */
+
+app.delete(
+    "/api/project-workers/:workerId",
+    async (req, res) => {
+
+        try {
+
+            const workerId =
+                Number(req.params.workerId);
+
+            const projectId =
+                Number(req.query.project_id);
+
+
+            if (
+                !Number.isInteger(workerId) ||
+                !Number.isInteger(projectId)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم العامل أو المشروع غير صحيح"
+
+                });
+
+            }
+
+
+            const result =
+                await pool.query(`
+
+                    DELETE FROM project_workers
+
+                    WHERE worker_id = $1
+
+                    AND project_id = $2
+
+                    RETURNING *
+
+                `, [
+
+                    workerId,
+
+                    projectId
+
+                ]);
+
+
+            if (!result.rows.length) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "العامل غير مرتبط بهذا المشروع"
+
+                });
+
+            }
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "تمت إزالة العامل من المشروع بنجاح"
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "REMOVE WORKER FROM PROJECT ERROR:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر إزالة العامل من المشروع"
+
+            });
+
+        }
+
+    }
+);
+
 
 /* =========================================================
    DELETE PROJECT
@@ -1391,274 +1989,66 @@ app.delete("/api/projects/:id", async (req, res) => {
 
     try {
 
-        const projectId = Number(req.params.id);
+        const projectId =
+            Number(req.params.id);
+
 
         if (!Number.isInteger(projectId)) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "رقم المشروع غير صحيح"
+
+                message:
+                    "رقم المشروع غير صحيح"
+
             });
 
         }
 
-        const result = await pool.query(`
-            DELETE FROM projects
-            WHERE id = $1
-            RETURNING id, name
-        `, [projectId]);
+
+        const result =
+            await pool.query(`
+
+                DELETE FROM projects
+
+                WHERE id = $1
+
+                RETURNING id, name
+
+            `, [projectId]);
+
 
         if (!result.rows.length) {
 
             return res.status(404).json({
+
                 success: false,
-                message: "المشروع غير موجود"
+
+                message:
+                    "المشروع غير موجود"
+
             });
 
         }
-
-        res.json({
-            success: true,
-            message: "تم حذف المشروع بنجاح",
-            project: result.rows[0]
-        });
-
-    } catch (error) {
-
-        console.error("DELETE PROJECT ERROR:", error);
-
-        res.status(500).json({
-            success: false,
-            message: "تعذر حذف المشروع"
-        });
-
-    }
-
-});
-
-/* =========================================================
-   404 / FRONTEND
-========================================================= */
-// ============================================================
-// PROJECT FULL DETAILS
-// ============================================================
-
-app.get("/api/projects/:id/full", async (req, res) => {
-
-    try {
-
-        const projectId = Number(req.params.id);
-
-        if (!Number.isInteger(projectId)) {
-
-            return res.status(400).json({
-                success: false,
-                message: "رقم المشروع غير صحيح"
-            });
-
-        }
-
-        const projectResult = await pool.query(
-            `
-            SELECT *
-            FROM projects
-            WHERE id = $1
-            `,
-            [projectId]
-        );
-
-        if (!projectResult.rows.length) {
-
-            return res.status(404).json({
-                success: false,
-                message: "المشروع غير موجود"
-            });
-
-        }
-
-
-        const workersResult = await pool.query(
-            `
-            SELECT
-                w.id,
-                w.name,
-                w.phone,
-                w.job,
-                w.salary,
-                w.active,
-                pw.role,
-                pw.joined_at
-            FROM project_workers pw
-            JOIN workers w
-                ON w.id = pw.worker_id
-            WHERE pw.project_id = $1
-            ORDER BY w.name
-            `,
-            [projectId]
-        );
-
-
-        const materialsResult = await pool.query(
-            `
-            SELECT
-                pm.id,
-                pm.quantity,
-                pm.used_quantity,
-                pm.unit_price,
-                pm.supplier,
-                m.id AS material_id,
-                m.name,
-                m.unit,
-                m.description
-            FROM project_materials pm
-            JOIN materials m
-                ON m.id = pm.material_id
-            WHERE pm.project_id = $1
-            ORDER BY m.name
-            `,
-            [projectId]
-        );
-
-
-        const expensesResult = await pool.query(
-            `
-            SELECT *
-            FROM expenses
-            WHERE project_id = $1
-            ORDER BY expense_date DESC, created_at DESC
-            `,
-            [projectId]
-        );
-
-
-        const reportsResult = await pool.query(
-            `
-            SELECT
-                dr.*,
-                w.name AS worker_name
-            FROM daily_reports dr
-            LEFT JOIN workers w
-                ON w.id = dr.worker_id
-            WHERE dr.project_id = $1
-            ORDER BY dr.report_date DESC, dr.created_at DESC
-            `,
-            [projectId]
-        );
-
-
-        const appointmentsResult = await pool.query(
-            `
-            SELECT *
-            FROM appointments
-            WHERE project_id = $1
-            ORDER BY
-                appointment_date ASC,
-                appointment_time ASC
-            `,
-            [projectId]
-        );
-
-
-        const meetingsResult = await pool.query(
-            `
-            SELECT *
-            FROM meetings
-            WHERE project_id = $1
-            ORDER BY meeting_date DESC
-            `,
-            [projectId]
-        );
-
-
-        const messagesResult = await pool.query(
-            `
-            SELECT *
-            FROM messages
-            WHERE project_id = $1
-            ORDER BY created_at ASC
-            `,
-            [projectId]
-        );
-
-
-        const notificationsResult = await pool.query(
-            `
-            SELECT *
-            FROM notifications
-            WHERE project_id = $1
-            ORDER BY created_at DESC
-            `,
-            [projectId]
-        );
-
-
-        const attendanceResult = await pool.query(
-            `
-            SELECT
-                a.*,
-                w.name AS worker_name,
-                w.job
-            FROM attendance a
-            JOIN workers w
-                ON w.id = a.worker_id
-            WHERE a.project_id = $1
-            ORDER BY
-                a.attendance_date DESC,
-                w.name ASC
-            `,
-            [projectId]
-        );
-
-
-        const stockResult = await pool.query(
-            `
-            SELECT
-                sm.*,
-                m.name AS material_name,
-                m.unit
-            FROM stock_movements sm
-            JOIN materials m
-                ON m.id = sm.material_id
-            WHERE sm.project_id = $1
-            ORDER BY sm.movement_date DESC
-            `,
-            [projectId]
-        );
 
 
         res.json({
 
             success: true,
 
-            project: projectResult.rows[0],
+            message:
+                "تم حذف المشروع بنجاح",
 
-            workers: workersResult.rows,
-
-            materials: materialsResult.rows,
-
-            expenses: expensesResult.rows,
-
-            reports: reportsResult.rows,
-
-            appointments: appointmentsResult.rows,
-
-            meetings: meetingsResult.rows,
-
-            messages: messagesResult.rows,
-
-            notifications: notificationsResult.rows,
-
-            attendance: attendanceResult.rows,
-
-            stockMovements: stockResult.rows
+            project:
+                result.rows[0]
 
         });
-
 
     } catch (error) {
 
         console.error(
-            "PROJECT FULL DETAILS ERROR:",
+            "DELETE PROJECT ERROR:",
             error
         );
 
@@ -1667,7 +2057,7 @@ app.get("/api/projects/:id/full", async (req, res) => {
             success: false,
 
             message:
-                "تعذر تحميل بيانات المشروع"
+                "تعذر حذف المشروع"
 
         });
 
@@ -1675,14 +2065,473 @@ app.get("/api/projects/:id/full", async (req, res) => {
 
 });
 
+
+/* =========================================================
+   PROJECT FULL DETAILS
+========================================================= */
+
+app.get(
+    "/api/projects/:id/full",
+    async (req, res) => {
+
+        try {
+
+            const projectId =
+                Number(req.params.id);
+
+
+            if (!Number.isInteger(projectId)) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم المشروع غير صحيح"
+
+                });
+
+            }
+
+
+            /* -------------------------------------------------
+               PROJECT
+            ------------------------------------------------- */
+
+            const projectResult =
+                await pool.query(
+
+                    `
+
+                    SELECT *
+
+                    FROM projects
+
+                    WHERE id = $1
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            if (!projectResult.rows.length) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "المشروع غير موجود"
+
+                });
+
+            }
+
+
+            /* -------------------------------------------------
+               WORKERS
+            ------------------------------------------------- */
+
+            const workersResult =
+                await pool.query(
+
+                    `
+
+                    SELECT
+
+                        w.id,
+
+                        w.name,
+
+                        w.phone,
+
+                        w.job,
+
+                        w.salary,
+
+                        w.active,
+
+                        pw.role,
+
+                        pw.joined_at
+
+                    FROM project_workers pw
+
+                    JOIN workers w
+                        ON w.id = pw.worker_id
+
+                    WHERE pw.project_id = $1
+
+                    ORDER BY w.name
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               MATERIALS
+            ------------------------------------------------- */
+
+            const materialsResult =
+                await pool.query(
+
+                    `
+
+                    SELECT
+
+                        pm.id,
+
+                        pm.quantity,
+
+                        pm.used_quantity,
+
+                        pm.unit_price,
+
+                        pm.supplier,
+
+                        m.id AS material_id,
+
+                        m.name,
+
+                        m.unit,
+
+                        m.description
+
+                    FROM project_materials pm
+
+                    JOIN materials m
+                        ON m.id = pm.material_id
+
+                    WHERE pm.project_id = $1
+
+                    ORDER BY m.name
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               EXPENSES
+            ------------------------------------------------- */
+
+            const expensesResult =
+                await pool.query(
+
+                    `
+
+                    SELECT *
+
+                    FROM expenses
+
+                    WHERE project_id = $1
+
+                    ORDER BY
+                        expense_date DESC,
+                        created_at DESC
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               DAILY REPORTS
+            ------------------------------------------------- */
+
+            const reportsResult =
+                await pool.query(
+
+                    `
+
+                    SELECT
+
+                        dr.*,
+
+                        w.name AS worker_name
+
+                    FROM daily_reports dr
+
+                    LEFT JOIN workers w
+                        ON w.id = dr.worker_id
+
+                    WHERE dr.project_id = $1
+
+                    ORDER BY
+                        dr.report_date DESC,
+                        dr.created_at DESC
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               APPOINTMENTS
+            ------------------------------------------------- */
+
+            const appointmentsResult =
+                await pool.query(
+
+                    `
+
+                    SELECT *
+
+                    FROM appointments
+
+                    WHERE project_id = $1
+
+                    ORDER BY
+
+                        appointment_date ASC,
+
+                        appointment_time ASC
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               MEETINGS
+            ------------------------------------------------- */
+
+            const meetingsResult =
+                await pool.query(
+
+                    `
+
+                    SELECT *
+
+                    FROM meetings
+
+                    WHERE project_id = $1
+
+                    ORDER BY meeting_date DESC
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               MESSAGES
+            ------------------------------------------------- */
+
+            const messagesResult =
+                await pool.query(
+
+                    `
+
+                    SELECT *
+
+                    FROM messages
+
+                    WHERE project_id = $1
+
+                    ORDER BY created_at ASC
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               NOTIFICATIONS
+            ------------------------------------------------- */
+
+            const notificationsResult =
+                await pool.query(
+
+                    `
+
+                    SELECT *
+
+                    FROM notifications
+
+                    WHERE project_id = $1
+
+                    ORDER BY created_at DESC
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               ATTENDANCE
+            ------------------------------------------------- */
+
+            const attendanceResult =
+                await pool.query(
+
+                    `
+
+                    SELECT
+
+                        a.*,
+
+                        w.name AS worker_name,
+
+                        w.job
+
+                    FROM attendance a
+
+                    JOIN workers w
+                        ON w.id = a.worker_id
+
+                    WHERE a.project_id = $1
+
+                    ORDER BY
+
+                        a.attendance_date DESC,
+
+                        w.name ASC
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               STOCK MOVEMENTS
+            ------------------------------------------------- */
+
+            const stockResult =
+                await pool.query(
+
+                    `
+
+                    SELECT
+
+                        sm.*,
+
+                        m.name AS material_name,
+
+                        m.unit
+
+                    FROM stock_movements sm
+
+                    JOIN materials m
+                        ON m.id = sm.material_id
+
+                    WHERE sm.project_id = $1
+
+                    ORDER BY
+                        sm.movement_date DESC
+
+                    `,
+
+                    [projectId]
+
+                );
+
+
+            /* -------------------------------------------------
+               RESPONSE
+            ------------------------------------------------- */
+
+            res.json({
+
+                success: true,
+
+                project:
+                    projectResult.rows[0],
+
+                workers:
+                    workersResult.rows,
+
+                materials:
+                    materialsResult.rows,
+
+                expenses:
+                    expensesResult.rows,
+
+                reports:
+                    reportsResult.rows,
+
+                appointments:
+                    appointmentsResult.rows,
+
+                meetings:
+                    meetingsResult.rows,
+
+                messages:
+                    messagesResult.rows,
+
+                notifications:
+                    notificationsResult.rows,
+
+                attendance:
+                    attendanceResult.rows,
+
+                stockMovements:
+                    stockResult.rows
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "PROJECT FULL DETAILS ERROR:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تحميل بيانات المشروع"
+
+            });
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FRONTEND FALLBACK
+========================================================= */
+
 app.get("*", (req, res) => {
 
     res.sendFile(
+
         path.join(
+
             __dirname,
+
             "public",
+
             "index.html"
+
         )
+
     );
 
 });
@@ -1696,14 +2545,18 @@ async function startServer() {
 
     await initDatabase();
 
-    app.listen(PORT, () => {
+    app.listen(
+        PORT,
+        () => {
 
-        console.log(
-            `🏗️ DUNYA-OMRAN running on port ${PORT}`
-        );
+            console.log(
+                `🏗️ DUNYA-OMRAN running on port ${PORT}`
+            );
 
-    });
+        }
+    );
 
 }
+
 
 startServer();
