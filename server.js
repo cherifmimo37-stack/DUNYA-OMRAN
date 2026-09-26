@@ -1331,11 +1331,36 @@ if (
 
         } else {
 
-            console.log(
-                "👷 حساب المهندس موجود مسبقاً:",
-                engineerUsername
-            );
-        }
+    const engineerPasswordHash =
+        await hashPassword(
+            engineerPassword
+        );
+
+    await pool.query(
+        `
+        UPDATE users
+
+        SET
+            password_hash = $1,
+            full_name = $2,
+            role = 'engineer',
+            active = TRUE
+
+        WHERE LOWER(username) =
+              LOWER($3)
+        `,
+        [
+            engineerPasswordHash,
+            engineerName,
+            engineerUsername
+        ]
+    );
+
+    console.log(
+        "👷 تم تحديث حساب المهندس:",
+        engineerUsername
+    );
+}
     }
 
 } else {
