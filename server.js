@@ -6549,21 +6549,10 @@ app.post(
 
             });
 
-        } catch (error) {
+                       } catch (error) {
 
             console.error(
                 "CREATE STAGE ERROR:",
-                error
-            );
-                            document:
-                    result.rows[0]
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "CREATE DOCUMENT ERROR:",
                 error
             );
 
@@ -6572,7 +6561,7 @@ app.post(
                 success: false,
 
                 message:
-                    "تعذر إضافة الوثيقة"
+                    "تعذر إضافة مرحلة المشروع"
 
             });
 
@@ -6581,8 +6570,6 @@ app.post(
     }
 
 );
-
-
 /* =========================================================
    WORKER PAYMENTS
 ========================================================= */
