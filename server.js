@@ -3571,15 +3571,18 @@ app.put(
 
             if (!result.rows.length) {
 
-                return res.status(404).json({
+    return res.status(404).json({
 
-                    success: false,
+        success: false,
 
-                    message:
-                        "العامل غير مرتبط بهذا المشروع"
-                                   });
+        message:
+            "العامل غير مرتبط بهذا المشروع"
 
-            res.json({
+    });
+
+}
+
+res.json({
 
                 success: true,
 
