@@ -2239,6 +2239,289 @@ app.post(
 
     }
 );
+
+/* =========================================================
+   ENGINEER - PROJECTS
+========================================================= */
+
+app.get(
+    "/api/engineer/projects",
+    requireAuth,
+    requireRole("engineer"),
+    async (req, res) => {
+
+        try {
+
+            const result = await pool.query(`
+                SELECT
+                    p.*
+                FROM project_engineers pe
+                INNER JOIN projects p
+                    ON p.id = pe.project_id
+                WHERE pe.engineer_id = $1
+                ORDER BY p.created_at DESC
+            `, [
+                req.user.id
+            ]);
+
+            res.json({
+                success: true,
+                projects: result.rows
+            });
+
+        } catch (error) {
+
+            console.error(
+                "ENGINEER PROJECTS ERROR:",
+                error
+            );
+
+            res.status(500).json({
+                success: false,
+                message:
+                    "تعذر تحميل مشاريع المهندس"
+            });
+        }
+    }
+);
+
+
+/* =========================================================
+   ENGINEER - REPORTS
+========================================================= */
+
+app.get(
+    "/api/engineer/reports",
+    requireAuth,
+    requireRole("engineer"),
+    async (req, res) => {
+
+        try {
+
+            const projectId =
+                integerValue(req.query.project_id);
+
+            const params = [
+                req.user.id
+            ];
+
+            let projectFilter = "";
+
+            if (projectId) {
+
+                params.push(projectId);
+
+                projectFilter = `
+                    AND dr.project_id = $2
+                `;
+            }
+
+            const result = await pool.query(`
+                SELECT
+                    dr.*,
+
+                    p.name AS project_name,
+                    p.location AS project_location
+
+                FROM daily_reports dr
+
+                INNER JOIN projects p
+                    ON p.id = dr.project_id
+
+                INNER JOIN project_engineers pe
+                    ON pe.project_id = dr.project_id
+
+                WHERE
+                    pe.engineer_id = $1
+                    ${projectFilter}
+
+                ORDER BY
+                    dr.report_date DESC,
+                    dr.created_at DESC
+
+            `, params);
+
+            res.json({
+                success: true,
+                reports: result.rows
+            });
+
+        } catch (error) {
+
+            console.error(
+                "ENGINEER REPORTS ERROR:",
+                error
+            );
+
+            res.status(500).json({
+                success: false,
+                message:
+                    "تعذر تحميل التقارير"
+            });
+        }
+    }
+);
+
+
+/* =========================================================
+   ENGINEER - CREATE REPORT
+========================================================= */
+
+app.post(
+    "/api/engineer/reports",
+    requireAuth,
+    requireRole("engineer"),
+    async (req, res) => {
+
+        try {
+
+            const {
+                project_id,
+                report_date,
+                title,
+                description,
+                quantity,
+                materials_used,
+                problems,
+                engineer_review
+            } = req.body;
+
+
+            const projectId =
+                integerValue(project_id);
+
+
+            if (!projectId) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "المشروع مطلوب"
+                });
+            }
+
+
+            /* -------------------------------------------------
+               VERIFY ENGINEER PROJECT
+            ------------------------------------------------- */
+
+            const assignment =
+                await pool.query(`
+                    SELECT
+                        p.id,
+                        p.name
+                    FROM project_engineers pe
+
+                    INNER JOIN projects p
+                        ON p.id = pe.project_id
+
+                    WHERE
+                        pe.engineer_id = $1
+                        AND pe.project_id = $2
+
+                    LIMIT 1
+                `, [
+                    req.user.id,
+                    projectId
+                ]);
+
+
+            if (!assignment.rows.length) {
+
+                return res.status(403).json({
+                    success: false,
+                    message:
+                        "هذا المشروع غير مسند إليك"
+                });
+            }
+
+
+            /* -------------------------------------------------
+               CREATE REPORT
+            ------------------------------------------------- */
+
+            const result =
+                await pool.query(`
+                    INSERT INTO daily_reports (
+                        project_id,
+                        worker_id,
+                        engineer_name,
+                        report_date,
+                        title,
+                        description,
+                        quantity,
+                        materials_used,
+                        problems,
+                        engineer_review,
+                        status
+                    )
+
+                    VALUES (
+                        $1,
+                        NULL,
+                        $2,
+                        COALESCE($3, CURRENT_DATE),
+                        $4,
+                        $5,
+                        $6,
+                        $7,
+                        $8,
+                        $9,
+                        'في الانتظار'
+                    )
+
+                    RETURNING *
+                `, [
+
+                    projectId,
+
+                    cleanText(
+                        req.user.full_name ||
+                        req.user.username ||
+                        ""
+                    ),
+
+                    report_date || null,
+
+                    cleanText(title),
+
+                    cleanText(description),
+
+                    cleanText(quantity),
+
+                    cleanText(materials_used),
+
+                    cleanText(problems),
+
+                    cleanText(engineer_review)
+                ]);
+
+
+            res.status(201).json({
+                success: true,
+                message:
+                    "تم تسجيل التقرير بنجاح",
+                report:
+                    result.rows[0]
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "CREATE ENGINEER REPORT ERROR:",
+                error
+            );
+
+            res.status(500).json({
+                success: false,
+                message:
+                    "تعذر تسجيل التقرير"
+            });
+        }
+    }
+);
+
 /* =========================================================
    HEALTH
 ========================================================= */
