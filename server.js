@@ -3282,7 +3282,233 @@ app.put("/api/projects/:id", async (req, res) => {
 
     }
 });
+/* =========================================================
+   ASSIGN ENGINEER TO PROJECT
+========================================================= */
 
+app.post(
+    "/api/projects/:id/engineer",
+    requireAuth,
+    requireRole("admin"),
+    async (req, res) => {
+
+        try {
+
+            const projectId =
+                integerValue(req.params.id);
+
+            const engineerId =
+                integerValue(req.body.engineer_id);
+
+            if (!projectId || !engineerId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "المشروع أو المهندس غير صحيح"
+
+                });
+            }
+
+
+            /* -------------------------------------------------
+               CHECK PROJECT
+            ------------------------------------------------- */
+
+            const projectResult =
+                await pool.query(
+                    `
+                    SELECT id, name
+                    FROM projects
+                    WHERE id = $1
+                    LIMIT 1
+                    `,
+                    [projectId]
+                );
+
+
+            if (
+                projectResult.rows.length === 0
+            ) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "المشروع غير موجود"
+
+                });
+            }
+
+
+            /* -------------------------------------------------
+               CHECK ENGINEER
+            ------------------------------------------------- */
+
+            const engineerResult =
+                await pool.query(
+                    `
+                    SELECT
+                        id,
+                        username,
+                        full_name,
+                        role,
+                        active
+
+                    FROM users
+
+                    WHERE
+                        id = $1
+                        AND role = 'engineer'
+
+                    LIMIT 1
+                    `,
+                    [engineerId]
+                );
+
+
+            if (
+                engineerResult.rows.length === 0
+            ) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "حساب المهندس غير موجود"
+
+                });
+            }
+
+
+            if (
+                !engineerResult.rows[0].active
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "حساب المهندس غير مفعل"
+
+                });
+            }
+
+
+            /* -------------------------------------------------
+               ASSIGN ENGINEER
+            ------------------------------------------------- */
+
+            await pool.query(
+                `
+                INSERT INTO project_engineers
+                (
+                    project_id,
+                    engineer_id,
+                    assigned_by
+                )
+
+                VALUES
+                (
+                    $1,
+                    $2,
+                    $3
+                )
+
+                ON CONFLICT
+                (
+                    project_id,
+                    engineer_id
+                )
+
+                DO NOTHING
+                `,
+                [
+                    projectId,
+                    engineerId,
+                    req.user.id
+                ]
+            );
+
+
+            /* -------------------------------------------------
+               UPDATE PROJECT ENGINEER NAME
+            ------------------------------------------------- */
+
+            await pool.query(
+                `
+                UPDATE projects
+
+                SET
+                    engineer_name = $1,
+                    updated_at = CURRENT_TIMESTAMP
+
+                WHERE id = $2
+                `,
+                [
+                    engineerResult.rows[0].full_name,
+                    projectId
+                ]
+            );
+
+
+            await logAction(
+                "تعيين مهندس",
+                "project",
+                projectId,
+                engineerResult.rows[0].full_name
+            );
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "تم تعيين المهندس للمشروع بنجاح",
+
+                project_id:
+                    projectId,
+
+                engineer: {
+
+                    id:
+                        engineerResult.rows[0].id,
+
+                    username:
+                        engineerResult.rows[0].username,
+
+                    full_name:
+                        engineerResult.rows[0].full_name
+
+                }
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "ASSIGN ENGINEER ERROR:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تعيين المهندس"
+
+            });
+
+        }
+    }
+);
 /* =========================================================
    ARCHIVE PROJECT
 ========================================================= */
