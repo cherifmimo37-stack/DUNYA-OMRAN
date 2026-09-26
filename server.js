@@ -6373,6 +6373,17 @@ app.post(
 
                     next_date || null,
 
+                    cleanText(notes)
+
+                ]);
+
+            res.status(201).json({
+
+                success: true,
+
+                maintenance:
+                    result.rows[0]
+
             });
 
         } catch (error) {
@@ -6395,7 +6406,6 @@ app.post(
 
     }
 );
-
 /* =========================================================
    PROJECT STAGES
 ========================================================= */
@@ -6540,7 +6550,7 @@ app.post(
 
                 ]);
 
-            res.status(201).json({
+                       res.status(201).json({
 
                 success: true,
 
@@ -6549,7 +6559,7 @@ app.post(
 
             });
 
-                       } catch (error) {
+        } catch (error) {
 
             console.error(
                 "CREATE STAGE ERROR:",
