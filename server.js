@@ -6248,39 +6248,7 @@ app.get(
 
     }
 );
-                cleanText(notes)
-
-            ]);
-
-        res.status(201).json({
-
-            success: true,
-
-            equipment:
-                result.rows[0]
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "CREATE EQUIPMENT ERROR:",
-            error
-        );
-
-        res.status(500).json({
-
-            success: false,
-
-            message:
-                "تعذر إضافة المعدة"
-
-        });
-
-    }
-
-});
-
+               
 /* =========================================================
    EQUIPMENT MAINTENANCE
 ========================================================= */
@@ -6404,17 +6372,6 @@ app.post(
                     numberValue(cost),
 
                     next_date || null,
-
-                    cleanText(notes)
-
-                ]);
-
-            res.status(201).json({
-
-                success: true,
-
-                maintenance:
-                    result.rows[0]
 
             });
 
@@ -6975,7 +6932,7 @@ app.post("/api/documents", async (req, res) => {
             error
         );
 
-        res.status(500).json({
+             res.status(500).json({
 
             success: false,
 
@@ -6987,23 +6944,25 @@ app.post("/api/documents", async (req, res) => {
     }
 
 });
+
+/* =========================================================
+   START SERVER
+========================================================= */
+
+async function startServer() {
+
+    try {
+
+        await initDatabase();
+
+        app.listen(
+            PORT,
+            () => {
+
+                console.log(
+                    `🏗️ DUNYA-OMRAN running on port ${PORT}`
                 );
 
-            }
-        );
-
-    } catch (error) {
-
-        console.error(
-            "START SERVER ERROR:",
-            error
-        );
-
-    }
-
-}
-
-startServer();
             }
         );
 
