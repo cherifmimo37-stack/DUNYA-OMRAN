@@ -3,188 +3,139 @@ const path = require("path");
 const { Pool } = require("pg");
 const crypto = require("crypto");
 const { promisify } = require("util");
-/* =========================================================
-   DATABASE INITIALIZATION
-========================================================= */
 
-async function initDatabase() {
-
-    if (!process.env.DUNYA_DATABASE_URL) {
-
-        console.log(
-            "⚠️ DUNYA_DATABASE_URL غير موجودة"
-        );
-
-        return;
-    }
-
-    try {
-
-
-    /* ---------------------------------------------------------
-       AUTHENTICATION TABLES
-    --------------------------------------------------------- */
-
-    await pool.query(`
-        CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-
-            username TEXT NOT NULL UNIQUE,
-
-            password_hash TEXT NOT NULL,
-
-            full_name TEXT NOT NULL,
-
-            role TEXT NOT NULL DEFAULT 'engineer',
-
-            active BOOLEAN NOT NULL DEFAULT TRUE,
-
-            created_at TIMESTAMPTZ
-                NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-            last_login TIMESTAMPTZ
-        )
-    `);
-
-
-    await pool.query(`
-        CREATE TABLE IF NOT EXISTS auth_tokens (
-            id SERIAL PRIMARY KEY,
-
-            user_id INTEGER NOT NULL
-                REFERENCES users(id)
-                ON DELETE CASCADE,
-
-            token_hash TEXT NOT NULL UNIQUE,
-
-            expires_at TIMESTAMPTZ NOT NULL,
-
-            created_at TIMESTAMPTZ
-                NOT NULL DEFAULT CURRENT_TIMESTAMP
-        )
-    `);
-
-
-    await pool.query(`
-        CREATE INDEX IF NOT EXISTS
-        idx_auth_tokens_user_id
-        ON auth_tokens(user_id)
-    `);
-
-
-    await pool.query(`
-        CREATE INDEX IF NOT EXISTS
-        idx_auth_tokens_expires_at
-        ON auth_tokens(expires_at)
-    `);
-
-       /* =========================================================
-   PROJECT ENGINEERS
-   ربط المشاريع بالمهندسين
-========================================================= */
-
-await pool.query(`
-    CREATE TABLE IF NOT EXISTS project_engineers (
-        id SERIAL PRIMARY KEY,
-
-        project_id INTEGER NOT NULL
-            REFERENCES projects(id)
-            ON DELETE CASCADE,
-
-        engineer_id INTEGER NOT NULL
-            REFERENCES users(id)
-            ON DELETE CASCADE,
-
-        assigned_at TIMESTAMPTZ
-            NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-        assigned_by INTEGER
-            REFERENCES users(id)
-            ON DELETE SET NULL,
-
-        UNIQUE (
-            project_id,
-            engineer_id
-        )
-    )
-`);
-
-await pool.query(`
-    CREATE INDEX IF NOT EXISTS
-    idx_project_engineers_project
-    ON project_engineers(project_id)
-`);
-
-await pool.query(`
-    CREATE INDEX IF NOT EXISTS
-    idx_project_engineers_engineer
-    ON project_engineers(engineer_id)
-`);
-       
-        /* ---------------------------------------------------------
-           PROJECTS
-        --------------------------------------------------------- */
 const scryptAsync = promisify(crypto.scrypt);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+const PORT =
+    process.env.PORT ||
+    3000;
+
 
 /* =========================================================
    EXPRESS
 ========================================================= */
 
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(
+    express.json({
+        limit: "10mb"
+    })
+);
+
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+app.use(
+    express.static(
+        path.join(
+            __dirname,
+            "public"
+        )
+    )
+);
+
 
 /* =========================================================
    POSTGRESQL
 ========================================================= */
 
-const pool = new Pool({
-    connectionString: process.env.DUNYA_DATABASE_URL,
-    ssl: process.env.DUNYA_DATABASE_URL
-        ? { rejectUnauthorized: false }
-        : false
-});
+const pool =
+    new Pool({
+        connectionString:
+            process.env.DUNYA_DATABASE_URL,
+
+        ssl:
+            process.env.DUNYA_DATABASE_URL
+                ? {
+                    rejectUnauthorized: false
+                }
+                : false
+    });
+
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function numberValue(value, fallback = 0) {
-    const n = Number(value);
-    return Number.isFinite(n) ? n : fallback;
+function numberValue(
+    value,
+    fallback = 0
+) {
+
+    const n =
+        Number(value);
+
+    return Number.isFinite(n)
+        ? n
+        : fallback;
 }
 
-function integerValue(value) {
-    const n = Number(value);
-    return Number.isInteger(n) ? n : null;
+
+function integerValue(
+    value
+) {
+
+    const n =
+        Number(value);
+
+    return Number.isInteger(n)
+        ? n
+        : null;
 }
 
-function cleanText(value) {
-    if (value === undefined || value === null) return null;
 
-    const text = String(value).trim();
+function cleanText(
+    value
+) {
 
-    return text ? text : null;
+    if (
+        value === undefined ||
+        value === null
+    ) {
+
+        return null;
+    }
+
+    const text =
+        String(value).trim();
+
+    return text
+        ? text
+        : null;
 }
 
-function progressValue(value) {
+
+function progressValue(
+    value
+) {
+
     return Math.min(
         100,
         Math.max(
             0,
-            numberValue(value, 0)
+            numberValue(
+                value,
+                0
+            )
         )
     );
 }
+
 
 /* =========================================================
    AUDIT LOG
 ========================================================= */
 
-async function logAction(action, entity, entityId = null, details = null) {
+async function logAction(
+    action,
+    entity,
+    entityId = null,
+    details = null
+) {
 
     try {
 
@@ -213,11 +164,14 @@ async function logAction(action, entity, entityId = null, details = null) {
     }
 }
 
+
 /* =========================================================
    AUTHENTICATION / SECURITY
 ========================================================= */
 
-function hashToken(token) {
+function hashToken(
+    token
+) {
 
     return crypto
         .createHash("sha256")
@@ -226,7 +180,9 @@ function hashToken(token) {
 }
 
 
-async function hashPassword(password) {
+async function hashPassword(
+    password
+) {
 
     const salt =
         crypto
@@ -337,6 +293,7 @@ function createAuthToken() {
         .toString("hex");
 }
 
+
 /* =========================================================
    DATABASE INITIALIZATION
 ========================================================= */
@@ -412,249 +369,369 @@ async function initDatabase() {
         ON auth_tokens(expires_at)
     `);
 
-        /* ---------------------------------------------------------
-           PROJECTS
-        --------------------------------------------------------- */
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS projects (
-                id SERIAL PRIMARY KEY,
-                name VARCHAR(200) NOT NULL,
-                location VARCHAR(300),
-                client_name VARCHAR(200),
-                engineer_name VARCHAR(200),
-                start_date DATE,
-                end_date DATE,
-                budget NUMERIC(14,2) DEFAULT 0,
-                progress NUMERIC(5,2) DEFAULT 0,
-                status VARCHAR(50) DEFAULT 'جاري',
-                notes TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        `);
-/* =========================================================
-   PROJECT ENGINEERS
-   ربط المشاريع بحسابات المهندسين
-========================================================= */
+    /* ---------------------------------------------------------
+       PROJECTS
+    --------------------------------------------------------- */
 
-await pool.query(`
-    CREATE TABLE IF NOT EXISTS project_engineers (
-        id SERIAL PRIMARY KEY,
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS projects (
+            id SERIAL PRIMARY KEY,
 
-        project_id INTEGER NOT NULL
-            REFERENCES projects(id)
-            ON DELETE CASCADE,
+            name VARCHAR(200) NOT NULL,
 
-        engineer_id INTEGER NOT NULL
-            REFERENCES users(id)
-            ON DELETE CASCADE,
+            location VARCHAR(300),
 
-        assigned_at TIMESTAMPTZ
-            NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            client_name VARCHAR(200),
 
-        assigned_by INTEGER
-            REFERENCES users(id)
-            ON DELETE SET NULL,
+            engineer_name VARCHAR(200),
 
-        UNIQUE (
-            project_id,
-            engineer_id
+            start_date DATE,
+
+            end_date DATE,
+
+            budget NUMERIC(14,2)
+                DEFAULT 0,
+
+            progress NUMERIC(5,2)
+                DEFAULT 0,
+
+            status VARCHAR(50)
+                DEFAULT 'جاري',
+
+            notes TEXT,
+
+            created_at TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP,
+
+            updated_at TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP
         )
-    )
-`);
+    `);
 
 
-await pool.query(`
-    CREATE INDEX IF NOT EXISTS
-    idx_project_engineers_project
-    ON project_engineers(project_id)
-`);
+    /* =========================================================
+       PROJECT ENGINEERS
+       ربط المشاريع بحسابات المهندسين
+    ========================================================= */
 
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS project_engineers (
+            id SERIAL PRIMARY KEY,
 
-await pool.query(`
-    CREATE INDEX IF NOT EXISTS
-    idx_project_engineers_engineer
-    ON project_engineers(engineer_id)
-`);
-        /* ---------------------------------------------------------
-           WORKERS
-        --------------------------------------------------------- */
+            project_id INTEGER NOT NULL
+                REFERENCES projects(id)
+                ON DELETE CASCADE,
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS workers (
-                id SERIAL PRIMARY KEY,
-                name VARCHAR(200) NOT NULL,
-                phone VARCHAR(50),
-                job VARCHAR(150),
-                salary NUMERIC(12,2) DEFAULT 0,
-                active BOOLEAN DEFAULT TRUE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            engineer_id INTEGER NOT NULL
+                REFERENCES users(id)
+                ON DELETE CASCADE,
+
+            assigned_at TIMESTAMPTZ
+                NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+            assigned_by INTEGER
+                REFERENCES users(id)
+                ON DELETE SET NULL,
+
+            UNIQUE (
+                project_id,
+                engineer_id
             )
-        `);
+        )
+    `);
 
-        /* ---------------------------------------------------------
-           PROJECT WORKERS
-        --------------------------------------------------------- */
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS project_workers (
-                id SERIAL PRIMARY KEY,
-                project_id INTEGER NOT NULL
-                    REFERENCES projects(id)
-                    ON DELETE CASCADE,
-                worker_id INTEGER NOT NULL
-                    REFERENCES workers(id)
-                    ON DELETE CASCADE,
-                role VARCHAR(150),
-                joined_at DATE DEFAULT CURRENT_DATE,
-                UNIQUE(project_id, worker_id)
+    await pool.query(`
+        CREATE INDEX IF NOT EXISTS
+        idx_project_engineers_project
+        ON project_engineers(project_id)
+    `);
+
+
+    await pool.query(`
+        CREATE INDEX IF NOT EXISTS
+        idx_project_engineers_engineer
+        ON project_engineers(engineer_id)
+    `);
+
+
+    /* ---------------------------------------------------------
+       WORKERS
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS workers (
+            id SERIAL PRIMARY KEY,
+
+            name VARCHAR(200) NOT NULL,
+
+            phone VARCHAR(50),
+
+            job VARCHAR(150),
+
+            salary NUMERIC(12,2)
+                DEFAULT 0,
+
+            active BOOLEAN
+                DEFAULT TRUE,
+
+            created_at TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+
+    /* ---------------------------------------------------------
+       PROJECT WORKERS
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS project_workers (
+            id SERIAL PRIMARY KEY,
+
+            project_id INTEGER NOT NULL
+                REFERENCES projects(id)
+                ON DELETE CASCADE,
+
+            worker_id INTEGER NOT NULL
+                REFERENCES workers(id)
+                ON DELETE CASCADE,
+
+            role VARCHAR(150),
+
+            joined_at DATE
+                DEFAULT CURRENT_DATE,
+
+            UNIQUE(
+                project_id,
+                worker_id
             )
-        `);
+        )
+    `);
 
-        /* ---------------------------------------------------------
-           MATERIALS
-        --------------------------------------------------------- */
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS materials (
-                id SERIAL PRIMARY KEY,
-                name VARCHAR(200) NOT NULL,
-                unit VARCHAR(50),
-                description TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    /* ---------------------------------------------------------
+       MATERIALS
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS materials (
+            id SERIAL PRIMARY KEY,
+
+            name VARCHAR(200) NOT NULL,
+
+            unit VARCHAR(50),
+
+            description TEXT,
+
+            created_at TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+
+    /* ---------------------------------------------------------
+       PROJECT MATERIALS
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS project_materials (
+            id SERIAL PRIMARY KEY,
+
+            project_id INTEGER NOT NULL
+                REFERENCES projects(id)
+                ON DELETE CASCADE,
+
+            material_id INTEGER NOT NULL
+                REFERENCES materials(id)
+                ON DELETE CASCADE,
+
+            quantity NUMERIC(14,3)
+                DEFAULT 0,
+
+            used_quantity NUMERIC(14,3)
+                DEFAULT 0,
+
+            unit_price NUMERIC(14,2)
+                DEFAULT 0,
+
+            supplier VARCHAR(200),
+
+            UNIQUE(
+                project_id,
+                material_id
             )
-        `);
+        )
+    `);
 
-        /* ---------------------------------------------------------
-           PROJECT MATERIALS
-        --------------------------------------------------------- */
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS project_materials (
-                id SERIAL PRIMARY KEY,
-                project_id INTEGER NOT NULL
-                    REFERENCES projects(id)
-                    ON DELETE CASCADE,
-                material_id INTEGER NOT NULL
-                    REFERENCES materials(id)
-                    ON DELETE CASCADE,
-                quantity NUMERIC(14,3) DEFAULT 0,
-                used_quantity NUMERIC(14,3) DEFAULT 0,
-                unit_price NUMERIC(14,2) DEFAULT 0,
-                supplier VARCHAR(200),
-                UNIQUE(project_id, material_id)
+    /* ---------------------------------------------------------
+       STOCK MOVEMENTS
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS stock_movements (
+            id SERIAL PRIMARY KEY,
+
+            project_id INTEGER
+                REFERENCES projects(id)
+                ON DELETE SET NULL,
+
+            material_id INTEGER NOT NULL
+                REFERENCES materials(id)
+                ON DELETE CASCADE,
+
+            movement_type VARCHAR(20)
+                NOT NULL,
+
+            quantity NUMERIC(14,3)
+                NOT NULL,
+
+            unit_price NUMERIC(14,2)
+                DEFAULT 0,
+
+            supplier VARCHAR(200),
+
+            notes TEXT,
+
+            movement_date TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+
+    /* ---------------------------------------------------------
+       ATTENDANCE
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS attendance (
+            id SERIAL PRIMARY KEY,
+
+            project_id INTEGER NOT NULL
+                REFERENCES projects(id)
+                ON DELETE CASCADE,
+
+            worker_id INTEGER NOT NULL
+                REFERENCES workers(id)
+                ON DELETE CASCADE,
+
+            attendance_date DATE
+                DEFAULT CURRENT_DATE,
+
+            status VARCHAR(30)
+                DEFAULT 'حاضر',
+
+            hours NUMERIC(5,2)
+                DEFAULT 0,
+
+            notes TEXT,
+
+            UNIQUE(
+                project_id,
+                worker_id,
+                attendance_date
             )
-        `);
+        )
+    `);
 
-        /* ---------------------------------------------------------
-           STOCK MOVEMENTS
-        --------------------------------------------------------- */
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS stock_movements (
-                id SERIAL PRIMARY KEY,
-                project_id INTEGER
-                    REFERENCES projects(id)
-                    ON DELETE SET NULL,
-                material_id INTEGER NOT NULL
-                    REFERENCES materials(id)
-                    ON DELETE CASCADE,
-                movement_type VARCHAR(20) NOT NULL,
-                quantity NUMERIC(14,3) NOT NULL,
-                unit_price NUMERIC(14,2) DEFAULT 0,
-                supplier VARCHAR(200),
-                notes TEXT,
-                movement_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        `);
+    /* ---------------------------------------------------------
+       EXPENSES
+    --------------------------------------------------------- */
 
-        /* ---------------------------------------------------------
-           ATTENDANCE
-        --------------------------------------------------------- */
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS expenses (
+            id SERIAL PRIMARY KEY,
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS attendance (
-                id SERIAL PRIMARY KEY,
-                project_id INTEGER NOT NULL
-                    REFERENCES projects(id)
-                    ON DELETE CASCADE,
-                worker_id INTEGER NOT NULL
-                    REFERENCES workers(id)
-                    ON DELETE CASCADE,
-                attendance_date DATE DEFAULT CURRENT_DATE,
-                status VARCHAR(30) DEFAULT 'حاضر',
-                hours NUMERIC(5,2) DEFAULT 0,
-                notes TEXT,
-                UNIQUE(
-                    project_id,
-                    worker_id,
-                    attendance_date
-                )
-            )
-        `);
+            project_id INTEGER
+                REFERENCES projects(id)
+                ON DELETE CASCADE,
 
-        /* ---------------------------------------------------------
-           EXPENSES
-        --------------------------------------------------------- */
+            category VARCHAR(100),
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS expenses (
-                id SERIAL PRIMARY KEY,
-                project_id INTEGER
-                    REFERENCES projects(id)
-                    ON DELETE CASCADE,
-                category VARCHAR(100),
-                description TEXT,
-                amount NUMERIC(14,2) NOT NULL,
-                expense_date DATE DEFAULT CURRENT_DATE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        `);
+            description TEXT,
 
-        /* ---------------------------------------------------------
-           PAYMENTS
-        --------------------------------------------------------- */
+            amount NUMERIC(14,2)
+                NOT NULL,
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS payments (
-                id SERIAL PRIMARY KEY,
-                project_id INTEGER
-                    REFERENCES projects(id)
-                    ON DELETE CASCADE,
-                description TEXT,
-                amount NUMERIC(14,2) NOT NULL,
-                payment_type VARCHAR(30),
-                payment_date DATE DEFAULT CURRENT_DATE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        `);
+            expense_date DATE
+                DEFAULT CURRENT_DATE,
 
-        /* ---------------------------------------------------------
+            created_at TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+
+    /* ---------------------------------------------------------
+       PAYMENTS
+    --------------------------------------------------------- */
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS payments (
+            id SERIAL PRIMARY KEY,
+
+            project_id INTEGER
+                REFERENCES projects(id)
+                ON DELETE CASCADE,
+
+            description TEXT,
+
+            amount NUMERIC(14,2)
+                NOT NULL,
+
+            payment_type VARCHAR(30),
+
+            payment_date DATE
+                DEFAULT CURRENT_DATE,
+
+            created_at TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+               /* ---------------------------------------------------------
            DAILY REPORTS
         --------------------------------------------------------- */
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS daily_reports (
                 id SERIAL PRIMARY KEY,
+
                 project_id INTEGER NOT NULL
                     REFERENCES projects(id)
                     ON DELETE CASCADE,
+
                 worker_id INTEGER
                     REFERENCES workers(id)
                     ON DELETE SET NULL,
+
                 engineer_name VARCHAR(200),
-                report_date DATE DEFAULT CURRENT_DATE,
+
+                report_date DATE
+                    DEFAULT CURRENT_DATE,
+
                 title VARCHAR(250),
+
                 description TEXT,
+
                 quantity VARCHAR(150),
+
                 materials_used TEXT,
+
                 problems TEXT,
+
                 engineer_review TEXT,
-                status VARCHAR(30) DEFAULT 'في الانتظار',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                status VARCHAR(30)
+                    DEFAULT 'في الانتظار',
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            REPORT PHOTOS
@@ -663,13 +740,18 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS report_photos (
                 id SERIAL PRIMARY KEY,
+
                 report_id INTEGER NOT NULL
                     REFERENCES daily_reports(id)
                     ON DELETE CASCADE,
+
                 image_url TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            APPOINTMENTS
@@ -678,17 +760,26 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS appointments (
                 id SERIAL PRIMARY KEY,
+
                 project_id INTEGER
                     REFERENCES projects(id)
                     ON DELETE CASCADE,
+
                 title VARCHAR(250) NOT NULL,
+
                 description TEXT,
+
                 appointment_date DATE,
+
                 appointment_time TIME,
+
                 location VARCHAR(300),
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            MEETINGS
@@ -697,15 +788,22 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS meetings (
                 id SERIAL PRIMARY KEY,
+
                 project_id INTEGER NOT NULL
                     REFERENCES projects(id)
                     ON DELETE CASCADE,
+
                 title VARCHAR(250) NOT NULL,
+
                 description TEXT,
+
                 meeting_date TIMESTAMP,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            MESSAGES
@@ -714,15 +812,22 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS messages (
                 id SERIAL PRIMARY KEY,
+
                 project_id INTEGER NOT NULL
                     REFERENCES projects(id)
                     ON DELETE CASCADE,
+
                 sender_name VARCHAR(200) NOT NULL,
+
                 sender_role VARCHAR(100),
+
                 message TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            NOTIFICATIONS
@@ -731,16 +836,25 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS notifications (
                 id SERIAL PRIMARY KEY,
+
                 project_id INTEGER
                     REFERENCES projects(id)
                     ON DELETE CASCADE,
+
                 recipient_name VARCHAR(200),
+
                 title VARCHAR(250),
+
                 message TEXT,
-                is_read BOOLEAN DEFAULT FALSE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                is_read BOOLEAN
+                    DEFAULT FALSE,
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            AUDIT LOGS
@@ -749,13 +863,20 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS audit_logs (
                 id SERIAL PRIMARY KEY,
+
                 action VARCHAR(100),
+
                 entity VARCHAR(100),
+
                 entity_id INTEGER,
+
                 details TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            CLIENTS
@@ -764,14 +885,22 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS clients (
                 id SERIAL PRIMARY KEY,
+
                 name VARCHAR(200) NOT NULL,
+
                 phone VARCHAR(50),
+
                 email VARCHAR(200),
+
                 address VARCHAR(300),
+
                 notes TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            SUPPLIERS
@@ -780,14 +909,22 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS suppliers (
                 id SERIAL PRIMARY KEY,
+
                 name VARCHAR(200) NOT NULL,
+
                 phone VARCHAR(50),
+
                 email VARCHAR(200),
+
                 address VARCHAR(300),
+
                 notes TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            EQUIPMENT
@@ -796,19 +933,32 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS equipment (
                 id SERIAL PRIMARY KEY,
+
                 name VARCHAR(200) NOT NULL,
+
                 type VARCHAR(150),
+
                 registration VARCHAR(100),
-                status VARCHAR(50) DEFAULT 'متاح',
+
+                status VARCHAR(50)
+                    DEFAULT 'متاح',
+
                 project_id INTEGER
                     REFERENCES projects(id)
                     ON DELETE SET NULL,
+
                 purchase_date DATE,
-                purchase_price NUMERIC(14,2) DEFAULT 0,
+
+                purchase_price NUMERIC(14,2)
+                    DEFAULT 0,
+
                 notes TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            EQUIPMENT MAINTENANCE
@@ -817,17 +967,28 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS equipment_maintenance (
                 id SERIAL PRIMARY KEY,
+
                 equipment_id INTEGER NOT NULL
                     REFERENCES equipment(id)
                     ON DELETE CASCADE,
-                maintenance_date DATE DEFAULT CURRENT_DATE,
+
+                maintenance_date DATE
+                    DEFAULT CURRENT_DATE,
+
                 description TEXT,
-                cost NUMERIC(14,2) DEFAULT 0,
+
+                cost NUMERIC(14,2)
+                    DEFAULT 0,
+
                 next_date DATE,
+
                 notes TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            PROJECT STAGES
@@ -836,18 +997,30 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS project_stages (
                 id SERIAL PRIMARY KEY,
+
                 project_id INTEGER NOT NULL
                     REFERENCES projects(id)
                     ON DELETE CASCADE,
+
                 name VARCHAR(200) NOT NULL,
-                progress NUMERIC(5,2) DEFAULT 0,
-                status VARCHAR(50) DEFAULT 'لم يبدأ',
+
+                progress NUMERIC(5,2)
+                    DEFAULT 0,
+
+                status VARCHAR(50)
+                    DEFAULT 'لم يبدأ',
+
                 start_date DATE,
+
                 end_date DATE,
+
                 notes TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            WORKER PAYMENTS
@@ -856,19 +1029,31 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS worker_payments (
                 id SERIAL PRIMARY KEY,
+
                 worker_id INTEGER NOT NULL
                     REFERENCES workers(id)
                     ON DELETE CASCADE,
+
                 project_id INTEGER
                     REFERENCES projects(id)
                     ON DELETE SET NULL,
-                amount NUMERIC(14,2) NOT NULL,
-                payment_type VARCHAR(50) DEFAULT 'أجرة',
-                payment_date DATE DEFAULT CURRENT_DATE,
+
+                amount NUMERIC(14,2)
+                    NOT NULL,
+
+                payment_type VARCHAR(50)
+                    DEFAULT 'أجرة',
+
+                payment_date DATE
+                    DEFAULT CURRENT_DATE,
+
                 notes TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* ---------------------------------------------------------
            DOCUMENTS
@@ -877,16 +1062,24 @@ await pool.query(`
         await pool.query(`
             CREATE TABLE IF NOT EXISTS documents (
                 id SERIAL PRIMARY KEY,
+
                 project_id INTEGER
                     REFERENCES projects(id)
                     ON DELETE CASCADE,
+
                 title VARCHAR(250) NOT NULL,
+
                 document_type VARCHAR(100),
+
                 file_url TEXT,
+
                 notes TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
 
         /* =========================================================
            SAFE DATABASE UPDATES
@@ -897,31 +1090,42 @@ await pool.query(`
             ADD COLUMN IF NOT EXISTS client_id INTEGER
         `);
 
+
         await pool.query(`
             ALTER TABLE projects
-            ADD COLUMN IF NOT EXISTS archived BOOLEAN DEFAULT FALSE
+            ADD COLUMN IF NOT EXISTS archived BOOLEAN
+                DEFAULT FALSE
         `);
+
 
         await pool.query(`
             ALTER TABLE materials
-            ADD COLUMN IF NOT EXISTS minimum_stock NUMERIC(14,3) DEFAULT 0
+            ADD COLUMN IF NOT EXISTS minimum_stock
+                NUMERIC(14,3)
+                DEFAULT 0
         `);
+
 
         await pool.query(`
             ALTER TABLE materials
-            ADD COLUMN IF NOT EXISTS default_price NUMERIC(14,2) DEFAULT 0
+            ADD COLUMN IF NOT EXISTS default_price
+                NUMERIC(14,2)
+                DEFAULT 0
         `);
+
 
         /* =========================================================
            INDEXES
         ========================================================= */
 
         await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_projects_status
+            CREATE INDEX IF NOT EXISTS
+            idx_projects_status
             ON projects(status)
         `);
 
-                /* =========================================================
+
+        /* =========================================================
            CREATE INITIAL ADMIN
         ========================================================= */
 
@@ -930,10 +1134,12 @@ await pool.query(`
                 process.env.ADMIN_USERNAME
             );
 
+
         const adminPassword =
             String(
                 process.env.ADMIN_PASSWORD || ""
             );
+
 
         const adminName =
             cleanText(
@@ -947,7 +1153,9 @@ await pool.query(`
             adminPassword
         ) {
 
-            if (adminPassword.length < 8) {
+            if (
+                adminPassword.length < 8
+            ) {
 
                 console.warn(
                     "⚠️ ADMIN_PASSWORD يجب أن تكون 8 أحرف على الأقل"
@@ -964,142 +1172,142 @@ await pool.query(`
                               LOWER($1)
                         LIMIT 1
                         `,
-                        [adminUsername]
-                    );
-
-
-                if (
-                    existingAdmin.rows.length === 0
-                ) {
-
-                    const passwordHash =
-                        await hashPassword(
-                            adminPassword
-                        );
-
-
-                    await pool.query(
-                        `
-                        INSERT INTO users
-                        (
-                            username,
-                            password_hash,
-                            full_name,
-                            role,
-                            active
-                        )
-
-                        VALUES
-                        (
-                            $1,
-                            $2,
-                            $3,
-                            'admin',
-                            TRUE
-                        )
-                        `,
                         [
-                            adminUsername,
-                            passwordHash,
-                            adminName
+                            adminUsername
                         ]
                     );
+                       if (
+            existingAdmin.rows.length === 0
+        ) {
+
+            const passwordHash =
+                await hashPassword(
+                    adminPassword
+                );
 
 
-                    console.log(
-                        "👑 تم إنشاء حساب المدير:",
-                        adminUsername
-                    );
+            await pool.query(
+                `
+                INSERT INTO users
+                (
+                    username,
+                    password_hash,
+                    full_name,
+                    role,
+                    active
+                )
 
-                } else {
+                VALUES
+                (
+                    $1,
+                    $2,
+                    $3,
+                    'admin',
+                    TRUE
+                )
+                `,
+                [
+                    adminUsername,
+                    passwordHash,
+                    adminName
+                ]
+            );
 
-                    console.log(
-                        "👑 حساب المدير موجود مسبقاً:",
-                        adminUsername
-                    );
-                }
-            }
+
+            console.log(
+                "👑 تم إنشاء حساب المدير:",
+                adminUsername
+            );
 
         } else {
 
-            console.warn(
-                "⚠️ ADMIN_USERNAME أو ADMIN_PASSWORD غير موجودين في Render"
+            console.log(
+                "👑 حساب المدير موجود مسبقاً:",
+                adminUsername
             );
         }
-
-
-        console.log(
-            "✅ PostgreSQL database initialized successfully"
-        );
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_projects_client
-            ON projects(client_id)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_workers_active
-            ON workers(active)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_stock_material
-            ON stock_movements(material_id)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_stock_project
-            ON stock_movements(project_id)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_expenses_project
-            ON expenses(project_id)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_payments_project
-            ON payments(project_id)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_notifications_read
-            ON notifications(is_read)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_audit_created
-            ON audit_logs(created_at)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_attendance_date
-            ON attendance(attendance_date)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_appointments_date
-            ON appointments(appointment_date)
-        `);
-
-        await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_reports_project
-            ON daily_reports(project_id)
-        `);
-
-        console.log(
-            "✅ PostgreSQL database initialized successfully"
-        );
-
-    } catch (error) {
-
-        console.error(
-            "❌ Database initialization error:",
-            error.message
-        );
-
-        throw error;
     }
+
+} else {
+
+    console.warn(
+        "⚠️ ADMIN_USERNAME أو ADMIN_PASSWORD غير موجودين في Render"
+    );
+}
+
+
+console.log(
+    "✅ PostgreSQL database initialized successfully"
+);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_projects_client
+    ON projects(client_id)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_workers_active
+    ON workers(active)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_stock_material
+    ON stock_movements(material_id)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_stock_project
+    ON stock_movements(project_id)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_expenses_project
+    ON expenses(project_id)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_payments_project
+    ON payments(project_id)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_notifications_read
+    ON notifications(is_read)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_audit_created
+    ON audit_logs(created_at)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_attendance_date
+    ON attendance(attendance_date)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_appointments_date
+    ON appointments(appointment_date)
+`);
+
+await pool.query(`
+    CREATE INDEX IF NOT EXISTS idx_reports_project
+    ON daily_reports(project_id)
+`);
+
+console.log(
+    "✅ PostgreSQL database initialized successfully"
+);
+
+} catch (error) {
+
+    console.error(
+        "❌ Database initialization error:",
+        error.message
+    );
+
+    throw error;
+}
 }
 
 /* =========================================================
@@ -1269,9 +1477,7 @@ function requireRole(...roles) {
 
         next();
     };
-}
-
-
+   }
 
 /* =========================================================
    LOGIN
@@ -1594,6 +1800,8 @@ app.post(
         }
     }
 );
+
+
 /* =========================================================
    HEALTH
 ========================================================= */
@@ -1619,8 +1827,7 @@ app.get("/api/health", async (req, res) => {
             serverTime: result.rows[0].time
 
         });
-
-    } catch (error) {
+           } catch (error) {
 
         res.status(500).json({
 
@@ -1970,8 +2177,7 @@ app.post("/api/projects", async (req, res) => {
             return res.status(400).json({
 
                 success: false,
-
-                message:
+                               message:
                     "اسم المشروع مطلوب"
 
             });
@@ -2322,7 +2528,7 @@ app.put(
 ========================================================= */
 
 app.get(
-    "/api/projects/:id/full",
+       "/api/projects/:id/full",
     async (req, res) => {
 
         try {
@@ -2672,8 +2878,7 @@ app.get("/api/projects/:id", async (req, res) => {
             await pool.query(`
 
                 SELECT *
-
-                FROM projects
+                                FROM projects
 
                 WHERE id = $1
 
@@ -3022,10 +3227,7 @@ app.put("/api/workers/:id", async (req, res) => {
         ) {
 
             return res.status(400).json({
-
-                success: false,
-
-                message:
+                               message:
                     "اسم العامل مطلوب"
 
             });
@@ -3375,9 +3577,7 @@ app.put(
 
                     message:
                         "العامل غير مرتبط بهذا المشروع"
-
-                });
-            }
+                                   });
 
             res.json({
 
@@ -3725,8 +3925,7 @@ app.put("/api/materials/:id", async (req, res) => {
             `, [
 
                 String(name || "").trim(),
-
-                cleanText(unit),
+                               cleanText(unit),
 
                 cleanText(description),
 
@@ -4076,8 +4275,7 @@ app.get("/api/expenses", async (req, res) => {
         );
 
         res.status(500).json({
-
-            success: false,
+                       success: false,
 
             message:
                 "تعذر تحميل المصاريف"
@@ -4427,8 +4625,7 @@ app.get("/api/attendance", async (req, res) => {
             );
 
         res.json({
-
-            success: true,
+                       success: true,
 
             attendance:
                 result.rows
@@ -4779,7 +4976,7 @@ app.get("/api/appointments", async (req, res) => {
     try {
 
         const result =
-            await pool.query(`
+                       await pool.query(`
 
                 SELECT
 
@@ -5129,357 +5326,7 @@ app.get("/api/messages", async (req, res) => {
                 WHERE project_id = $1
 
                 ORDER BY created_at ASC
-
-            `, [projectId]);
-
-        res.json({
-
-            success: true,
-
-            messages:
-                result.rows
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "GET MESSAGES ERROR:",
-            error
-        );
-
-        res.status(500).json({
-
-            success: false,
-
-            message:
-                "تعذر تحميل الرسائل"
-
-        });
-
-    }
-
-});
-
-app.post("/api/messages", async (req, res) => {
-
-    try {
-
-        const {
-            project_id,
-            sender_name,
-            sender_role,
-            message
-        } = req.body;
-
-        if (
-            !integerValue(project_id) ||
-            !cleanText(sender_name) ||
-            !cleanText(message)
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "بيانات الرسالة ناقصة"
-
-            });
-
-        }
-
-        const result =
-            await pool.query(`
-
-                INSERT INTO messages (
-
-                    project_id,
-                    sender_name,
-                    sender_role,
-                    message
-
-                )
-
-                VALUES ($1,$2,$3,$4)
-
-                RETURNING *
-
-            `, [
-
-                integerValue(project_id),
-
-                cleanText(sender_name),
-
-                cleanText(sender_role),
-
-                cleanText(message)
-
-            ]);
-
-        res.status(201).json({
-
-            success: true,
-
-            message:
-                result.rows[0]
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "CREATE MESSAGE ERROR:",
-            error
-        );
-
-        res.status(500).json({
-
-            success: false,
-
-            message:
-                "تعذر إرسال الرسالة"
-
-        });
-
-    }
-
-});
-
-/* =========================================================
-   NOTIFICATIONS
-========================================================= */
-
-app.get(
-    "/api/notifications",
-    async (req, res) => {
-
-        try {
-
-            const result =
-                await pool.query(`
-
-                    SELECT *
-
-                    FROM notifications
-
-                    ORDER BY created_at DESC
-
-                    LIMIT 100
-
-                `);
-
-            res.json({
-
-                success: true,
-
-                notifications:
-                    result.rows
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "GET NOTIFICATIONS ERROR:",
-                error
-            );
-
-            res.status(500).json({
-
-                success: false,
-
-                message:
-                    "تعذر تحميل الإشعارات"
-
-            });
-
-        }
-
-    }
-);
-
-app.post(
-    "/api/notifications",
-    async (req, res) => {
-
-        try {
-
-            const {
-                project_id,
-                recipient_name,
-                title,
-                message
-            } = req.body;
-
-            const result =
-                await pool.query(`
-
-                    INSERT INTO notifications (
-
-                        project_id,
-                        recipient_name,
-                        title,
-                        message
-
-                    )
-
-                    VALUES ($1,$2,$3,$4)
-
-                    RETURNING *
-
-                `, [
-
-                    integerValue(project_id),
-
-                    cleanText(recipient_name),
-
-                    cleanText(title),
-
-                    cleanText(message)
-
-                ]);
-
-            res.status(201).json({
-
-                success: true,
-
-                notification:
-                    result.rows[0]
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "CREATE NOTIFICATION ERROR:",
-                error
-            );
-
-            res.status(500).json({
-
-                success: false,
-
-                message:
-                    "تعذر إنشاء الإشعار"
-
-            });
-
-        }
-
-    }
-);
-
-app.put(
-    "/api/notifications/:id/read",
-    async (req, res) => {
-
-        try {
-
-            const id =
-                integerValue(req.params.id);
-
-            const result =
-                await pool.query(`
-
-                    UPDATE notifications
-
-                    SET is_read = TRUE
-
-                    WHERE id = $1
-
-                    RETURNING *
-
-                `, [id]);
-
-            if (!result.rows.length) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "الإشعار غير موجود"
-
-                });
-
-            }
-
-            res.json({
-
-                success: true,
-
-                notification:
-                    result.rows[0]
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "READ NOTIFICATION ERROR:",
-                error
-            );
-
-            res.status(500).json({
-
-                success: false,
-
-                message:
-                    "تعذر تحديث الإشعار"
-
-            });
-
-        }
-
-    }
-);
-
-/* =========================================================
-   CLIENTS
-========================================================= */
-
-app.get("/api/clients", async (req, res) => {
-
-    try {
-
-        const result =
-            await pool.query(`
-
-                SELECT *
-
-                FROM clients
-
-                ORDER BY created_at DESC
-
-            `);
-
-        res.json({
-
-            success: true,
-
-            clients:
-                result.rows
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "GET CLIENTS ERROR:",
-            error
-        );
-
-        res.status(500).json({
-
-            success: false,
-
-            message:
-                "تعذر تحميل العملاء"
-
-        });
-
-    }
+                    }
 
 });
 
@@ -5492,13 +5339,10 @@ app.post("/api/clients", async (req, res) => {
             phone,
             email,
             address,
-            notes
+            company
         } = req.body;
 
-        if (
-            !name ||
-            !String(name).trim()
-        ) {
+        if (!cleanText(name)) {
 
             return res.status(400).json({
 
@@ -5515,13 +5359,11 @@ app.post("/api/clients", async (req, res) => {
             await pool.query(`
 
                 INSERT INTO clients (
-
                     name,
                     phone,
                     email,
                     address,
-                    notes
-
+                    company
                 )
 
                 VALUES ($1,$2,$3,$4,$5)
@@ -5530,7 +5372,7 @@ app.post("/api/clients", async (req, res) => {
 
             `, [
 
-                String(name).trim(),
+                cleanText(name),
 
                 cleanText(phone),
 
@@ -5538,7 +5380,7 @@ app.post("/api/clients", async (req, res) => {
 
                 cleanText(address),
 
-                cleanText(notes)
+                cleanText(company)
 
             ]);
 
@@ -5570,6 +5412,158 @@ app.post("/api/clients", async (req, res) => {
     }
 
 });
+
+
+app.put("/api/clients/:id", async (req, res) => {
+
+    try {
+
+        const id =
+            integerValue(req.params.id);
+
+        const {
+            name,
+            phone,
+            email,
+            address,
+            company
+        } = req.body;
+
+        const result =
+            await pool.query(`
+
+                UPDATE clients
+
+                SET
+                    name = $1,
+                    phone = $2,
+                    email = $3,
+                    address = $4,
+                    company = $5
+
+                WHERE id = $6
+
+                RETURNING *
+
+            `, [
+
+                cleanText(name),
+
+                cleanText(phone),
+
+                cleanText(email),
+
+                cleanText(address),
+
+                cleanText(company),
+
+                id
+
+            ]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "العميل غير موجود"
+
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+
+            client:
+                result.rows[0]
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "UPDATE CLIENT ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر تعديل العميل"
+
+        });
+
+    }
+
+});
+
+
+app.delete("/api/clients/:id", async (req, res) => {
+
+    try {
+
+        const id =
+            integerValue(req.params.id);
+
+        const result =
+            await pool.query(`
+
+                DELETE FROM clients
+
+                WHERE id = $1
+
+                RETURNING *
+
+            `, [id]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "العميل غير موجود"
+
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+
+            message:
+                "تم حذف العميل"
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "DELETE CLIENT ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر حذف العميل"
+
+        });
+
+    }
+
+});
+
 
 /* =========================================================
    SUPPLIERS
@@ -5619,6 +5613,7 @@ app.get("/api/suppliers", async (req, res) => {
 
 });
 
+
 app.post("/api/suppliers", async (req, res) => {
 
     try {
@@ -5628,13 +5623,10 @@ app.post("/api/suppliers", async (req, res) => {
             phone,
             email,
             address,
-            notes
+            company
         } = req.body;
 
-        if (
-            !name ||
-            !String(name).trim()
-        ) {
+        if (!cleanText(name)) {
 
             return res.status(400).json({
 
@@ -5651,13 +5643,11 @@ app.post("/api/suppliers", async (req, res) => {
             await pool.query(`
 
                 INSERT INTO suppliers (
-
                     name,
                     phone,
                     email,
                     address,
-                    notes
-
+                    company
                 )
 
                 VALUES ($1,$2,$3,$4,$5)
@@ -5666,7 +5656,7 @@ app.post("/api/suppliers", async (req, res) => {
 
             `, [
 
-                String(name).trim(),
+                cleanText(name),
 
                 cleanText(phone),
 
@@ -5674,7 +5664,7 @@ app.post("/api/suppliers", async (req, res) => {
 
                 cleanText(address),
 
-                cleanText(notes)
+                cleanText(company)
 
             ]);
 
@@ -5707,6 +5697,158 @@ app.post("/api/suppliers", async (req, res) => {
 
 });
 
+
+app.put("/api/suppliers/:id", async (req, res) => {
+
+    try {
+
+        const id =
+            integerValue(req.params.id);
+
+        const {
+            name,
+            phone,
+            email,
+            address,
+            company
+        } = req.body;
+
+        const result =
+            await pool.query(`
+
+                UPDATE suppliers
+
+                SET
+                    name = $1,
+                    phone = $2,
+                    email = $3,
+                    address = $4,
+                    company = $5
+
+                WHERE id = $6
+
+                RETURNING *
+
+            `, [
+
+                cleanText(name),
+
+                cleanText(phone),
+
+                cleanText(email),
+
+                cleanText(address),
+
+                cleanText(company),
+
+                id
+
+            ]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "المورد غير موجود"
+
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+
+            supplier:
+                result.rows[0]
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "UPDATE SUPPLIER ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر تعديل المورد"
+
+        });
+
+    }
+
+});
+
+
+app.delete("/api/suppliers/:id", async (req, res) => {
+
+    try {
+
+        const id =
+            integerValue(req.params.id);
+
+        const result =
+            await pool.query(`
+
+                DELETE FROM suppliers
+
+                WHERE id = $1
+
+                RETURNING *
+
+            `, [id]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "المورد غير موجود"
+
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+
+            message:
+                "تم حذف المورد"
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "DELETE SUPPLIER ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر حذف المورد"
+
+        });
+
+    }
+
+});
+
+
 /* =========================================================
    EQUIPMENT
 ========================================================= */
@@ -5718,18 +5860,11 @@ app.get("/api/equipment", async (req, res) => {
         const result =
             await pool.query(`
 
-                SELECT
+                SELECT *
 
-                    e.*,
+                FROM equipment
 
-                    p.name AS project_name
-
-                FROM equipment e
-
-                LEFT JOIN projects p
-                    ON p.id = e.project_id
-
-                ORDER BY e.created_at DESC
+                ORDER BY created_at DESC
 
             `);
 
@@ -5762,6 +5897,7 @@ app.get("/api/equipment", async (req, res) => {
 
 });
 
+
 app.post("/api/equipment", async (req, res) => {
 
     try {
@@ -5769,18 +5905,14 @@ app.post("/api/equipment", async (req, res) => {
         const {
             name,
             type,
-            registration,
+            serial_number,
             status,
-            project_id,
             purchase_date,
             purchase_price,
             notes
         } = req.body;
 
-        if (
-            !name ||
-            !String(name).trim()
-        ) {
+        if (!cleanText(name)) {
 
             return res.status(400).json({
 
@@ -5797,41 +5929,292 @@ app.post("/api/equipment", async (req, res) => {
             await pool.query(`
 
                 INSERT INTO equipment (
-
                     name,
                     type,
-                    registration,
+                    serial_number,
                     status,
-                    project_id,
                     purchase_date,
                     purchase_price,
                     notes
-
                 )
 
-                VALUES (
-                    $1,$2,$3,$4,
-                    $5,$6,$7,$8
-                )
+                VALUES ($1,$2,$3,$4,$5,$6,$7)
 
                 RETURNING *
 
             `, [
 
-                String(name).trim(),
+                cleanText(name),
 
                 cleanText(type),
 
-                cleanText(registration),
+                cleanText(serial_number),
 
-                cleanText(status) || "متاح",
+                cleanText(status) ||
+                    "متاحة",
 
-                integerValue(project_id),
+                cleanText(purchase_date),
 
-                purchase_date || null,
+                numberValue(
+                    purchase_price,
+                    0
+                ),
 
-                numberValue(purchase_price),
+                cleanText(notes)
 
+            ]);
+
+        res.status(201).json({
+
+            success: true,
+
+            equipment:
+                result.rows[0]
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "CREATE EQUIPMENT ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر إضافة المعدة"
+
+        });
+
+    }
+
+});
+
+
+app.put("/api/equipment/:id", async (req, res) => {
+
+    try {
+
+        const id =
+            integerValue(req.params.id);
+
+        const {
+            name,
+            type,
+            serial_number,
+            status,
+            purchase_date,
+            purchase_price,
+            notes
+        } = req.body;
+
+        const result =
+            await pool.query(`
+
+                UPDATE equipment
+
+                SET
+                    name = $1,
+                    type = $2,
+                    serial_number = $3,
+                    status = $4,
+                    purchase_date = $5,
+                    purchase_price = $6,
+                    notes = $7
+
+                WHERE id = $8
+
+                RETURNING *
+
+            `, [
+
+                cleanText(name),
+
+                cleanText(type),
+
+                cleanText(serial_number),
+
+                cleanText(status),
+
+                cleanText(purchase_date),
+
+                numberValue(
+                    purchase_price,
+                    0
+                ),
+
+                cleanText(notes),
+
+                id
+
+            ]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "المعدة غير موجودة"
+
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+
+            equipment:
+                result.rows[0]
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "UPDATE EQUIPMENT ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر تعديل المعدة"
+
+        });
+
+    }
+
+});
+
+
+app.delete("/api/equipment/:id", async (req, res) => {
+
+    try {
+
+        const id =
+            integerValue(req.params.id);
+
+        const result =
+            await pool.query(`
+
+                DELETE FROM equipment
+
+                WHERE id = $1
+
+                RETURNING *
+
+            `, [id]);
+
+        if (!result.rows.length) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "المعدة غير موجودة"
+
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+
+            message:
+                "تم حذف المعدة"
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "DELETE EQUIPMENT ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر حذف المعدة"
+
+        });
+
+    }
+
+});
+
+
+/* =========================================================
+   EQUIPMENT MAINTENANCE
+========================================================= */
+
+app.get(
+    "/api/equipment/:id/maintenance",
+    async (req, res) => {
+
+        try {
+
+            const equipmentId =
+                integerValue(
+                    req.params.id
+                );
+
+            const result =
+                await pool.query(`
+
+                    SELECT *
+
+                    FROM equipment_maintenance
+
+                    WHERE equipment_id = $1
+
+                    ORDER BY maintenance_date DESC
+
+                `, [
+                    equipmentId
+                ]);
+
+            res.json({
+
+                success: true,
+
+                maintenance:
+                    result.rows
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "GET MAINTENANCE ERROR:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تحميل الصيانة"
+
+            });
+
+        }
+
+    }
+);
                 cleanText(notes)
 
             ]);
@@ -6182,20 +6565,33 @@ app.post(
                 "CREATE STAGE ERROR:",
                 error
             );
+                            document:
+                    result.rows[0]
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "CREATE DOCUMENT ERROR:",
+                error
+            );
 
             res.status(500).json({
 
                 success: false,
 
                 message:
-                    "تعذر إضافة المرحلة"
+                    "تعذر إضافة الوثيقة"
 
             });
 
         }
 
     }
+
 );
+
 
 /* =========================================================
    WORKER PAYMENTS
@@ -6391,6 +6787,7 @@ app.post(
     }
 );
 
+
 /* =========================================================
    DOCUMENTS
 ========================================================= */
@@ -6557,334 +6954,23 @@ app.post("/api/documents", async (req, res) => {
     }
 
 });
-
-/* =========================================================
-   PROJECT MATERIAL ASSIGNMENT
-========================================================= */
-
-app.post(
-    "/api/project-materials",
-    async (req, res) => {
-
-        try {
-
-            const {
-                project_id,
-                material_id,
-                quantity,
-                used_quantity,
-                unit_price,
-                supplier
-            } = req.body;
-
-            const projectId =
-                integerValue(project_id);
-
-            const materialId =
-                integerValue(material_id);
-
-            if (
-                !projectId ||
-                !materialId
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "المشروع والمادة مطلوبان"
-
-                });
+                );
 
             }
-
-            const result =
-                await pool.query(`
-
-                    INSERT INTO project_materials (
-
-                        project_id,
-                        material_id,
-                        quantity,
-                        used_quantity,
-                        unit_price,
-                        supplier
-
-                    )
-
-                    VALUES ($1,$2,$3,$4,$5,$6)
-
-                    ON CONFLICT (
-                        project_id,
-                        material_id
-                    )
-
-                    DO UPDATE SET
-
-                        quantity =
-                            EXCLUDED.quantity,
-
-                        used_quantity =
-                            EXCLUDED.used_quantity,
-
-                        unit_price =
-                            EXCLUDED.unit_price,
-
-                        supplier =
-                            EXCLUDED.supplier
-
-                    RETURNING *
-
-                `, [
-
-                    projectId,
-
-                    materialId,
-
-                    numberValue(quantity),
-
-                    numberValue(used_quantity),
-
-                    numberValue(unit_price),
-
-                    cleanText(supplier)
-
-                ]);
-
-            res.status(201).json({
-
-                success: true,
-
-                projectMaterial:
-                    result.rows[0]
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "PROJECT MATERIAL ERROR:",
-                error
-            );
-
-            res.status(500).json({
-
-                success: false,
-
-                message:
-                    "تعذر ربط المادة بالمشروع"
-
-            });
-
-        }
-
-    }
-);
-
-/* =========================================================
-   REPORT PHOTOS
-========================================================= */
-
-app.get(
-    "/api/report-photos/:reportId",
-    async (req, res) => {
-
-        try {
-
-            const reportId =
-                integerValue(req.params.reportId);
-
-            const result =
-                await pool.query(`
-
-                    SELECT *
-
-                    FROM report_photos
-
-                    WHERE report_id = $1
-
-                    ORDER BY created_at DESC
-
-                `, [reportId]);
-
-            res.json({
-
-                success: true,
-
-                photos:
-                    result.rows
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "GET REPORT PHOTOS ERROR:",
-                error
-            );
-
-            res.status(500).json({
-
-                success: false,
-
-                message:
-                    "تعذر تحميل صور التقرير"
-
-            });
-
-        }
-
-    }
-);
-
-app.post(
-    "/api/report-photos",
-    async (req, res) => {
-
-        try {
-
-            const {
-                report_id,
-                image_url
-            } = req.body;
-
-            if (
-                !integerValue(report_id) ||
-                !cleanText(image_url)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "التقرير ورابط الصورة مطلوبان"
-
-                });
-
-            }
-
-            const result =
-                await pool.query(`
-
-                    INSERT INTO report_photos (
-
-                        report_id,
-                        image_url
-
-                    )
-
-                    VALUES ($1,$2)
-
-                    RETURNING *
-
-                `, [
-
-                    integerValue(report_id),
-
-                    cleanText(image_url)
-
-                ]);
-
-            res.status(201).json({
-
-                success: true,
-
-                photo:
-                    result.rows[0]
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "CREATE REPORT PHOTO ERROR:",
-                error
-            );
-
-            res.status(500).json({
-
-                success: false,
-
-                message:
-                    "تعذر إضافة الصورة"
-
-            });
-
-        }
-
-    }
-);
-
-/* =========================================================
-   AUDIT LOGS
-========================================================= */
-
-app.get("/api/audit-logs", async (req, res) => {
-
-    try {
-
-        const result =
-            await pool.query(`
-
-                SELECT *
-
-                FROM audit_logs
-
-                ORDER BY created_at DESC
-
-                LIMIT 100
-
-            `);
-
-        res.json({
-
-            success: true,
-
-            logs:
-                result.rows
-
-        });
+        );
 
     } catch (error) {
 
         console.error(
-            "GET AUDIT LOGS ERROR:",
+            "START SERVER ERROR:",
             error
         );
 
-        res.status(500).json({
-
-            success: false,
-
-            message:
-                "تعذر تحميل سجل العمليات"
-
-        });
-
     }
 
-});
+}
 
-/* =========================================================
-   START SERVER
-========================================================= */
-
-async function startServer() {
-
-    try {
-
-        await initDatabase();
-
-        app.listen(
-            PORT,
-            () => {
-
-                console.log(
-                    `🏗️ DUNYA-OMRAN running on port ${PORT}`
-                );
-
+startServer();
             }
         );
 
