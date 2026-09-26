@@ -1670,7 +1670,10 @@ app.post(
             };
 
 
-            const redirect = "/index.html";
+            const redirect =
+    user.role === "engineer"
+        ? "/engineer.html"
+        : "/index.html";
 
             res.json({
 
@@ -1801,7 +1804,441 @@ app.post(
     }
 );
 
+/* =========================================================
+   ENGINEER SYSTEM
+========================================================= */
 
+/*
+   المشاريع المسندة للمهندس الحالي
+*/
+
+app.get(
+    "/api/engineer/projects",
+    requireAuth,
+    requireRole("engineer"),
+    async (req, res) => {
+
+        try {
+
+            const result =
+                await pool.query(`
+
+                    SELECT
+
+                        p.*,
+
+                        pe.id AS assignment_id,
+
+                        pe.assigned_at
+
+                    FROM project_engineers pe
+
+                    INNER JOIN projects p
+                        ON p.id = pe.project_id
+
+                    WHERE
+                        pe.engineer_id = $1
+
+                        AND COALESCE(
+                            p.archived,
+                            FALSE
+                        ) = FALSE
+
+                    ORDER BY
+                        p.created_at DESC
+
+                `, [
+                    req.user.id
+                ]);
+
+
+            res.json({
+
+                success: true,
+
+                projects:
+                    result.rows
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "ENGINEER PROJECTS ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تحميل مشاريع المهندس"
+
+            });
+
+        }
+
+    }
+);
+
+
+/*
+   تقارير المهندس
+*/
+
+app.get(
+    "/api/engineer/reports",
+    requireAuth,
+    requireRole("engineer"),
+    async (req, res) => {
+
+        try {
+
+            const projectId =
+                integerValue(
+                    req.query.project_id
+                );
+
+
+            let sql = `
+
+                SELECT
+
+                    dr.*,
+
+                    p.name AS project_name
+
+                FROM daily_reports dr
+
+                INNER JOIN projects p
+                    ON p.id = dr.project_id
+
+                INNER JOIN project_engineers pe
+                    ON pe.project_id =
+                       dr.project_id
+
+                WHERE
+                    pe.engineer_id = $1
+
+            `;
+
+
+            const params = [
+                req.user.id
+            ];
+
+
+            if (projectId) {
+
+                params.push(
+                    projectId
+                );
+
+
+                sql += `
+                    AND dr.project_id = $2
+                `;
+
+            }
+
+
+            sql += `
+
+                ORDER BY
+                    dr.report_date DESC,
+                    dr.created_at DESC
+
+            `;
+
+
+            const result =
+                await pool.query(
+                    sql,
+                    params
+                );
+
+
+            res.json({
+
+                success: true,
+
+                reports:
+                    result.rows
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "ENGINEER REPORTS ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تحميل تقارير المهندس"
+
+            });
+
+        }
+
+    }
+);
+
+
+/*
+   إنشاء تقرير يومي بواسطة المهندس
+*/
+
+app.post(
+    "/api/engineer/reports",
+    requireAuth,
+    requireRole("engineer"),
+    async (req, res) => {
+
+        try {
+
+            const {
+
+                project_id,
+
+                report_date,
+
+                title,
+
+                description,
+
+                quantity,
+
+                materials_used,
+
+                problems,
+
+                engineer_review
+
+            } = req.body;
+
+
+            const projectId =
+                integerValue(
+                    project_id
+                );
+
+
+            if (!projectId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "المشروع مطلوب"
+
+                });
+
+            }
+
+
+            /*
+               التأكد أن المشروع مسند
+               لهذا المهندس فعلاً
+            */
+
+            const assignment =
+                await pool.query(`
+
+                    SELECT
+
+                        pe.id,
+
+                        p.name AS project_name
+
+                    FROM project_engineers pe
+
+                    INNER JOIN projects p
+                        ON p.id = pe.project_id
+
+                    WHERE
+
+                        pe.project_id = $1
+
+                        AND pe.engineer_id = $2
+
+                    LIMIT 1
+
+                `, [
+
+                    projectId,
+
+                    req.user.id
+
+                ]);
+
+
+            if (
+                assignment.rows.length === 0
+            ) {
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message:
+                        "هذا المشروع غير مسند إليك"
+
+                });
+
+            }
+
+
+            if (
+                !cleanText(title) ||
+                !cleanText(description)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "عنوان التقرير ووصف الأشغال مطلوبان"
+
+                });
+
+            }
+
+
+            const result =
+                await pool.query(`
+
+                    INSERT INTO daily_reports (
+
+                        project_id,
+
+                        engineer_name,
+
+                        report_date,
+
+                        title,
+
+                        description,
+
+                        quantity,
+
+                        materials_used,
+
+                        problems,
+
+                        engineer_review,
+
+                        status
+
+                    )
+
+                    VALUES (
+
+                        $1,
+
+                        $2,
+
+                        COALESCE(
+                            $3,
+                            CURRENT_DATE
+                        ),
+
+                        $4,
+
+                        $5,
+
+                        $6,
+
+                        $7,
+
+                        $8,
+
+                        $9,
+
+                        'في الانتظار'
+
+                    )
+
+                    RETURNING *
+
+                `, [
+
+                    projectId,
+
+                    req.user.full_name,
+
+                    report_date || null,
+
+                    cleanText(title),
+
+                    cleanText(description),
+
+                    cleanText(quantity),
+
+                    cleanText(materials_used),
+
+                    cleanText(problems),
+
+                    cleanText(engineer_review)
+
+                ]);
+
+
+            await logAction(
+
+                "إنشاء تقرير يومي",
+
+                "daily_report",
+
+                result.rows[0].id,
+
+                `المهندس: ${req.user.full_name} - المشروع: ${assignment.rows[0].project_name}`
+
+            );
+
+
+            res.status(201).json({
+
+                success: true,
+
+                report:
+                    result.rows[0]
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "ENGINEER CREATE REPORT ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر حفظ التقرير اليومي"
+
+            });
+
+        }
+
+    }
+);
 /* =========================================================
    HEALTH
 ========================================================= */
