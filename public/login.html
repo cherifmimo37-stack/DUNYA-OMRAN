@@ -1,28 +1,61 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>تسجيل الدخول | دنيا العمران والترقية</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>دخول | دنيا العمران والترقية</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+>
 
 <style>
 
+/* =========================================================
+   DUNYA OMRAN PRO LOGIN
+========================================================= */
+
 :root{
+
     --petroleum:#123B4A;
-    --dark:#0B2934;
+    --petroleum-dark:#071E27;
+    --petroleum-deep:#06171E;
+
     --green:#3F6B63;
+    --green-light:#5F8E83;
+
     --copper:#C47735;
-    --copper-light:#D99658;
+    --copper-light:#E0A267;
+    --copper-soft:#F0C08D;
+
     --ivory:#F5F3EE;
     --white:#ffffff;
-    --muted:#72828A;
-    --danger:#c94b4b;
+
+    --text:#18313A;
+    --muted:#718189;
+    --border:#DDE3E4;
+
+    --danger:#C94B4B;
+
+    --shadow:
+        0 30px 90px rgba(0,0,0,.35);
+
 }
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
     box-sizing:border-box;
@@ -37,352 +70,671 @@ body{
 }
 
 body{
+
     font-family:"Cairo",sans-serif;
-    background:var(--dark);
-    color:#17252b;
+
+    background:
+        var(--petroleum-deep);
+
+    color:var(--text);
+
     overflow-x:hidden;
+
 }
 
 /* =========================================================
-   BACKGROUND
+   MAIN PAGE
 ========================================================= */
 
 .login-page{
+
     min-height:100vh;
-    position:relative;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
-    padding:30px;
+
+    position:relative;
+
+    padding:28px;
+
     overflow:hidden;
 
     background:
+
         radial-gradient(
-            circle at 15% 20%,
-            rgba(196,119,53,.22),
+            circle at 8% 15%,
+            rgba(196,119,53,.18),
+            transparent 27%
+        ),
+
+        radial-gradient(
+            circle at 92% 88%,
+            rgba(63,107,99,.20),
             transparent 30%
         ),
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(63,107,99,.22),
-            transparent 35%
-        ),
+
         linear-gradient(
             135deg,
-            #071c24 0%,
-            #0B2934 45%,
+            #06171E 0%,
+            #0A2832 42%,
             #123B4A 100%
         );
+
 }
 
-/* خطوط هندسية */
+/* =========================================================
+   ARCHITECTURAL GRID
+========================================================= */
 
 .login-page::before{
+
     content:"";
+
     position:absolute;
+
     inset:0;
 
     background-image:
+
         linear-gradient(
-            rgba(255,255,255,.035) 1px,
+            rgba(255,255,255,.028) 1px,
             transparent 1px
         ),
+
         linear-gradient(
             90deg,
-            rgba(255,255,255,.035) 1px,
+            rgba(255,255,255,.028) 1px,
             transparent 1px
         );
 
-    background-size:45px 45px;
+    background-size:42px 42px;
 
     mask-image:
         linear-gradient(
             to bottom,
             transparent,
-            black 25%,
-            black 75%,
+            black 15%,
+            black 85%,
             transparent
         );
 
     pointer-events:none;
+
 }
 
-/* دوائر زخرفية */
+/* =========================================================
+   DECORATIVE SHAPES
+========================================================= */
 
 .shape{
+
     position:absolute;
+
     border-radius:50%;
+
     pointer-events:none;
-    filter:blur(1px);
+
 }
 
 .shape-one{
-    width:430px;
-    height:430px;
-    left:-220px;
-    top:-160px;
-    border:1px solid rgba(196,119,53,.18);
+
+    width:560px;
+    height:560px;
+
+    top:-330px;
+    left:-260px;
+
+    border:
+        1px solid
+        rgba(196,119,53,.18);
+
     box-shadow:
-        0 0 0 35px rgba(196,119,53,.035),
-        0 0 0 70px rgba(196,119,53,.025);
+
+        0 0 0 40px
+        rgba(196,119,53,.025),
+
+        0 0 0 85px
+        rgba(196,119,53,.018);
+
 }
 
 .shape-two{
-    width:500px;
-    height:500px;
-    right:-280px;
-    bottom:-260px;
-    border:1px solid rgba(255,255,255,.08);
+
+    width:620px;
+    height:620px;
+
+    right:-390px;
+    bottom:-390px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
     box-shadow:
-        0 0 0 45px rgba(255,255,255,.025),
-        0 0 0 90px rgba(255,255,255,.018);
+
+        0 0 0 45px
+        rgba(255,255,255,.025),
+
+        0 0 0 90px
+        rgba(255,255,255,.015);
+
 }
 
 /* =========================================================
-   MAIN LAYOUT
+   FLOATING ARCHITECTURAL LINES
+========================================================= */
+
+.arch-line{
+
+    position:absolute;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(196,119,53,.28),
+            transparent
+        );
+
+    height:1px;
+
+    pointer-events:none;
+
+}
+
+.arch-line.one{
+
+    width:420px;
+
+    top:19%;
+
+    left:-100px;
+
+    transform:rotate(-18deg);
+
+}
+
+.arch-line.two{
+
+    width:330px;
+
+    bottom:22%;
+
+    right:-70px;
+
+    transform:rotate(-18deg);
+
+}
+
+/* =========================================================
+   MAIN CARD
 ========================================================= */
 
 .login-wrapper{
-    position:relative;
-    z-index:2;
 
-    width:min(1120px,100%);
+    width:min(1180px,100%);
+
+    min-height:680px;
 
     display:grid;
-    grid-template-columns:1.15fr .85fr;
 
-    min-height:650px;
+    grid-template-columns:
+        1.08fr
+        .92fr;
 
-    border:1px solid rgba(255,255,255,.10);
+    position:relative;
 
-    border-radius:30px;
+    z-index:5;
 
     overflow:hidden;
 
-    background:rgba(255,255,255,.055);
+    border-radius:32px;
 
-    backdrop-filter:blur(22px);
-    -webkit-backdrop-filter:blur(22px);
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    background:
+        rgba(255,255,255,.055);
+
+    backdrop-filter:
+        blur(24px);
+
+    -webkit-backdrop-filter:
+        blur(24px);
 
     box-shadow:
-        0 35px 100px rgba(0,0,0,.40),
-        inset 0 1px 0 rgba(255,255,255,.08);
+
+        0 40px 120px
+        rgba(0,0,0,.42),
+
+        inset 0 1px 0
+        rgba(255,255,255,.10);
+
 }
 
 /* =========================================================
-   LEFT BRAND AREA
+   BRAND PANEL
 ========================================================= */
 
 .brand-panel{
-    position:relative;
 
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
+    min-height:680px;
 
     padding:55px;
 
-    min-height:650px;
+    position:relative;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    overflow:hidden;
 
     background:
+
         linear-gradient(
-            135deg,
-            rgba(18,59,74,.92),
-            rgba(11,41,52,.82)
+            145deg,
+            rgba(18,59,74,.96),
+            rgba(7,30,39,.91)
         );
+
 }
 
-.brand-panel::after{
-    content:"";
-    position:absolute;
-    width:280px;
-    height:280px;
+/* subtle copper side */
 
-    left:-100px;
-    bottom:-100px;
+.brand-panel::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    bottom:0;
+    right:0;
+
+    width:3px;
+
+    background:
+
+        linear-gradient(
+            to bottom,
+            transparent,
+            var(--copper),
+            transparent
+        );
+
+    opacity:.75;
+
+}
+
+/* circle */
+
+.brand-panel::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:460px;
+    height:460px;
+
+    left:-250px;
+    bottom:-260px;
 
     border-radius:50%;
 
-    border:1px solid rgba(196,119,53,.25);
+    border:
+        1px solid
+        rgba(196,119,53,.20);
 
     box-shadow:
-        0 0 0 30px rgba(196,119,53,.04),
-        0 0 0 60px rgba(196,119,53,.025);
+
+        0 0 0 35px
+        rgba(196,119,53,.035),
+
+        0 0 0 70px
+        rgba(196,119,53,.020);
+
 }
 
-/* Logo */
+/* =========================================================
+   BRAND HEADER
+========================================================= */
 
 .brand-logo{
-    position:relative;
-    z-index:2;
 
     display:flex;
+
     align-items:center;
-    gap:15px;
+
+    gap:16px;
+
+    position:relative;
+
+    z-index:3;
+
 }
 
 .logo-mark{
-    width:62px;
-    height:62px;
 
-    border-radius:18px;
+    width:66px;
+    height:66px;
+
+    flex:none;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
+    border-radius:20px;
+
+    position:relative;
+
     background:
+
         linear-gradient(
-            135deg,
-            var(--copper),
-            var(--copper-light)
+            145deg,
+            var(--copper-light),
+            var(--copper)
         );
 
-    color:white;
-
-    font-size:29px;
-
     box-shadow:
-        0 12px 28px rgba(196,119,53,.28);
+
+        0 15px 35px
+        rgba(196,119,53,.28),
+
+        inset 0 1px 0
+        rgba(255,255,255,.40);
+
 }
 
-.brand-title{
-    color:white;
+/* building icon */
+
+.logo-mark svg{
+
+    width:37px;
+    height:37px;
+
+    fill:none;
+
+    stroke:white;
+
+    stroke-width:1.8;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+
 }
 
 .brand-title h1{
-    font-size:23px;
+
+    color:white;
+
+    font-size:22px;
+
     font-weight:900;
-    line-height:1.25;
+
+    line-height:1.3;
+
 }
 
 .brand-title span{
+
     display:block;
 
-    margin-top:3px;
+    margin-top:4px;
 
-    font-size:11px;
-    letter-spacing:2px;
+    color:
+        rgba(255,255,255,.48);
 
-    color:rgba(255,255,255,.58);
+    font-size:10px;
+
+    letter-spacing:3px;
+
+    font-weight:700;
+
 }
 
-/* Content */
+/* =========================================================
+   BRAND CONTENT
+========================================================= */
 
 .brand-content{
-    position:relative;
-    z-index:2;
 
-    max-width:510px;
+    position:relative;
+
+    z-index:3;
+
+    max-width:550px;
+
 }
 
-.brand-content .eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
+.eyebrow{
 
-    padding:7px 13px;
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    padding:8px 14px;
 
     margin-bottom:20px;
 
     border-radius:50px;
 
-    background:rgba(196,119,53,.13);
-    border:1px solid rgba(196,119,53,.24);
+    background:
+        rgba(196,119,53,.10);
 
-    color:#e8b77e;
+    border:
+        1px solid
+        rgba(196,119,53,.25);
 
-    font-size:12px;
-    font-weight:700;
+    color:
+        var(--copper-soft);
+
+    font-size:11px;
+
+    font-weight:800;
+
 }
 
-.brand-content .eyebrow i{
+.eyebrow-dot{
+
     width:7px;
     height:7px;
+
     border-radius:50%;
-    background:#69b49f;
-    box-shadow:0 0 12px #69b49f;
+
+    background:
+        #6FB49F;
+
+    box-shadow:
+        0 0 13px
+        rgba(111,180,159,.9);
+
 }
 
 .brand-content h2{
+
     color:white;
 
-    font-size:40px;
-    line-height:1.35;
+    font-size:43px;
+
+    line-height:1.4;
 
     font-weight:900;
 
-    margin-bottom:18px;
+    margin-bottom:17px;
+
+    letter-spacing:-.5px;
+
 }
 
-.brand-content h2 strong{
-    color:#dca36c;
+.brand-content h2 span{
+
+    color:
+        var(--copper-light);
+
 }
 
-.brand-content p{
-    color:rgba(255,255,255,.67);
+.brand-description{
 
-    font-size:15px;
-    line-height:2;
+    max-width:510px;
 
-    max-width:470px;
+    color:
+        rgba(255,255,255,.62);
+
+    font-size:14px;
+
+    line-height:2.1;
+
 }
 
-/* Features */
+/* =========================================================
+   FEATURE CARDS
+========================================================= */
 
 .brand-features{
-    position:relative;
-    z-index:2;
 
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
 
     gap:12px;
 
-    margin-top:35px;
+    margin-top:30px;
+
 }
 
 .feature{
-    padding:14px 12px;
 
-    border-radius:16px;
+    min-height:104px;
 
-    background:rgba(255,255,255,.045);
-    border:1px solid rgba(255,255,255,.07);
+    padding:16px 14px;
+
+    border-radius:17px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+
+    background:
+        rgba(255,255,255,.045);
+
+    backdrop-filter:
+        blur(8px);
+
+    transition:
+        .25s ease;
+
+}
+
+.feature:hover{
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(196,119,53,.28);
+
+    background:
+        rgba(255,255,255,.065);
+
 }
 
 .feature-icon{
-    font-size:21px;
-    margin-bottom:7px;
+
+    width:34px;
+    height:34px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    margin-bottom:9px;
+
+    border-radius:10px;
+
+    color:
+        var(--copper-light);
+
+    background:
+        rgba(196,119,53,.10);
+
+    border:
+        1px solid
+        rgba(196,119,53,.18);
+
 }
 
 .feature strong{
+
     display:block;
 
     color:white;
 
     font-size:12px;
+
+    font-weight:800;
+
 }
 
 .feature span{
+
     display:block;
 
-    color:rgba(255,255,255,.42);
+    color:
+        rgba(255,255,255,.40);
 
-    font-size:10px;
+    font-size:9px;
 
-    margin-top:2px;
+    margin-top:3px;
+
 }
 
-/* Footer */
+/* =========================================================
+   BRAND FOOTER
+========================================================= */
 
 .brand-footer{
+
     position:relative;
-    z-index:2;
 
-    color:rgba(255,255,255,.35);
+    z-index:3;
 
-    font-size:11px;
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    color:
+        rgba(255,255,255,.30);
+
+    font-size:9px;
+
+}
+
+.brand-footer-line{
+
+    width:30px;
+    height:1px;
+
+    background:
+        rgba(196,119,53,.55);
+
 }
 
 /* =========================================================
@@ -390,49 +742,174 @@ body{
 ========================================================= */
 
 .login-panel{
+
+    min-height:680px;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
-    padding:50px 45px;
+    padding:55px 50px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.985),
+            rgba(246,244,239,.97)
+        );
+
+}
+
+/* =========================================================
+   LOGIN BOX
+========================================================= */
+
+.login-box{
+
+    width:100%;
+
+    max-width:410px;
+
+}
+
+/* =========================================================
+   MOBILE BRAND
+========================================================= */
+
+.mobile-logo{
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:22px;
+
+}
+
+.mobile-logo-mark{
+
+    width:66px;
+    height:66px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:20px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(255,255,255,.98),
-            rgba(245,243,238,.96)
+            var(--copper-light),
+            var(--copper)
         );
+
+    box-shadow:
+        0 15px 30px
+        rgba(196,119,53,.25);
+
 }
 
-.login-box{
-    width:100%;
-    max-width:390px;
+.mobile-logo-mark svg{
+
+    width:36px;
+    height:36px;
+
+    fill:none;
+
+    stroke:white;
+
+    stroke-width:1.8;
+
+    stroke-linecap:round;
+
+    stroke-linejoin:round;
+
 }
 
-/* Header */
+/* =========================================================
+   LOGIN HEADER
+========================================================= */
 
 .login-header{
-    margin-bottom:30px;
+
+    margin-bottom:31px;
+
 }
 
-.login-header .mobile-logo{
-    display:none;
+.login-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    margin-bottom:13px;
+
+    padding:6px 10px;
+
+    border-radius:8px;
+
+    color:
+        var(--copper);
+
+    background:
+        rgba(196,119,53,.08);
+
+    border:
+        1px solid
+        rgba(196,119,53,.15);
+
+    font-size:9px;
+
+    font-weight:800;
+
+}
+
+.login-badge-dot{
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:
+        var(--green);
+
 }
 
 .login-header h2{
-    color:var(--dark);
 
-    font-size:30px;
+    color:
+        var(--petroleum-dark);
+
+    font-size:31px;
+
     font-weight:900;
 
-    margin-bottom:7px;
+    line-height:1.3;
+
+    margin-bottom:8px;
+
 }
 
 .login-header p{
-    color:var(--muted);
 
-    font-size:13px;
-    line-height:1.8;
+    color:
+        var(--muted);
+
+    font-size:12px;
+
+    line-height:2;
+
 }
 
 /* =========================================================
@@ -440,165 +917,287 @@ body{
 ========================================================= */
 
 .form-group{
-    margin-bottom:19px;
+
+    margin-bottom:18px;
+
 }
 
 .form-label{
-    display:block;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
 
     margin-bottom:8px;
 
-    color:#30424a;
-
-    font-size:12px;
-    font-weight:800;
-}
-
-.input-wrapper{
-    position:relative;
-}
-
-.input-icon{
-    position:absolute;
-
-    right:16px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    color:#809099;
-
-    font-size:18px;
-
-    pointer-events:none;
-}
-
-.form-input{
-    width:100%;
-    height:55px;
-
-    padding:0 48px 0 45px;
-
-    border-radius:15px;
-
-    border:1px solid #d9dedf;
-
-    background:#ffffff;
-
-    outline:none;
-
-    font-family:"Cairo",sans-serif;
-    font-size:13px;
-
-    color:var(--dark);
-
-    transition:
-        .2s ease;
-}
-
-.form-input::placeholder{
-    color:#a5afb3;
-}
-
-.form-input:focus{
-    border-color:var(--copper);
-
-    box-shadow:
-        0 0 0 4px rgba(196,119,53,.10);
-}
-
-.password-toggle{
-    position:absolute;
-
-    left:14px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:32px;
-    height:32px;
-
-    border:0;
-    background:transparent;
-
-    cursor:pointer;
-
-    color:#849197;
-
-    font-size:17px;
-
-    border-radius:8px;
-}
-
-.password-toggle:hover{
-    background:#f0eeea;
-    color:var(--copper);
-}
-
-/* Options */
-
-.form-options{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin:3px 0 22px;
-}
-
-.remember{
-    display:flex;
-    align-items:center;
-    gap:7px;
-
-    color:#66767d;
+    color:
+        #30444B;
 
     font-size:11px;
 
+    font-weight:900;
+
+}
+
+.input-wrapper{
+
+    position:relative;
+
+}
+
+.input-icon{
+
+    position:absolute;
+
+    right:16px;
+
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    width:20px;
+
+    height:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:
+        #829197;
+
+    pointer-events:none;
+
+    z-index:2;
+
+}
+
+.form-input{
+
+    width:100%;
+
+    height:57px;
+
+    padding:
+        0 49px 0 47px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:15px;
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.92);
+
+    color:
+        var(--petroleum-dark);
+
+    font-family:
+        "Cairo",sans-serif;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    transition:
+        .22s ease;
+
+}
+
+.form-input::placeholder{
+
+    color:#A7B0B4;
+
+    font-weight:500;
+
+}
+
+.form-input:hover{
+
+    border-color:
+        #C9D1D3;
+
+}
+
+.form-input:focus{
+
+    border-color:
+        var(--copper);
+
+    background:white;
+
+    box-shadow:
+
+        0 0 0 4px
+        rgba(196,119,53,.09),
+
+        0 8px 22px
+        rgba(18,59,74,.05);
+
+}
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+.password-toggle{
+
+    position:absolute;
+
+    left:10px;
+
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    width:35px;
+    height:35px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border:0;
+
+    border-radius:9px;
+
+    background:transparent;
+
+    color:#89959A;
+
     cursor:pointer;
+
+    font-family:
+        "Cairo",sans-serif;
+
+    font-size:16px;
+
+    transition:
+        .2s ease;
+
+}
+
+.password-toggle:hover{
+
+    color:
+        var(--copper);
+
+    background:
+        #F3F0EB;
+
+}
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.form-options{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin:
+        3px 0 22px;
+
+}
+
+.remember{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:
+        #718087;
+
+    font-size:10px;
+
+    cursor:pointer;
+
+    user-select:none;
+
 }
 
 .remember input{
-    accent-color:var(--copper);
+
+    width:15px;
+    height:15px;
+
+    accent-color:
+        var(--copper);
+
 }
 
-/* Login Button */
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
 
 .login-button{
+
     width:100%;
-    height:56px;
+
+    height:58px;
 
     border:0;
+
     border-radius:16px;
+
+    position:relative;
+
+    overflow:hidden;
 
     cursor:pointer;
 
-    font-family:"Cairo",sans-serif;
-
-    font-size:14px;
-    font-weight:900;
-
     color:white;
 
+    font-family:
+        "Cairo",sans-serif;
+
+    font-size:13px;
+
+    font-weight:900;
+
     background:
+
         linear-gradient(
             135deg,
-            #123B4A,
-            #1d5665
+            #123B4A 0%,
+            #174C5D 55%,
+            #123B4A 100%
         );
 
     box-shadow:
-        0 12px 25px rgba(18,59,74,.20);
+
+        0 13px 28px
+        rgba(18,59,74,.20),
+
+        inset 0 1px 0
+        rgba(255,255,255,.14);
 
     transition:
         transform .18s ease,
         box-shadow .18s ease,
         opacity .18s ease;
 
-    position:relative;
-    overflow:hidden;
 }
 
 .login-button::before{
+
     content:"";
 
     position:absolute;
@@ -606,334 +1205,686 @@ body{
     inset:0;
 
     background:
+
         linear-gradient(
             110deg,
-            transparent 25%,
-            rgba(255,255,255,.13) 50%,
-            transparent 75%
+            transparent 20%,
+            rgba(255,255,255,.17) 50%,
+            transparent 80%
         );
 
-    transform:translateX(-100%);
-    transition:.5s ease;
+    transform:
+        translateX(-120%);
+
+    transition:
+        .65s ease;
+
 }
 
 .login-button:hover{
-    transform:translateY(-2px);
+
+    transform:
+        translateY(-2px);
 
     box-shadow:
-        0 17px 32px rgba(18,59,74,.27);
+
+        0 18px 35px
+        rgba(18,59,74,.27),
+
+        inset 0 1px 0
+        rgba(255,255,255,.15);
+
 }
 
 .login-button:hover::before{
-    transform:translateX(100%);
+
+    transform:
+        translateX(120%);
+
 }
 
 .login-button:active{
-    transform:translateY(0);
+
+    transform:
+        translateY(0);
+
+}
+
+.login-button:disabled{
+
+    cursor:
+        not-allowed;
+
 }
 
 .button-content{
+
     position:relative;
+
     z-index:2;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     gap:9px;
+
 }
 
-/* Status */
+/* =========================================================
+   BUTTON ICON
+========================================================= */
+
+.button-icon{
+
+    width:21px;
+    height:21px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
 
 .login-status{
+
     display:none;
 
-    margin-top:15px;
+    margin-top:14px;
 
     padding:12px 14px;
 
     border-radius:12px;
 
-    font-size:11px;
+    font-size:10px;
 
-    line-height:1.7;
+    font-weight:700;
+
+    line-height:1.8;
+
 }
 
 .login-status.show{
+
     display:block;
+
 }
 
 .login-status.error{
-    color:#9d3434;
-    background:#fff0f0;
-    border:1px solid #f0cccc;
+
+    color:#963838;
+
+    background:
+        #FFF1F1;
+
+    border:
+        1px solid
+        #F0CECE;
+
 }
 
 .login-status.success{
-    color:#28634e;
-    background:#edf8f3;
-    border:1px solid #cbe9dc;
+
+    color:#28644F;
+
+    background:
+        #EDF8F3;
+
+    border:
+        1px solid
+        #CBE9DC;
+
 }
 
-/* Security */
+/* =========================================================
+   SECURITY
+========================================================= */
 
 .security-note{
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     gap:7px;
 
     margin-top:23px;
 
-    color:#8a969a;
+    color:#9AA4A8;
 
-    font-size:10px;
+    font-size:9px;
+
 }
 
-.security-note span{
-    color:#6c807f;
+.security-shield{
+
+    width:20px;
+    height:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:7px;
+
+    color:
+        var(--green);
+
+    background:
+        rgba(63,107,99,.08);
+
 }
 
 /* =========================================================
-   LOADING
+   LOADING SPINNER
 ========================================================= */
 
 .loading-spinner{
-    width:18px;
-    height:18px;
 
-    border:2px solid rgba(255,255,255,.35);
-    border-top-color:white;
+    width:17px;
+    height:17px;
+
+    border:
+        2px solid
+        rgba(255,255,255,.28);
+
+    border-top-color:
+        white;
 
     border-radius:50%;
 
-    animation:spin .7s linear infinite;
+    animation:
+        spin .7s linear infinite;
+
 }
 
 @keyframes spin{
+
     to{
         transform:rotate(360deg);
     }
+
 }
 
 /* =========================================================
    RESPONSIVE
 ========================================================= */
 
-@media(max-width:900px){
+@media(max-width:950px){
 
     .login-wrapper{
+
+        max-width:560px;
+
         grid-template-columns:1fr;
 
-        max-width:520px;
-
         min-height:auto;
+
     }
 
     .brand-panel{
+
         display:none;
+
     }
 
     .login-panel{
-        min-height:620px;
 
-        padding:45px 28px;
+        min-height:650px;
+
+        padding:45px 38px;
+
     }
 
-    .login-header .mobile-logo{
-        display:flex;
-
-        align-items:center;
-        justify-content:center;
-
-        margin-bottom:25px;
-    }
-
-    .mobile-logo-mark{
-        width:58px;
-        height:58px;
+    .mobile-logo{
 
         display:flex;
-        align-items:center;
-        justify-content:center;
 
-        border-radius:17px;
-
-        color:white;
-
-        background:
-            linear-gradient(
-                135deg,
-                var(--copper),
-                var(--copper-light)
-            );
-
-        font-size:27px;
-
-        box-shadow:
-            0 10px 25px rgba(196,119,53,.25);
     }
 
     .login-header{
+
         text-align:center;
+
     }
+
 }
 
-@media(max-width:520px){
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:600px){
 
     .login-page{
+
         padding:14px;
+
     }
 
     .login-wrapper{
-        border-radius:23px;
+
+        border-radius:25px;
+
     }
 
     .login-panel{
-        padding:38px 21px;
+
+        padding:
+            35px 22px;
+
+        min-height:
+            610px;
+
     }
 
     .login-header h2{
-        font-size:26px;
+
+        font-size:27px;
+
     }
 
     .login-header p{
-        font-size:12px;
+
+        font-size:11px;
+
+    }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:420px){
+
+    .login-page{
+
+        padding:10px;
+
+    }
+
+    .login-wrapper{
+
+        border-radius:22px;
+
+    }
+
+    .login-panel{
+
+        padding:
+            30px 18px;
+
+    }
+
+    .mobile-logo-mark{
+
+        width:59px;
+        height:59px;
+
+        border-radius:17px;
+
+    }
+
+    .mobile-logo-mark svg{
+
+        width:32px;
+        height:32px;
+
+    }
+
+    .login-header{
+
+        margin-bottom:25px;
+
+    }
+
+    .login-header h2{
+
+        font-size:25px;
+
     }
 
     .form-input{
-        height:53px;
+
+        height:54px;
+
     }
 
     .login-button{
-        height:54px;
+
+        height:55px;
+
     }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        transition-duration:.01ms !important;
+
+    }
+
 }
 
 </style>
+
 </head>
+
 
 <body>
 
 <div class="login-page">
 
     <div class="shape shape-one"></div>
+
     <div class="shape shape-two"></div>
 
-    <div class="login-wrapper">
+    <div class="arch-line one"></div>
+
+    <div class="arch-line two"></div>
+
+
+    <main class="login-wrapper">
+
 
         <!-- =====================================================
-             BRAND
+             BRAND PANEL
         ====================================================== -->
 
         <section class="brand-panel">
 
+
+            <!-- BRAND -->
+
             <div class="brand-logo">
 
                 <div class="logo-mark">
-                    🏗️
+
+                    <svg
+                        viewBox="0 0 48 48"
+                        aria-hidden="true"
+                    >
+
+                        <path d="M8 39V19L24 8L40 19V39"/>
+
+                        <path d="M16 39V25H32V39"/>
+
+                        <path d="M21 39V31H27V39"/>
+
+                        <path d="M8 19H40"/>
+
+                    </svg>
+
                 </div>
 
+
                 <div class="brand-title">
-                    <h1>دنيا العمران والترقية</h1>
-                    <span>DUNYA OMRAN</span>
+
+                    <h1>
+                        دنيا العمران والترقية
+                    </h1>
+
+                    <span>
+                        DUNYA OMRAN
+                    </span>
+
                 </div>
 
             </div>
 
 
+            <!-- CONTENT -->
+
             <div class="brand-content">
 
+
                 <div class="eyebrow">
-                    <i></i>
-                    منصة إدارة المشاريع والمقاولات
+
+                    <span class="eyebrow-dot"></span>
+
+                    منصة احترافية لإدارة المشاريع والمقاولات
+
                 </div>
 
+
                 <h2>
-                    سيّر مشاريعك
-                    <strong>باحترافية</strong>
-                    أكبر.
+
+                    كل مشروعك
+
+                    <span>
+                        في مكان واحد.
+                    </span>
+
                 </h2>
 
-                <p>
-                    منصة متكاملة لمتابعة المشاريع،
-                    المهندسين، العمال، المواد، المصاريف
-                    والتقارير اليومية من مكان واحد.
+
+                <p class="brand-description">
+
+                    نظام متكامل يساعدك على إدارة المشاريع،
+                    العمال، المهندسين، المواد، المعدات،
+                    المصاريف، المراحل والتقارير اليومية
+                    بسهولة ووضوح من منصة واحدة.
+
                 </p>
 
 
                 <div class="brand-features">
 
-                    <div class="feature">
-                        <div class="feature-icon">🏗️</div>
-                        <strong>المشاريع</strong>
-                        <span>متابعة شاملة</span>
-                    </div>
 
                     <div class="feature">
-                        <div class="feature-icon">👷</div>
-                        <strong>الفريق</strong>
-                        <span>إدارة المستخدمين</span>
+
+                        <div class="feature-icon">
+                            🏗️
+                        </div>
+
+                        <strong>
+                            إدارة المشاريع
+                        </strong>
+
+                        <span>
+                            متابعة دقيقة لكل مشروع
+                        </span>
+
                     </div>
 
+
                     <div class="feature">
-                        <div class="feature-icon">📊</div>
-                        <strong>التقارير</strong>
-                        <span>قرارات أسرع</span>
+
+                        <div class="feature-icon">
+                            👷
+                        </div>
+
+                        <strong>
+                            إدارة الفريق
+                        </strong>
+
+                        <span>
+                            العمال والمهندسون
+                        </span>
+
                     </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            📊
+                        </div>
+
+                        <strong>
+                            التقارير
+                        </strong>
+
+                        <span>
+                            معلومات أوضح وقرارات أسرع
+                        </span>
+
+                    </div>
+
 
                 </div>
 
+
             </div>
 
+
+            <!-- FOOTER -->
 
             <div class="brand-footer">
-                © 2026 DUNYA OMRAN — نظام إدارة المشاريع
+
+                <span class="brand-footer-line"></span>
+
+                <span>
+                    DUNYA OMRAN MANAGEMENT SYSTEM
+                </span>
+
             </div>
+
 
         </section>
 
 
         <!-- =====================================================
-             LOGIN
+             LOGIN PANEL
         ====================================================== -->
 
         <section class="login-panel">
 
+
             <div class="login-box">
 
-                <div class="login-header">
 
-                    <div class="mobile-logo">
-                        <div class="mobile-logo-mark">
-                            🏗️
-                        </div>
+                <!-- MOBILE LOGO -->
+
+                <div class="mobile-logo">
+
+                    <div class="mobile-logo-mark">
+
+                        <svg
+                            viewBox="0 0 48 48"
+                            aria-hidden="true"
+                        >
+
+                            <path d="M8 39V19L24 8L40 19V39"/>
+
+                            <path d="M16 39V25H32V39"/>
+
+                            <path d="M21 39V31H27V39"/>
+
+                            <path d="M8 19H40"/>
+
+                        </svg>
+
                     </div>
-
-                    <h2>مرحباً بك 👋</h2>
-
-                    <p>
-                        سجّل الدخول إلى حسابك للوصول إلى منصة
-                        دنيا العمران والترقية.
-                    </p>
 
                 </div>
 
 
+                <!-- HEADER -->
+
+                <div class="login-header">
+
+
+                    <div class="login-badge">
+
+                        <span class="login-badge-dot"></span>
+
+                        نظام إدارة المشاريع
+
+                    </div>
+
+
+                    <h2>
+                        مرحباً بك 👋
+                    </h2>
+
+
+                    <p>
+
+                        سجّل الدخول للوصول إلى لوحة
+                        دنيا العمران والترقية وإدارة أعمالك.
+
+                    </p>
+
+
+                </div>
+
+
+                <!-- FORM -->
+
                 <form id="loginForm">
 
-                    <!-- Username -->
+
+                    <!-- USERNAME -->
 
                     <div class="form-group">
 
-                        <label class="form-label">
+
+                        <label
+                            class="form-label"
+                            for="username"
+                        >
+
                             اسم المستخدم
+
                         </label>
+
 
                         <div class="input-wrapper">
 
+
                             <span class="input-icon">
-                                👤
+
+                                <svg
+                                    width="19"
+                                    height="19"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+
+                                    <circle
+                                        cx="12"
+                                        cy="8"
+                                        r="4"
+                                    />
+
+                                    <path
+                                        d="M4 21C4.8 16.8 7.4 15 12 15s7.2 1.8 8 6"
+                                    />
+
+                                </svg>
+
                             </span>
+
 
                             <input
                                 id="username"
@@ -944,24 +1895,60 @@ body{
                                 required
                             >
 
+
                         </div>
+
 
                     </div>
 
 
-                    <!-- Password -->
+                    <!-- PASSWORD -->
 
                     <div class="form-group">
 
-                        <label class="form-label">
+
+                        <label
+                            class="form-label"
+                            for="password"
+                        >
+
                             كلمة المرور
+
                         </label>
+
 
                         <div class="input-wrapper">
 
+
                             <span class="input-icon">
-                                🔐
+
+                                <svg
+                                    width="19"
+                                    height="19"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+
+                                    <rect
+                                        x="4"
+                                        y="10"
+                                        width="16"
+                                        height="10"
+                                        rx="2"
+                                    />
+
+                                    <path
+                                        d="M8 10V7a4 4 0 0 1 8 0v3"
+                                    />
+
+                                </svg>
+
                             </span>
+
 
                             <input
                                 id="password"
@@ -972,6 +1959,7 @@ body{
                                 required
                             >
 
+
                             <button
                                 type="button"
                                 class="password-toggle"
@@ -981,26 +1969,37 @@ body{
                                 👁️
                             </button>
 
+
                         </div>
+
 
                     </div>
 
 
+                    <!-- OPTIONS -->
+
                     <div class="form-options">
 
+
                         <label class="remember">
+
 
                             <input
                                 type="checkbox"
                                 id="rememberMe"
                             >
 
+
                             تذكرني على هذا الجهاز
+
 
                         </label>
 
+
                     </div>
 
+
+                    <!-- LOGIN BUTTON -->
 
                     <button
                         type="submit"
@@ -1008,33 +2007,84 @@ body{
                         id="loginButton"
                     >
 
-                        <span class="button-content" id="buttonContent">
-                            🔐 تسجيل الدخول
+
+                        <span
+                            class="button-content"
+                            id="buttonContent"
+                        >
+
+                            <span class="button-icon">
+
+                                <svg
+                                    width="19"
+                                    height="19"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+
+                                    <rect
+                                        x="3"
+                                        y="11"
+                                        width="18"
+                                        height="10"
+                                        rx="2"
+                                    />
+
+                                    <path
+                                        d="M7 11V7a5 5 0 0 1 10 0v4"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            تسجيل الدخول
+
                         </span>
+
 
                     </button>
 
+
+                    <!-- STATUS -->
 
                     <div
                         id="loginStatus"
                         class="login-status"
                     ></div>
 
+
                 </form>
 
 
+                <!-- SECURITY -->
+
                 <div class="security-note">
-                    🔒
+
+                    <span class="security-shield">
+
+                        🔒
+
+                    </span>
+
                     <span>
                         اتصال آمن — صلاحيات الدخول محمية
                     </span>
+
                 </div>
+
 
             </div>
 
+
         </section>
 
-    </div>
+
+    </main>
 
 </div>
 
@@ -1042,7 +2092,7 @@ body{
 <script>
 
 /* =========================================================
-   ELEMENTS
+   LOGIN ELEMENTS
 ========================================================= */
 
 const loginForm =
@@ -1071,18 +2121,35 @@ const loginStatus =
    PASSWORD VISIBILITY
 ========================================================= */
 
-togglePassword.addEventListener("click", () => {
+togglePassword.addEventListener(
+    "click",
+    () => {
 
-    const isPassword =
-        passwordInput.type === "password";
+        const isPassword =
+            passwordInput.type === "password";
 
-    passwordInput.type =
-        isPassword ? "text" : "password";
 
-    togglePassword.textContent =
-        isPassword ? "🙈" : "👁️";
+        passwordInput.type =
+            isPassword
+                ? "text"
+                : "password";
 
-});
+
+        togglePassword.textContent =
+            isPassword
+                ? "🙈"
+                : "👁️";
+
+
+        togglePassword.setAttribute(
+            "aria-label",
+            isPassword
+                ? "إخفاء كلمة المرور"
+                : "إظهار كلمة المرور"
+        );
+
+    }
+);
 
 
 /* =========================================================
@@ -1091,10 +2158,13 @@ togglePassword.addEventListener("click", () => {
 
 function showStatus(message, type){
 
-    loginStatus.textContent = message;
+    loginStatus.textContent =
+        message;
 
     loginStatus.className =
-        "login-status show " + type;
+        "login-status show " +
+        type;
+
 }
 
 
@@ -1104,24 +2174,65 @@ function showStatus(message, type){
 
 function setLoading(loading){
 
-    loginButton.disabled = loading;
+    loginButton.disabled =
+        loading;
+
 
     if(loading){
 
         buttonContent.innerHTML = `
+
             <span class="loading-spinner"></span>
+
             جاري تسجيل الدخول...
+
         `;
 
-        loginButton.style.opacity = ".85";
+        loginButton.style.opacity =
+            ".82";
 
     }else{
 
-        buttonContent.innerHTML =
-            "🔐 تسجيل الدخول";
+        buttonContent.innerHTML = `
 
-        loginButton.style.opacity = "1";
+            <span class="button-icon">
+
+                <svg
+                    width="19"
+                    height="19"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <rect
+                        x="3"
+                        y="11"
+                        width="18"
+                        height="10"
+                        rx="2"
+                    />
+
+                    <path
+                        d="M7 11V7a5 5 0 0 1 10 0v4"
+                    />
+
+                </svg>
+
+            </span>
+
+            تسجيل الدخول
+
+        `;
+
+        loginButton.style.opacity =
+            "1";
+
     }
+
 }
 
 
@@ -1129,174 +2240,238 @@ function setLoading(loading){
    LOGIN
 ========================================================= */
 
-loginForm.addEventListener("submit", async (event) => {
+loginForm.addEventListener(
+    "submit",
+    async (event) => {
 
-    event.preventDefault();
-
-    const username =
-        usernameInput.value.trim();
-
-    const password =
-        passwordInput.value;
-
-    if(!username || !password){
-
-        showStatus(
-            "يرجى إدخال اسم المستخدم وكلمة المرور.",
-            "error"
-        );
-
-        return;
-    }
+        event.preventDefault();
 
 
-    /*
-       حالياً الواجهة جاهزة.
-       سيتم ربط هذا الجزء بالـ API الحقيقي
-       بعد إنشاء نظام Users + Roles في PostgreSQL.
-    */
+        const username =
+            usernameInput.value.trim();
 
-    setLoading(true);
-
-    showStatus(
-        "جاري التحقق من بيانات الدخول...",
-        "success"
-    );
+        const password =
+            passwordInput.value;
 
 
-    try{
+        /* -----------------------------------------------------
+           VALIDATION
+        ----------------------------------------------------- */
 
-        const response =
-            await fetch("/api/login", {
+        if(!username || !password){
 
-                method:"POST",
-
-                headers:{
-                    "Content-Type":"application/json"
-                },
-
-                body:JSON.stringify({
-
-                    username,
-                    password
-
-                })
-
-            });
-
-
-        const data =
-            await response.json();
-
-
-        if(!response.ok || !data.success){
-
-            throw new Error(
-                data.message ||
-                "اسم المستخدم أو كلمة المرور غير صحيحة."
+            showStatus(
+                "يرجى إدخال اسم المستخدم وكلمة المرور.",
+                "error"
             );
+
+            return;
 
         }
 
 
-        /*
-           سيتم استعمال هذه البيانات لاحقاً
-           لتوجيه المستخدم حسب الصلاحية:
+        /* -----------------------------------------------------
+           START LOADING
+        ----------------------------------------------------- */
 
-           admin
-           engineer
-           supervisor
-           warehouse
-           accountant
-           viewer
-        */
-
-        if(data.token){
-
-            localStorage.setItem(
-                "dunya_token",
-                data.token
-            );
-        }
-
-
-        if(data.user){
-
-            localStorage.setItem(
-                "dunya_user",
-                JSON.stringify(data.user)
-            );
-        }
+        setLoading(true);
 
 
         showStatus(
-            "تم تسجيل الدخول بنجاح. جاري فتح المنصة...",
+            "جاري التحقق من بيانات الدخول...",
             "success"
         );
 
 
-        setTimeout(() => {
+        try{
 
-            if(data.redirect){
 
-                window.location.href =
-                    data.redirect;
+            /* -------------------------------------------------
+               API LOGIN
+            ------------------------------------------------- */
 
-            }else{
+            const response =
+                await fetch(
+                    "/api/login",
+                    {
 
-                window.location.href =
-                    "/";
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:JSON.stringify({
+
+                            username,
+                            password
+
+                        })
+
+                    }
+                );
+
+
+            /* -------------------------------------------------
+               RESPONSE
+            ------------------------------------------------- */
+
+            const data =
+                await response.json();
+
+
+            if(
+                !response.ok ||
+                !data.success
+            ){
+
+                throw new Error(
+
+                    data.message ||
+
+                    "اسم المستخدم أو كلمة المرور غير صحيحة."
+
+                );
 
             }
 
-        },700);
+
+            /* -------------------------------------------------
+               SAVE TOKEN
+            ------------------------------------------------- */
+
+            if(data.token){
+
+                localStorage.setItem(
+                    "dunya_token",
+                    data.token
+                );
+
+            }
 
 
-    }catch(error){
+            /* -------------------------------------------------
+               SAVE USER
+            ------------------------------------------------- */
 
-        console.error(error);
+            if(data.user){
 
-        showStatus(
-            error.message ||
-            "تعذر الاتصال بالخادم.",
-            "error"
-        );
+                localStorage.setItem(
+                    "dunya_user",
+                    JSON.stringify(
+                        data.user
+                    )
+                );
 
-        setLoading(false);
+            }
+
+
+            /* -------------------------------------------------
+               SUCCESS
+            ------------------------------------------------- */
+
+            showStatus(
+                "تم تسجيل الدخول بنجاح. جاري فتح المنصة...",
+                "success"
+            );
+
+
+            /* -------------------------------------------------
+               REDIRECT
+            ------------------------------------------------- */
+
+            setTimeout(
+                () => {
+
+                    if(data.redirect){
+
+                        window.location.href =
+                            data.redirect;
+
+                    }else{
+
+                        window.location.href =
+                            "/";
+
+                    }
+
+                },
+                700
+            );
+
+
+        }catch(error){
+
+
+            console.error(
+                "LOGIN ERROR:",
+                error
+            );
+
+
+            showStatus(
+
+                error.message ||
+
+                "تعذر الاتصال بالخادم.",
+
+                "error"
+
+            );
+
+
+            setLoading(false);
+
+
+        }
 
     }
-
-});
+);
 
 
 /* =========================================================
-   ENTER KEY UX
+   ENTER FROM USERNAME
 ========================================================= */
 
-usernameInput.addEventListener("keydown", (event) => {
+usernameInput.addEventListener(
+    "keydown",
+    (event) => {
 
-    if(event.key === "Enter"){
+        if(event.key === "Enter"){
 
-        event.preventDefault();
+            event.preventDefault();
 
-        passwordInput.focus();
+            passwordInput.focus();
+
+        }
 
     }
-
-});
+);
 
 
 /* =========================================================
    AUTO FOCUS
 ========================================================= */
 
-window.addEventListener("load", () => {
+window.addEventListener(
+    "load",
+    () => {
 
-    usernameInput.focus();
+        setTimeout(
+            () => {
 
-});
+                usernameInput.focus();
+
+            },
+            150
+        );
+
+    }
+);
 
 </script>
 
 </body>
+
 </html>
