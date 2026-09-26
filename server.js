@@ -3569,7 +3569,7 @@ app.put(
 
                 ]);
 
-            if (!result.rows.length) {
+           if (!result.rows.length) {
 
     return res.status(404).json({
 
