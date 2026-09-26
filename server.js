@@ -5329,7 +5329,37 @@ app.get("/api/messages", async (req, res) => {
                 WHERE project_id = $1
 
                 ORDER BY created_at ASC
-                    }
+
+            `, [
+                projectId
+            ]);
+
+        res.json({
+
+            success: true,
+
+            messages:
+                result.rows
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "GET MESSAGES ERROR:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر تحميل الرسائل"
+
+        });
+
+    }
 
 });
 
