@@ -1235,7 +1235,116 @@ async function initDatabase() {
     );
 }
 
+/* =========================================================
+   CREATE INITIAL ENGINEER
+========================================================= */
 
+const engineerUsername =
+    cleanText(
+        process.env.ENGINEER_USERNAME
+    );
+
+const engineerPassword =
+    String(
+        process.env.ENGINEER_PASSWORD || ""
+    );
+
+const engineerName =
+    cleanText(
+        process.env.ENGINEER_NAME ||
+        "مهندس المشروع"
+    );
+
+
+if (
+    engineerUsername &&
+    engineerPassword
+) {
+
+    if (
+        engineerPassword.length < 8
+    ) {
+
+        console.warn(
+            "⚠️ ENGINEER_PASSWORD يجب أن تكون 8 أحرف على الأقل"
+        );
+
+    } else {
+
+        const existingEngineer =
+            await pool.query(
+                `
+                SELECT id
+                FROM users
+                WHERE LOWER(username) =
+                      LOWER($1)
+                LIMIT 1
+                `,
+                [
+                    engineerUsername
+                ]
+            );
+
+
+        if (
+            existingEngineer.rows.length === 0
+        ) {
+
+            const engineerPasswordHash =
+                await hashPassword(
+                    engineerPassword
+                );
+
+
+            await pool.query(
+                `
+                INSERT INTO users
+                (
+                    username,
+                    password_hash,
+                    full_name,
+                    role,
+                    active
+                )
+
+                VALUES
+                (
+                    $1,
+                    $2,
+                    $3,
+                    'engineer',
+                    TRUE
+                )
+                `,
+                [
+                    engineerUsername,
+                    engineerPasswordHash,
+                    engineerName
+                ]
+            );
+
+
+            console.log(
+                "👷 تم إنشاء حساب المهندس:",
+                engineerUsername
+            );
+
+        } else {
+
+            console.log(
+                "👷 حساب المهندس موجود مسبقاً:",
+                engineerUsername
+            );
+        }
+    }
+
+} else {
+
+    console.warn(
+        "⚠️ ENGINEER_USERNAME أو ENGINEER_PASSWORD غير موجودين في Render"
+    );
+}
+        
 console.log(
     "✅ PostgreSQL database initialized successfully"
 );
