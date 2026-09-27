@@ -1945,7 +1945,6 @@ app.post(
 /*
    المشاريع المسندة للمهندس الحالي
 */
-
 app.get(
     "/api/engineer/projects",
     requireAuth,
@@ -1958,11 +1957,8 @@ app.get(
                 await pool.query(`
 
                     SELECT
-
                         p.*,
-
                         pe.id AS assignment_id,
-
                         pe.assigned_at
 
                     FROM project_engineers pe
@@ -2019,9 +2015,9 @@ app.get(
 );
 
 
-/*
-   تقارير المهندس
-*/
+/* =========================================================
+   ENGINEER - REPORTS
+========================================================= */
 
 app.get(
     "/api/engineer/reports",
@@ -2037,32 +2033,12 @@ app.get(
                 );
 
 
-            let sql = `
-
-                SELECT
-
-                    dr.*,
-
-                    p.name AS project_name
-
-                FROM daily_reports dr
-
-                INNER JOIN projects p
-                    ON p.id = dr.project_id
-
-                INNER JOIN project_engineers pe
-                    ON pe.project_id =
-                       dr.project_id
-
-                WHERE
-                    pe.engineer_id = $1
-
-            `;
-
-
             const params = [
                 req.user.id
             ];
+
+
+            let projectFilter = "";
 
 
             if (projectId) {
@@ -2072,27 +2048,45 @@ app.get(
                 );
 
 
-                sql += `
+                projectFilter = `
                     AND dr.project_id = $2
                 `;
 
             }
 
 
-            sql += `
-
-                ORDER BY
-                    dr.report_date DESC,
-                    dr.created_at DESC
-
-            `;
-
-
             const result =
-                await pool.query(
-                    sql,
-                    params
-                );
+                await pool.query(`
+
+                    SELECT
+
+                        dr.*,
+
+                        p.name AS project_name,
+
+                        p.location AS project_location
+
+                    FROM daily_reports dr
+
+                    INNER JOIN projects p
+                        ON p.id = dr.project_id
+
+                    INNER JOIN project_engineers pe
+                        ON pe.project_id = dr.project_id
+
+                    WHERE
+
+                        pe.engineer_id = $1
+
+                        ${projectFilter}
+
+                    ORDER BY
+
+                        dr.report_date DESC,
+
+                        dr.created_at DESC
+
+                `, params);
 
 
             res.json({
@@ -2128,9 +2122,9 @@ app.get(
 );
 
 
-/*
-   إنشاء تقرير يومي بواسطة المهندس
-*/
+/* =========================================================
+   ENGINEER - CREATE DAILY REPORT
+========================================================= */
 
 app.post(
     "/api/engineer/reports",
@@ -2181,9 +2175,26 @@ app.post(
             }
 
 
+            if (
+                !cleanText(title) ||
+                !cleanText(description)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "عنوان التقرير ووصف الأشغال مطلوبان"
+
+                });
+
+            }
+
+
             /*
                التأكد أن المشروع مسند
-               لهذا المهندس فعلاً
+               لهذا المهندس الحالي
             */
 
             const assignment =
@@ -2191,7 +2202,7 @@ app.post(
 
                     SELECT
 
-                        pe.id,
+                        p.id,
 
                         p.name AS project_name
 
@@ -2202,17 +2213,17 @@ app.post(
 
                     WHERE
 
-                        pe.project_id = $1
+                        pe.engineer_id = $1
 
-                        AND pe.engineer_id = $2
+                        AND pe.project_id = $2
 
                     LIMIT 1
 
                 `, [
 
-                    projectId,
+                    req.user.id,
 
-                    req.user.id
+                    projectId
 
                 ]);
 
@@ -2233,22 +2244,9 @@ app.post(
             }
 
 
-            if (
-                !cleanText(title) ||
-                !cleanText(description)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "عنوان التقرير ووصف الأشغال مطلوبان"
-
-                });
-
-            }
-
+            /*
+               إنشاء التقرير
+            */
 
             const result =
                 await pool.query(`
@@ -2310,305 +2308,6 @@ app.post(
 
                     projectId,
 
-                    req.user.full_name,
-
-                    report_date || null,
-
-                    cleanText(title),
-
-                    cleanText(description),
-
-                    cleanText(quantity),
-
-                    cleanText(materials_used),
-
-                    cleanText(problems),
-
-                    cleanText(engineer_review)
-
-                ]);
-
-
-            await logAction(
-
-                "إنشاء تقرير يومي",
-
-                "daily_report",
-
-                result.rows[0].id,
-
-                `المهندس: ${req.user.full_name} - المشروع: ${assignment.rows[0].project_name}`
-
-            );
-
-
-            res.status(201).json({
-
-                success: true,
-
-                report:
-                    result.rows[0]
-
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "ENGINEER CREATE REPORT ERROR:",
-                error
-            );
-
-
-            res.status(500).json({
-
-                success: false,
-
-                message:
-                    "تعذر حفظ التقرير اليومي"
-
-            });
-
-        }
-
-    }
-);
-
-/* =========================================================
-   ENGINEER - PROJECTS
-========================================================= */
-
-app.get(
-    "/api/engineer/projects",
-    requireAuth,
-    requireRole("engineer"),
-    async (req, res) => {
-
-        try {
-
-            const result = await pool.query(`
-                SELECT
-                    p.*
-                FROM project_engineers pe
-                INNER JOIN projects p
-                    ON p.id = pe.project_id
-                WHERE pe.engineer_id = $1
-                ORDER BY p.created_at DESC
-            `, [
-                req.user.id
-            ]);
-
-            res.json({
-                success: true,
-                projects: result.rows
-            });
-
-        } catch (error) {
-
-            console.error(
-                "ENGINEER PROJECTS ERROR:",
-                error
-            );
-
-            res.status(500).json({
-                success: false,
-                message:
-                    "تعذر تحميل مشاريع المهندس"
-            });
-        }
-    }
-);
-
-
-/* =========================================================
-   ENGINEER - REPORTS
-========================================================= */
-
-app.get(
-    "/api/engineer/reports",
-    requireAuth,
-    requireRole("engineer"),
-    async (req, res) => {
-
-        try {
-
-            const projectId =
-                integerValue(req.query.project_id);
-
-            const params = [
-                req.user.id
-            ];
-
-            let projectFilter = "";
-
-            if (projectId) {
-
-                params.push(projectId);
-
-                projectFilter = `
-                    AND dr.project_id = $2
-                `;
-            }
-
-            const result = await pool.query(`
-                SELECT
-                    dr.*,
-
-                    p.name AS project_name,
-                    p.location AS project_location
-
-                FROM daily_reports dr
-
-                INNER JOIN projects p
-                    ON p.id = dr.project_id
-
-                INNER JOIN project_engineers pe
-                    ON pe.project_id = dr.project_id
-
-                WHERE
-                    pe.engineer_id = $1
-                    ${projectFilter}
-
-                ORDER BY
-                    dr.report_date DESC,
-                    dr.created_at DESC
-
-            `, params);
-
-            res.json({
-                success: true,
-                reports: result.rows
-            });
-
-        } catch (error) {
-
-            console.error(
-                "ENGINEER REPORTS ERROR:",
-                error
-            );
-
-            res.status(500).json({
-                success: false,
-                message:
-                    "تعذر تحميل التقارير"
-            });
-        }
-    }
-);
-
-
-/* =========================================================
-   ENGINEER - CREATE REPORT
-========================================================= */
-
-app.post(
-    "/api/engineer/reports",
-    requireAuth,
-    requireRole("engineer"),
-    async (req, res) => {
-
-        try {
-
-            const {
-                project_id,
-                report_date,
-                title,
-                description,
-                quantity,
-                materials_used,
-                problems,
-                engineer_review
-            } = req.body;
-
-
-            const projectId =
-                integerValue(project_id);
-
-
-            if (!projectId) {
-
-                return res.status(400).json({
-                    success: false,
-                    message:
-                        "المشروع مطلوب"
-                });
-            }
-
-
-            /* -------------------------------------------------
-               VERIFY ENGINEER PROJECT
-            ------------------------------------------------- */
-
-            const assignment =
-                await pool.query(`
-                    SELECT
-                        p.id,
-                        p.name
-                    FROM project_engineers pe
-
-                    INNER JOIN projects p
-                        ON p.id = pe.project_id
-
-                    WHERE
-                        pe.engineer_id = $1
-                        AND pe.project_id = $2
-
-                    LIMIT 1
-                `, [
-                    req.user.id,
-                    projectId
-                ]);
-
-
-            if (!assignment.rows.length) {
-
-                return res.status(403).json({
-                    success: false,
-                    message:
-                        "هذا المشروع غير مسند إليك"
-                });
-            }
-
-
-            /* -------------------------------------------------
-               CREATE REPORT
-            ------------------------------------------------- */
-
-            const result =
-                await pool.query(`
-                    INSERT INTO daily_reports (
-                        project_id,
-                        worker_id,
-                        engineer_name,
-                        report_date,
-                        title,
-                        description,
-                        quantity,
-                        materials_used,
-                        problems,
-                        engineer_review,
-                        status
-                    )
-
-                    VALUES (
-                        $1,
-                        NULL,
-                        $2,
-                        COALESCE($3, CURRENT_DATE),
-                        $4,
-                        $5,
-                        $6,
-                        $7,
-                        $8,
-                        $9,
-                        'في الانتظار'
-                    )
-
-                    RETURNING *
-                `, [
-
-                    projectId,
-
                     cleanText(
                         req.user.full_name ||
                         req.user.username ||
@@ -2628,15 +2327,43 @@ app.post(
                     cleanText(problems),
 
                     cleanText(engineer_review)
+
                 ]);
 
 
+            /*
+               تسجيل العملية في السجل
+            */
+
+            await logAction(
+
+                "إنشاء تقرير يومي",
+
+                "daily_report",
+
+                result.rows[0].id,
+
+                `المهندس: ${
+                    req.user.full_name ||
+                    req.user.username ||
+                    ""
+                } - المشروع: ${
+                    assignment.rows[0].project_name
+                }`
+
+            );
+
+
             res.status(201).json({
+
                 success: true,
+
                 message:
                     "تم تسجيل التقرير بنجاح",
+
                 report:
                     result.rows[0]
+
             });
 
 
@@ -2647,15 +2374,198 @@ app.post(
                 error
             );
 
+
             res.status(500).json({
+
                 success: false,
+
                 message:
                     "تعذر تسجيل التقرير"
+
             });
+
         }
+
     }
 );
 
+
+/* =========================================================
+   ENGINEER - PROJECT ACCESS
+========================================================= */
+
+/*
+   جلب تفاصيل مشروع معيّن
+   المهندس لا يستطيع فتح إلا مشروعًا مسندًا إليه
+*/
+
+app.get(
+    "/api/engineer/projects/:id",
+    requireAuth,
+    requireEngineerProject,
+    async (req, res) => {
+
+        try {
+
+            const projectId =
+                req.engineerProjectId;
+
+
+            const result =
+                await pool.query(`
+
+                    SELECT
+                        p.*,
+
+                        pe.id AS assignment_id,
+
+                        pe.assigned_at
+
+                    FROM project_engineers pe
+
+                    INNER JOIN projects p
+                        ON p.id = pe.project_id
+
+                    WHERE
+
+                        pe.project_id = $1
+
+                        AND pe.engineer_id = $2
+
+                        AND COALESCE(
+                            p.archived,
+                            FALSE
+                        ) = FALSE
+
+                    LIMIT 1
+
+                `, [
+
+                    projectId,
+
+                    req.user.id
+
+                ]);
+
+
+            if (!result.rows.length) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "المشروع غير موجود"
+
+                });
+
+            }
+
+
+            res.json({
+
+                success: true,
+
+                project:
+                    result.rows[0]
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "ENGINEER PROJECT DETAILS ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تحميل تفاصيل المشروع"
+
+            });
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENGINEER - PROJECT SUMMARY
+========================================================= */
+
+app.get(
+    "/api/engineer/projects/:id/summary",
+    requireAuth,
+    requireEngineerProject,
+    async (req, res) => {
+
+        try {
+
+            const projectId =
+                req.engineerProjectId;
+
+
+            const result =
+                await pool.query(`
+
+                    SELECT
+
+                        (
+                            SELECT COUNT(*)
+                            FROM daily_reports
+                            WHERE project_id = $1
+                        ) AS reports_count,
+
+                        (
+                            SELECT COUNT(*)
+                            FROM project_engineers
+                            WHERE project_id = $1
+                        ) AS engineers_count
+
+                `, [
+
+                    projectId
+
+                ]);
+
+
+            res.json({
+
+                success: true,
+
+                summary:
+                    result.rows[0]
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "ENGINEER PROJECT SUMMARY ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تحميل ملخص المشروع"
+
+            });
+
+        }
+
+    }
+);
 /* =========================================================
    HEALTH
 ========================================================= */
