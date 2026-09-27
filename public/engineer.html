@@ -1,14 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة المهندس | دنيا العمران</title>
+
+<title>لوحة المهندس | دنيا العمران والترقية</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+
 :root{
   --petroleum:#123B4A;
   --dark:#0B2934;
@@ -20,518 +22,3830 @@
   --muted:#718189;
   --border:#E1E7E8;
   --danger:#B94040;
+  --warning:#B87921;
+  --success:#2E7654;
   --shadow:0 12px 35px rgba(11,41,52,.08);
 }
-*{box-sizing:border-box}
-body{
-  margin:0;background:#F1F4F3;color:var(--text);
-  font-family:"Cairo",sans-serif
+
+*{
+  box-sizing:border-box;
 }
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:#F1F4F3;
+  color:var(--text);
+  font-family:"Cairo",sans-serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
 .topbar{
   background:linear-gradient(120deg,var(--dark),var(--petroleum));
-  color:white;padding:18px 5%;display:flex;
-  align-items:center;justify-content:space-between;gap:15px;
-  box-shadow:0 8px 25px #0b293426
+  color:white;
+  padding:18px 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  box-shadow:0 8px 25px #0b293426;
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
-.brand{display:flex;align-items:center;gap:12px}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
 .logo{
-  width:48px;height:48px;border-radius:15px;
-  display:grid;place-items:center;background:var(--copper);
-  color:white;font-size:25px;font-weight:900
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  background:var(--copper);
+  color:white;
+  font-size:25px;
+  font-weight:900;
 }
-.brand h1{font-size:18px;margin:0;font-weight:900}
-.brand small{display:block;color:#d4e0e2;font-size:11px}
-.top-actions{display:flex;align-items:center;gap:10px}
-.user-name{font-size:13px;color:#f0e7dc}
+
+.brand h1{
+  font-size:18px;
+  margin:0;
+  font-weight:900;
+}
+
+.brand small{
+  display:block;
+  color:#d4e0e2;
+  font-size:11px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.user-name{
+  font-size:13px;
+  color:#f0e7dc;
+}
+
+.notification-btn{
+  position:relative;
+  min-width:44px;
+  padding:10px 12px;
+}
+
+.notification-count{
+  position:absolute;
+  top:-5px;
+  right:-4px;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  border-radius:20px;
+  background:#d94c4c;
+  color:white;
+  font-size:10px;
+  display:none;
+  place-items:center;
+  border:2px solid var(--dark);
+}
+
+.notification-count.show{
+  display:grid;
+}
+
 .btn{
-  border:0;border-radius:12px;padding:11px 16px;
-  font-weight:800;transition:.2s
+  border:0;
+  border-radius:12px;
+  padding:11px 16px;
+  font-weight:800;
+  transition:.2s;
 }
-.btn:hover{transform:translateY(-1px)}
-.btn-copper{background:var(--copper);color:white}
-.btn-dark{background:var(--petroleum);color:white}
-.btn-light{background:#e9eeee;color:var(--petroleum)}
-.btn-danger{background:#fff0f0;color:var(--danger)}
-.page{max-width:1250px;margin:28px auto;padding:0 18px}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.btn-copper{
+  background:var(--copper);
+  color:white;
+}
+
+.btn-dark{
+  background:var(--petroleum);
+  color:white;
+}
+
+.btn-light{
+  background:#e9eeee;
+  color:var(--petroleum);
+}
+
+.btn-danger{
+  background:#fff0f0;
+  color:var(--danger);
+}
+
+.btn-green{
+  background:#e8f4ef;
+  color:#27634d;
+}
+
+.btn-small{
+  padding:8px 11px;
+  font-size:12px;
+}
+
+.page{
+  max-width:1300px;
+  margin:28px auto;
+  padding:0 18px;
+}
+
 .welcome{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:15px;flex-wrap:wrap;margin-bottom:22px
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
 }
-.welcome h2{margin:0;font-size:25px;color:var(--petroleum)}
-.welcome p{margin:5px 0 0;color:var(--muted);font-size:13px}
-.stats{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:15px;margin-bottom:22px
+
+.welcome h2{
+  margin:0;
+  font-size:25px;
+  color:var(--petroleum);
 }
-.stat,.panel{
-  background:white;border:1px solid var(--border);
-  border-radius:18px;box-shadow:var(--shadow)
+
+.welcome p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:13px;
 }
-.stat{padding:20px;display:flex;align-items:center;gap:14px}
-.stat-icon{
-  width:48px;height:48px;border-radius:15px;
-  display:grid;place-items:center;background:#edf3f1;font-size:23px
-}
-.stat strong{display:block;font-size:25px;color:var(--petroleum)}
-.stat span{font-size:12px;color:var(--muted)}
-.columns{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
-.panel{padding:22px;margin-bottom:18px}
-.panel-head{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:10px;margin-bottom:18px
-}
-.panel h3{margin:0;color:var(--petroleum);font-size:18px}
-.hint{font-size:12px;color:var(--muted);margin-top:4px}
-.field{margin-bottom:14px}
-label{display:block;font-size:13px;font-weight:800;margin-bottom:7px}
-input,select,textarea{
-  width:100%;border:1px solid #dce4e5;border-radius:11px;
-  padding:12px;background:#fbfcfc;color:var(--text);outline:none
-}
-input:focus,select:focus,textarea:focus{
-  border-color:var(--green);box-shadow:0 0 0 3px #3f6b6317
-}
-textarea{min-height:95px;resize:vertical}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.notice{
-  padding:12px 14px;border-radius:12px;background:#f2f6f4;
-  color:#47645c;font-size:12px;line-height:1.8;margin-bottom:14px
-}
-.status{
-  padding:11px 13px;border-radius:11px;margin-bottom:14px;
-  font-size:13px;display:none
-}
-.status.show{display:block}
-.status.error{background:#fff0f0;color:#a52f2f}
-.status.success{background:#edf8f0;color:#236a3b}
-.project-list,.report-list{display:grid;gap:12px}
-.project-card,.report-card{
-  border:1px solid var(--border);border-radius:14px;padding:14px;
-  background:#fff
-}
-.project-card h4,.report-card h4{margin:0 0 5px;color:var(--petroleum)}
-.project-meta{font-size:12px;color:var(--muted);line-height:1.9}
-.progress{
-  height:8px;background:#e8eeee;border-radius:20px;overflow:hidden;margin:10px 0
-}
-.progress span{display:block;height:100%;background:var(--green);border-radius:20px}
-.project-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.report-card p{white-space:pre-wrap;line-height:1.8;font-size:13px;margin:8px 0}
+
 .badge{
-  display:inline-block;padding:4px 9px;border-radius:20px;
-  font-size:11px;font-weight:800;background:#fff3e7;color:#9b5a20
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  background:#fff3e7;
+  color:#9b5a20;
 }
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:13px;
+  margin-bottom:22px;
+}
+
+.stat,
+.panel{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+}
+
+.stat{
+  padding:18px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.stat-icon{
+  width:46px;
+  height:46px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  background:#edf3f1;
+  font-size:21px;
+  flex-shrink:0;
+}
+
+.stat strong{
+  display:block;
+  font-size:23px;
+  color:var(--petroleum);
+}
+
+.stat span{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:5px;
+  margin-bottom:18px;
+  background:#e8eeee;
+  border-radius:15px;
+}
+
+.tab{
+  border:0;
+  background:transparent;
+  color:#577078;
+  padding:11px 15px;
+  border-radius:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.tab.active{
+  background:white;
+  color:var(--petroleum);
+  box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.tab-panel{
+  display:none;
+}
+
+.tab-panel.active{
+  display:block;
+}
+
+.columns{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:18px;
+}
+
+.panel{
+  padding:22px;
+  margin-bottom:18px;
+}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.panel h3{
+  margin:0;
+  color:var(--petroleum);
+  font-size:18px;
+}
+
+.hint{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.field{
+  margin-bottom:14px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  border:1px solid #dce4e5;
+  border-radius:11px;
+  padding:12px;
+  background:#fbfcfc;
+  color:var(--text);
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 3px #3f6b6317;
+}
+
+textarea{
+  min-height:95px;
+  resize:vertical;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.notice{
+  padding:12px 14px;
+  border-radius:12px;
+  background:#f2f6f4;
+  color:#47645c;
+  font-size:12px;
+  line-height:1.8;
+  margin-bottom:14px;
+}
+
+.status{
+  padding:11px 13px;
+  border-radius:11px;
+  margin-bottom:14px;
+  font-size:13px;
+  display:none;
+}
+
+.status.show{
+  display:block;
+}
+
+.status.error{
+  background:#fff0f0;
+  color:#a52f2f;
+}
+
+.status.success{
+  background:#edf8f0;
+  color:#236a3b;
+}
+
+.status.warning{
+  background:#fff7e8;
+  color:#8b641d;
+}
+
+.project-list,
+.report-list,
+.data-list{
+  display:grid;
+  gap:12px;
+}
+
+.project-card,
+.report-card,
+.data-card{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:15px;
+  background:#fff;
+  transition:.2s;
+}
+
+.project-card:hover,
+.report-card:hover,
+.data-card:hover{
+  box-shadow:0 7px 20px rgba(11,41,52,.06);
+  transform:translateY(-1px);
+}
+
+.project-card h4,
+.report-card h4,
+.data-card h4{
+  margin:0 0 5px;
+  color:var(--petroleum);
+}
+
+.project-meta{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.9;
+}
+
+.progress{
+  height:8px;
+  background:#e8eeee;
+  border-radius:20px;
+  overflow:hidden;
+  margin:10px 0;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  background:var(--green);
+  border-radius:20px;
+}
+
+.project-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:11px;
+}
+
+.report-card p{
+  white-space:pre-wrap;
+  line-height:1.8;
+  font-size:13px;
+  margin:8px 0;
+}
+
 .empty{
-  padding:25px;text-align:center;color:var(--muted);
-  background:#f8faf9;border:1px dashed #d7e0df;border-radius:13px;font-size:13px
+  padding:25px;
+  text-align:center;
+  color:var(--muted);
+  background:#f8faf9;
+  border:1px dashed #d7e0df;
+  border-radius:13px;
+  font-size:13px;
 }
-.footer{text-align:center;color:#91a0a4;font-size:11px;padding:18px}
+
+.section-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+
+.info-box{
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fafcfc;
+}
+
+.info-box strong{
+  display:block;
+  color:var(--petroleum);
+  margin-bottom:5px;
+}
+
+.info-box span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:15px;
+}
+
+.detail-item{
+  padding:12px;
+  background:#f7f9f8;
+  border-radius:11px;
+}
+
+.detail-item small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-bottom:3px;
+}
+
+.detail-item strong{
+  color:var(--petroleum);
+  font-size:13px;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(5,24,31,.55);
+  z-index:2000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  background:white;
+  width:min(900px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 25px 70px rgba(0,0,0,.2);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.modal-head h3{
+  margin:0;
+  color:var(--petroleum);
+}
+
+.close-btn{
+  border:0;
+  background:#edf1f1;
+  color:var(--petroleum);
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  font-weight:900;
+}
+
+.profile-card{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:18px;
+  background:linear-gradient(120deg,#f5f8f7,#fff);
+  border:1px solid var(--border);
+  border-radius:16px;
+}
+
+.avatar{
+  width:65px;
+  height:65px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  background:var(--petroleum);
+  color:white;
+  font-size:28px;
+  font-weight:900;
+}
+
+.profile-card h3{
+  margin:0;
+  color:var(--petroleum);
+}
+
+.profile-card p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.notification-list{
+  display:grid;
+  gap:10px;
+}
+
+.notification{
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:#fff;
+}
+
+.notification.unread{
+  background:#f2f7f5;
+  border-right:4px solid var(--copper);
+}
+
+.notification strong{
+  color:var(--petroleum);
+  font-size:13px;
+}
+
+.notification p{
+  margin:5px 0;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.footer{
+  text-align:center;
+  color:#91a0a4;
+  font-size:11px;
+  padding:18px;
+}
+
+.loading{
+  opacity:.65;
+  pointer-events:none;
+}
+
+@media(max-width:1050px){
+  .stats{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
 @media(max-width:850px){
-  .columns{grid-template-columns:1fr}
+  .columns{
+    grid-template-columns:1fr;
+  }
+
+  .section-grid{
+    grid-template-columns:1fr;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr 1fr;
+  }
 }
+
 @media(max-width:600px){
-  .topbar{padding:14px 16px;align-items:flex-start}
-  .brand h1{font-size:15px}
-  .brand small{font-size:10px}
-  .logo{width:42px;height:42px}
-  .user-name{display:none}
-  .page{padding:0 12px;margin:20px auto}
-  .welcome h2{font-size:21px}
-  .stats{grid-template-columns:1fr;gap:10px}
-  .stat{padding:14px}
-  .panel{padding:16px}
-  .form-grid{grid-template-columns:1fr;gap:0}
-  .top-actions .btn{padding:9px 11px;font-size:12px}
+
+  .topbar{
+    padding:14px 16px;
+    align-items:flex-start;
+  }
+
+  .brand h1{
+    font-size:15px;
+  }
+
+  .brand small{
+    font-size:10px;
+  }
+
+  .logo{
+    width:42px;
+    height:42px;
+  }
+
+  .user-name{
+    display:none;
+  }
+
+  .page{
+    padding:0 12px;
+    margin:20px auto;
+  }
+
+  .welcome h2{
+    font-size:21px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .stat{
+    padding:13px;
+  }
+
+  .stat strong{
+    font-size:20px;
+  }
+
+  .panel{
+    padding:16px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .top-actions .btn{
+    padding:9px 10px;
+    font-size:11px;
+  }
+
+  .notification-btn{
+    min-width:40px;
+  }
 }
+
 </style>
 </head>
 
 <body>
+
 <header class="topbar">
+
   <div class="brand">
+
     <div class="logo">د</div>
+
     <div>
       <h1>دنيا العمران والترقية</h1>
       <small>فضاء المهندس الميداني</small>
     </div>
+
   </div>
+
   <div class="top-actions">
+
     <span class="user-name" id="userName">المهندس</span>
-    <button class="btn btn-light" id="refreshBtn" type="button">↻ تحديث</button>
-    <button class="btn btn-copper" id="logoutBtn" type="button">خروج</button>
+
+    <button
+      class="btn btn-light notification-btn"
+      id="notificationBtn"
+      type="button"
+      title="الإشعارات"
+    >
+      🔔
+      <span id="notificationCount" class="notification-count">0</span>
+    </button>
+
+    <button
+      class="btn btn-light"
+      id="refreshBtn"
+      type="button"
+    >
+      ↻ تحديث
+    </button>
+
+    <button
+      class="btn btn-copper"
+      id="logoutBtn"
+      type="button"
+    >
+      خروج
+    </button>
+
   </div>
+
 </header>
 
+
 <main class="page">
+
   <section class="welcome">
+
     <div>
-      <h2>مرحبا بك في فضاء المهندس 👷</h2>
-      <p>تابع مشاريعك وسجّل الأشغال اليومية بكل سهولة.</p>
+
+      <h2>
+        مرحبا بك في فضاء المهندس 👷
+      </h2>
+
+      <p>
+        تابع مشاريعك، راقب تقدم الأشغال وسجّل التقارير اليومية بكل سهولة.
+      </p>
+
     </div>
-    <span class="badge">ENGINEER SPACE</span>
+
+    <span class="badge">
+      ENGINEER SPACE
+    </span>
+
   </section>
+
+
+  <!-- STATS -->
 
   <section class="stats">
+
     <div class="stat">
-      <div class="stat-icon">🏗️</div>
-      <div><strong id="projectCount">—</strong><span>المشاريع المسندة إليك</span></div>
+
+      <div class="stat-icon">
+        🏗️
+      </div>
+
+      <div>
+        <strong id="projectCount">—</strong>
+        <span>المشاريع المسندة</span>
+      </div>
+
     </div>
+
+
     <div class="stat">
-      <div class="stat-icon">📝</div>
-      <div><strong id="reportCount">—</strong><span>التقارير المسجلة</span></div>
+
+      <div class="stat-icon">
+        📝
+      </div>
+
+      <div>
+        <strong id="reportCount">—</strong>
+        <span>التقارير المسجلة</span>
+      </div>
+
     </div>
+
+
     <div class="stat">
-      <div class="stat-icon">📅</div>
-      <div><strong id="todayCount">—</strong><span>تقارير اليوم</span></div>
+
+      <div class="stat-icon">
+        📅
+      </div>
+
+      <div>
+        <strong id="todayCount">—</strong>
+        <span>تقارير اليوم</span>
+      </div>
+
     </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+        📈
+      </div>
+
+      <div>
+        <strong id="averageProgress">—</strong>
+        <span>متوسط التقدم</span>
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-icon">
+        🔔
+      </div>
+
+      <div>
+        <strong id="unreadCount">0</strong>
+        <span>إشعارات غير مقروءة</span>
+      </div>
+
+    </div>
+
   </section>
 
-  <div class="columns">
-    <section>
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <h3>🏗️ مشاريعي</h3>
-            <div class="hint">المشاريع المسندة إلى حسابك فقط</div>
+
+  <!-- TABS -->
+
+  <nav class="tabs">
+
+    <button
+      class="tab active"
+      data-tab="dashboard"
+      type="button"
+    >
+      🏠 الرئيسية
+    </button>
+
+    <button
+      class="tab"
+      data-tab="projects"
+      type="button"
+    >
+      🏗️ مشاريعي
+    </button>
+
+    <button
+      class="tab"
+      data-tab="reports"
+      type="button"
+    >
+      📝 تقاريري
+    </button>
+
+    <button
+      class="tab"
+      data-tab="resources"
+      type="button"
+    >
+      📦 الموارد
+    </button>
+
+    <button
+      class="tab"
+      data-tab="schedule"
+      type="button"
+    >
+      📅 المواعيد
+    </button>
+
+    <button
+      class="tab"
+      data-tab="profile"
+      type="button"
+    >
+      👤 حسابي
+    </button>
+
+  </nav>
+
+
+  <!-- DASHBOARD -->
+
+  <section
+    id="tab-dashboard"
+    class="tab-panel active"
+  >
+
+    <div class="columns">
+
+      <section>
+
+        <div class="panel">
+
+          <div class="panel-head">
+
+            <div>
+              <h3>🏗️ المشاريع المسندة إليك</h3>
+
+              <div class="hint">
+                لا تظهر هنا إلا المشاريع المرتبطة بحساب المهندس الحالي.
+              </div>
+            </div>
+
+            <button
+              class="btn btn-light btn-small"
+              id="loadProjectsBtn"
+              type="button"
+            >
+              تحميل
+            </button>
+
           </div>
-          <button class="btn btn-light" id="loadProjectsBtn" type="button">تحميل</button>
+
+          <div
+            id="projectsList"
+            class="project-list"
+          >
+            <div class="empty">
+              جاري تحميل المشاريع...
+            </div>
+          </div>
+
         </div>
-        <div id="projectsList" class="project-list">
-          <div class="empty">جاري تحميل المشاريع...</div>
+
+
+        <div class="panel">
+
+          <div class="panel-head">
+
+            <div>
+              <h3>📋 آخر التقارير</h3>
+
+              <div class="hint">
+                آخر التقارير التي سجلتها.
+              </div>
+            </div>
+
+            <button
+              class="btn btn-light btn-small"
+              type="button"
+              onclick="switchTab('reports')"
+            >
+              كل التقارير
+            </button>
+
+          </div>
+
+          <div
+            id="dashboardReports"
+            class="report-list"
+          >
+            <div class="empty">
+              جاري تحميل التقارير...
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section>
+
+        <div class="panel">
+
+          <div class="panel-head">
+
+            <div>
+              <h3>⚡ إجراءات سريعة</h3>
+
+              <div class="hint">
+                العمليات المسموح بها للمهندس.
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="section-grid">
+
+            <div class="info-box">
+
+              <strong>📝 تقرير يومي</strong>
+
+              <span>
+                تسجيل الأشغال المنجزة والعراقيل.
+              </span>
+
+              <br><br>
+
+              <button
+                class="btn btn-copper btn-small"
+                type="button"
+                onclick="switchTab('reports')"
+              >
+                تسجيل تقرير
+              </button>
+
+            </div>
+
+
+            <div class="info-box">
+
+              <strong>🏗️ مشاريعي</strong>
+
+              <span>
+                عرض المشاريع المسندة إليك.
+              </span>
+
+              <br><br>
+
+              <button
+                class="btn btn-light btn-small"
+                type="button"
+                onclick="switchTab('projects')"
+              >
+                عرض المشاريع
+              </button>
+
+            </div>
+
+
+            <div class="info-box">
+
+              <strong>📦 الموارد</strong>
+
+              <span>
+                العمال والمواد والمعدات والمصاريف.
+              </span>
+
+              <br><br>
+
+              <button
+                class="btn btn-light btn-small"
+                type="button"
+                onclick="switchTab('resources')"
+              >
+                عرض الموارد
+              </button>
+
+            </div>
+
+
+            <div class="info-box">
+
+              <strong>📅 المواعيد</strong>
+
+              <span>
+                الاجتماعات والمواعيد المرتبطة بالمشاريع.
+              </span>
+
+              <br><br>
+
+              <button
+                class="btn btn-light btn-small"
+                type="button"
+                onclick="switchTab('schedule')"
+              >
+                عرض المواعيد
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="panel">
+
+          <div class="panel-head">
+
+            <div>
+              <h3>🔐 صلاحيات المهندس</h3>
+            </div>
+
+          </div>
+
+          <div class="notice">
+
+            <b>مسموح:</b>
+            متابعة المشاريع المسندة، الاطلاع على البيانات المرتبطة بها،
+            وتسجيل التقارير اليومية.
+
+            <br><br>
+
+            <b>غير مسموح:</b>
+            إنشاء أو حذف المشاريع، تعيين المهندسين، إدارة المستخدمين،
+            تعديل الميزانيات أو حذف البيانات الإدارية.
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </section>
+
+
+  <!-- PROJECTS -->
+
+  <section
+    id="tab-projects"
+    class="tab-panel"
+  >
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <div>
+          <h3>🏗️ مشاريعي</h3>
+
+          <div class="hint">
+            المشاريع التي تم إسنادها إلى حسابك فقط.
+          </div>
+        </div>
+
+        <button
+          class="btn btn-light"
+          type="button"
+          onclick="loadProjects()"
+        >
+          ↻ تحديث
+        </button>
+
+      </div>
+
+      <div
+        id="allProjectsList"
+        class="project-list"
+      >
+        <div class="empty">
+          جاري تحميل المشاريع...
         </div>
       </div>
 
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <h3>📋 تقاريري السابقة</h3>
-            <div class="hint">تقاريرك اليومية المسجلة</div>
-          </div>
-          <select id="reportFilter" style="max-width:190px">
-            <option value="">كل المشاريع</option>
-          </select>
-        </div>
-        <div id="reportsList" class="report-list">
-          <div class="empty">جاري تحميل التقارير...</div>
-        </div>
-      </div>
-    </section>
+    </div>
 
-    <section>
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <h3>📝 تسجيل تقرير يومي</h3>
-            <div class="hint">سجّل ملخص الأشغال المنجزة في المشروع</div>
-          </div>
-        </div>
+  </section>
 
-        <div class="notice">
-          اختَر مشروعًا مسندًا إليك، ثم اكتب تفاصيل الأشغال والكمية والمواد والمشاكل إن وجدت.
-        </div>
 
-        <div id="formStatus" class="status"></div>
+  <!-- REPORTS -->
 
-        <form id="reportForm">
-          <div class="field">
-            <label for="project_id">المشروع *</label>
-            <select id="project_id" required>
-              <option value="">جاري تحميل المشاريع...</option>
+  <section
+    id="tab-reports"
+    class="tab-panel"
+  >
+
+    <div class="columns">
+
+      <section>
+
+        <div class="panel">
+
+          <div class="panel-head">
+
+            <div>
+              <h3>📋 تقاريري السابقة</h3>
+
+              <div class="hint">
+                جميع التقارير المسجلة بواسطة حسابك.
+              </div>
+            </div>
+
+            <select
+              id="reportFilter"
+              style="max-width:190px"
+            >
+              <option value="">
+                كل المشاريع
+              </option>
             </select>
+
           </div>
 
-          <div class="form-grid">
-            <div class="field">
-              <label for="report_date">تاريخ التقرير *</label>
-              <input id="report_date" type="date" required>
+          <div
+            id="reportsList"
+            class="report-list"
+          >
+            <div class="empty">
+              جاري تحميل التقارير...
             </div>
-            <div class="field">
-              <label for="title">عنوان التقرير *</label>
-              <input id="title" maxlength="250" required placeholder="مثال: أشغال صب الخرسانة">
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section>
+
+        <div class="panel">
+
+          <div class="panel-head">
+
+            <div>
+              <h3>📝 تسجيل تقرير يومي</h3>
+
+              <div class="hint">
+                سجّل ملخص الأشغال المنجزة في المشروع.
+              </div>
             </div>
+
           </div>
 
-          <div class="field">
-            <label for="description">الأشغال المنجزة اليوم *</label>
-            <textarea id="description" required placeholder="اشرح الأشغال التي تم إنجازها..."></textarea>
+
+          <div class="notice">
+
+            اختَر مشروعًا مسندًا إليك، ثم اكتب تفاصيل الأشغال
+            والكمية والمواد والمشاكل إن وجدت.
+
           </div>
 
-          <div class="field">
-            <label for="quantity">الكمية أو نسبة الإنجاز</label>
-            <input id="quantity" maxlength="150" placeholder="مثال: 20 م³ أو تقدم الأشغال 5%">
-          </div>
 
-          <div class="field">
-            <label for="materials_used">المواد المستعملة</label>
-            <textarea id="materials_used" placeholder="الإسمنت، الرمل، الحديد... والكميات إن توفرت"></textarea>
-          </div>
+          <div
+            id="formStatus"
+            class="status"
+          ></div>
 
-          <div class="field">
-            <label for="problems">المشاكل والعراقيل</label>
-            <textarea id="problems" placeholder="اكتب المشاكل إن وجدت، أو اترك الحقل فارغًا"></textarea>
-          </div>
 
-          <div class="field">
-            <label for="engineer_review">ملاحظات المهندس</label>
-            <textarea id="engineer_review" placeholder="ملاحظات أو توصيات تخص سير الأشغال"></textarea>
-          </div>
+          <form id="reportForm">
 
-          <button class="btn btn-copper" id="submitBtn" type="submit" style="width:100%">
-            حفظ التقرير
-          </button>
-        </form>
+            <div class="field">
+
+              <label for="project_id">
+                المشروع *
+              </label>
+
+              <select
+                id="project_id"
+                required
+              >
+                <option value="">
+                  جاري تحميل المشاريع...
+                </option>
+              </select>
+
+            </div>
+
+
+            <div class="form-grid">
+
+              <div class="field">
+
+                <label for="report_date">
+                  تاريخ التقرير *
+                </label>
+
+                <input
+                  id="report_date"
+                  type="date"
+                  required
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label for="title">
+                  عنوان التقرير *
+                </label>
+
+                <input
+                  id="title"
+                  maxlength="250"
+                  required
+                  placeholder="مثال: أشغال صب الخرسانة"
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="description">
+                الأشغال المنجزة اليوم *
+              </label>
+
+              <textarea
+                id="description"
+                required
+                placeholder="اشرح الأشغال التي تم إنجازها..."
+              ></textarea>
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="quantity">
+                الكمية أو نسبة الإنجاز
+              </label>
+
+              <input
+                id="quantity"
+                maxlength="150"
+                placeholder="مثال: 20 م³ أو تقدم الأشغال 5%"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="materials_used">
+                المواد المستعملة
+              </label>
+
+              <textarea
+                id="materials_used"
+                placeholder="الإسمنت، الرمل، الحديد... والكميات إن توفرت"
+              ></textarea>
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="problems">
+                المشاكل والعراقيل
+              </label>
+
+              <textarea
+                id="problems"
+                placeholder="اكتب المشاكل إن وجدت، أو اترك الحقل فارغًا"
+              ></textarea>
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="engineer_review">
+                ملاحظات المهندس
+              </label>
+
+              <textarea
+                id="engineer_review"
+                placeholder="ملاحظات أو توصيات تخص سير الأشغال"
+              ></textarea>
+
+            </div>
+
+
+            <button
+              class="btn btn-copper"
+              id="submitBtn"
+              type="submit"
+              style="width:100%"
+            >
+              حفظ التقرير
+            </button>
+
+          </form>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </section>
+
+
+  <!-- RESOURCES -->
+
+  <section
+    id="tab-resources"
+    class="tab-panel"
+  >
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <div>
+          <h3>📦 موارد المشاريع</h3>
+
+          <div class="hint">
+            المعلومات المرتبطة بمشاريعك — للعرض والمتابعة فقط.
+          </div>
+        </div>
+
+        <button
+          class="btn btn-light"
+          type="button"
+          onclick="loadResources()"
+        >
+          ↻ تحديث
+        </button>
+
       </div>
-    </section>
+
+
+      <div
+        id="resourcesStatus"
+        class="status"
+      ></div>
+
+
+      <div class="section-grid">
+
+        <div class="data-card">
+
+          <h4>👷 العمال</h4>
+
+          <div
+            id="workersList"
+            class="data-list"
+          >
+            <div class="empty">
+              اختر مشروعًا لعرض العمال.
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="data-card">
+
+          <h4>📦 المواد</h4>
+
+          <div
+            id="materialsList"
+            class="data-list"
+          >
+            <div class="empty">
+              اختر مشروعًا لعرض المواد.
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="data-card">
+
+          <h4>🚜 المعدات</h4>
+
+          <div
+            id="equipmentList"
+            class="data-list"
+          >
+            <div class="empty">
+              اختر مشروعًا لعرض المعدات.
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="data-card">
+
+          <h4>💰 المصاريف</h4>
+
+          <div
+            id="expensesList"
+            class="data-list"
+          >
+            <div class="empty">
+              اختر مشروعًا لعرض المصاريف.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SCHEDULE -->
+
+  <section
+    id="tab-schedule"
+    class="tab-panel"
+  >
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <div>
+          <h3>📅 المواعيد والاجتماعات</h3>
+
+          <div class="hint">
+            المواعيد والاجتماعات المرتبطة بمشاريعك.
+          </div>
+        </div>
+
+        <button
+          class="btn btn-light"
+          type="button"
+          onclick="loadSchedule()"
+        >
+          ↻ تحديث
+        </button>
+
+      </div>
+
+
+      <div
+        id="scheduleList"
+        class="data-list"
+      >
+
+        <div class="empty">
+          جاري تحميل المواعيد...
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <div>
+          <h3>📄 الوثائق</h3>
+
+          <div class="hint">
+            الوثائق المرتبطة بالمشاريع المسندة إليك.
+          </div>
+        </div>
+
+        <button
+          class="btn btn-light"
+          type="button"
+          onclick="loadDocuments()"
+        >
+          ↻ تحديث
+        </button>
+
+      </div>
+
+
+      <div
+        id="documentsList"
+        class="data-list"
+      >
+
+        <div class="empty">
+          جاري تحميل الوثائق...
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PROFILE -->
+
+  <section
+    id="tab-profile"
+    class="tab-panel"
+  >
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <div>
+          <h3>👤 حساب المهندس</h3>
+
+          <div class="hint">
+            معلومات الحساب والصلاحيات.
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="profile-card">
+
+        <div class="avatar">
+          👷
+        </div>
+
+        <div>
+
+          <h3 id="profileName">
+            المهندس
+          </h3>
+
+          <p id="profileUsername">
+            —
+          </p>
+
+          <span class="badge">
+            ENGINEER
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <br>
+
+
+      <div class="detail-grid">
+
+        <div class="detail-item">
+
+          <small>الاسم الكامل</small>
+
+          <strong id="profileFullName">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <small>اسم المستخدم</small>
+
+          <strong id="profileUserName2">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <small>الصلاحية</small>
+
+          <strong>
+            مهندس
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <small>عدد المشاريع</small>
+
+          <strong id="profileProjects">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <small>عدد التقارير</small>
+
+          <strong id="profileReports">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="detail-item">
+
+          <small>حالة الحساب</small>
+
+          <strong>
+            نشط
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <div>
+          <h3>🔐 حدود الصلاحيات</h3>
+        </div>
+
+      </div>
+
+
+      <div class="section-grid">
+
+        <div class="info-box">
+
+          <strong>✅ مسموح</strong>
+
+          <span>
+            متابعة المشاريع المسندة، قراءة البيانات،
+            تسجيل التقارير اليومية ومتابعة تقدم الأشغال.
+          </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+          <strong>👁️ عرض فقط</strong>
+
+          <span>
+            العمال، المواد، المعدات، المصاريف،
+            الاجتماعات والوثائق حسب المشروع.
+          </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+          <strong>🚫 غير مسموح</strong>
+
+          <span>
+            إنشاء أو حذف المشاريع وتغيير الميزانيات
+            أو إدارة المستخدمين.
+          </span>
+
+        </div>
+
+
+        <div class="info-box">
+
+          <strong>🔒 حماية البيانات</strong>
+
+          <span>
+            الوصول يجب أن يكون محصورًا بالمشاريع
+            المسندة إلى المهندس الحالي.
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <div class="footer">
+    دنيا العمران والترقية · فضاء المهندس
   </div>
-  <div class="footer">دنيا العمران والترقية · فضاء المهندس</div>
+
 </main>
 
+
+<!-- PROJECT DETAIL MODAL -->
+
+<div
+  id="projectModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h3 id="modalProjectTitle">
+        تفاصيل المشروع
+      </h3>
+
+      <button
+        class="close-btn"
+        type="button"
+        onclick="closeProjectModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div id="projectModalContent">
+
+      <div class="empty">
+        جاري تحميل تفاصيل المشروع...
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- NOTIFICATIONS MODAL -->
+
+<div
+  id="notificationModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h3>
+        🔔 الإشعارات
+      </h3>
+
+      <button
+        class="close-btn"
+        type="button"
+        onclick="closeNotifications()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      id="notificationList"
+      class="notification-list"
+    >
+
+      <div class="empty">
+        جاري تحميل الإشعارات...
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
-const token = localStorage.getItem("dunya_token");
+
+const token =
+  localStorage.getItem("dunya_token");
+
 let currentUser = null;
+
 let projects = [];
+
 let reports = [];
 
-const $ = id => document.getElementById(id);
+let notifications = [];
 
-function showStatus(message, type="success"){
-  const box = $("formStatus");
-  box.textContent = message;
-  box.className = "status show " + type;
+let currentProjectId = null;
+
+
+const $ =
+  id => document.getElementById(id);
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function showStatus(
+  message,
+  type="success"
+){
+
+  const box =
+    $("formStatus");
+
+  box.textContent =
+    message;
+
+  box.className =
+    "status show " + type;
 }
+
 
 function hideStatus(){
-  $("formStatus").className = "status";
+
+  $("formStatus").className =
+    "status";
+
 }
+
+
+/* =========================================================
+   HTML SAFETY
+========================================================= */
 
 function escapeHtml(value){
-  return String(value ?? "").replace(/[&<>"']/g, ch => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[ch]));
+
+  return String(value ?? "")
+    .replace(/[&<>"']/g, ch => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[ch]));
+
 }
+
+
+/* =========================================================
+   DATE
+========================================================= */
 
 function localDate(){
-  const now = new Date();
-  const offset = now.getTimezoneOffset();
-  return new Date(now.getTime() - offset * 60000).toISOString().slice(0,10);
+
+  const now =
+    new Date();
+
+  const offset =
+    now.getTimezoneOffset();
+
+  return new Date(
+    now.getTime() -
+    offset * 60000
+  )
+  .toISOString()
+  .slice(0,10);
+
 }
 
-async function api(url, options={}){
-  const response = await fetch(url, {
-    ...options,
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer " + token,
-      ...(options.headers || {})
-    }
-  });
+
+/* =========================================================
+   API
+========================================================= */
+
+async function api(
+  url,
+  options={}
+){
+
+  const response =
+    await fetch(
+      url,
+      {
+        ...options,
+
+        headers:{
+          "Content-Type":
+            "application/json",
+
+          "Authorization":
+            "Bearer " + token,
+
+          ...(options.headers || {})
+        }
+      }
+    );
+
 
   let data = {};
-  try { data = await response.json(); } catch {}
-
-  if(response.status === 401){
-    localStorage.removeItem("dunya_token");
-    localStorage.removeItem("dunya_user");
-    location.href = "/login.html";
-    throw new Error("انتهت جلسة الدخول، أعد تسجيل الدخول.");
-  }
-
-  if(!response.ok || data.success === false){
-    throw new Error(data.message || "تعذر تنفيذ الطلب.");
-  }
-  return data;
-}
-
-function requireEngineer(){
-  if(!token){
-    location.href = "/login.html";
-    return false;
-  }
 
   try{
-    currentUser = JSON.parse(localStorage.getItem("dunya_user") || "null");
-  }catch{
-    currentUser = null;
+
+    data =
+      await response.json();
+
+  }catch{}
+
+
+  if(response.status === 401){
+
+    localStorage.removeItem(
+      "dunya_token"
+    );
+
+    localStorage.removeItem(
+      "dunya_user"
+    );
+
+    location.href =
+      "/login.html";
+
+    throw new Error(
+      "انتهت جلسة الدخول."
+    );
+
   }
 
-  if(currentUser && currentUser.role && currentUser.role !== "engineer"){
-    location.href = "/";
-    return false;
+
+  if(
+    !response.ok ||
+    data.success === false
+  ){
+
+    throw new Error(
+      data.message ||
+      "تعذر تنفيذ الطلب."
+    );
+
   }
 
-  $("userName").textContent =
-    currentUser?.full_name || currentUser?.username || "المهندس";
 
-  return true;
+  return data;
+
 }
 
-function renderProjects(){
-  const list = $("projectsList");
-  const select = $("project_id");
-  const filter = $("reportFilter");
 
-  if(!projects.length){
-    list.innerHTML = '<div class="empty">مازال ما تسند حتى مشروع لحسابك.</div>';
-    select.innerHTML = '<option value="">لا توجد مشاريع متاحة</option>';
-    return;
+/* =========================================================
+   ENGINEER AUTH
+========================================================= */
+
+function requireEngineer(){
+
+  if(!token){
+
+    location.href =
+      "/login.html";
+
+    return false;
+
   }
 
-  list.innerHTML = projects.map(project => {
-    const progress = Math.max(0, Math.min(100, Number(project.progress || 0)));
-    return `
-      <article class="project-card">
-        <h4>${escapeHtml(project.name || "مشروع")}</h4>
-        <div class="project-meta">
-          📍 ${escapeHtml(project.location || "الموقع غير محدد")}<br>
-          📅 ${escapeHtml(project.start_date || "—")} إلى ${escapeHtml(project.end_date || "—")}<br>
-          الحالة: ${escapeHtml(project.status || "—")}
-        </div>
-        <div class="progress"><span style="width:${progress}%"></span></div>
-        <div class="project-meta">نسبة التقدم المسجلة: ${progress}%</div>
-        <div class="project-actions">
-          <button class="btn btn-copper" type="button" onclick="chooseProject(${Number(project.id)})">تقرير لهذا المشروع</button>
-        </div>
-      </article>`;
-  }).join("");
+
+  try{
+
+    currentUser =
+      JSON.parse(
+        localStorage.getItem(
+          "dunya_user"
+        ) || "null"
+      );
+
+  }catch{
+
+    currentUser =
+      null;
+
+  }
+
+
+  if(
+    currentUser &&
+    currentUser.role &&
+    currentUser.role !== "engineer"
+  ){
+
+    location.href =
+      "/";
+
+    return false;
+
+  }
+
+
+  const name =
+    currentUser?.full_name ||
+    currentUser?.username ||
+    "المهندس";
+
+
+  $("userName").textContent =
+    name;
+
+  $("profileName").textContent =
+    name;
+
+  $("profileFullName").textContent =
+    currentUser?.full_name ||
+    "—";
+
+  $("profileUsername").textContent =
+    currentUser?.username ?
+    "@" + currentUser.username :
+    "—";
+
+  $("profileUserName2").textContent =
+    currentUser?.username ||
+    "—";
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+function switchTab(tabName){
+
+  document
+    .querySelectorAll(".tab")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.tab === tabName
+      );
+
+    });
+
+
+  document
+    .querySelectorAll(".tab-panel")
+    .forEach(panel => {
+
+      panel.classList.toggle(
+        "active",
+        panel.id === "tab-" + tabName
+      );
+
+    });
+
+
+  if(tabName === "resources"){
+
+    loadResources();
+
+  }
+
+
+  if(tabName === "schedule"){
+
+    loadSchedule();
+
+    loadDocuments();
+
+  }
+
+
+  if(tabName === "projects"){
+
+    renderAllProjects();
+
+  }
+
+}
+
+
+document
+  .querySelectorAll(".tab")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => switchTab(
+        button.dataset.tab
+      )
+    );
+
+  });
+
+
+/* =========================================================
+   PROJECTS
+========================================================= */
+
+function projectProgress(project){
+
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      Number(
+        project.progress || 0
+      )
+    )
+  );
+
+}
+
+
+function projectCard(project){
+
+  const progress =
+    projectProgress(project);
+
+
+  return `
+
+    <article class="project-card">
+
+      <h4>
+        ${escapeHtml(
+          project.name ||
+          "مشروع"
+        )}
+      </h4>
+
+      <div class="project-meta">
+
+        📍
+        ${escapeHtml(
+          project.location ||
+          "الموقع غير محدد"
+        )}
+
+        <br>
+
+        👤 العميل:
+        ${escapeHtml(
+          project.client_name ||
+          "—"
+        )}
+
+        <br>
+
+        📅
+        ${escapeHtml(
+          project.start_date ||
+          "—"
+        )}
+        إلى
+        ${escapeHtml(
+          project.end_date ||
+          "—"
+        )}
+
+        <br>
+
+        الحالة:
+        ${escapeHtml(
+          project.status ||
+          "—"
+        )}
+
+      </div>
+
+
+      <div class="progress">
+
+        <span
+          style="width:${progress}%"
+        ></span>
+
+      </div>
+
+
+      <div class="project-meta">
+
+        نسبة التقدم:
+        <b>${progress}%</b>
+
+      </div>
+
+
+      <div class="project-actions">
+
+        <button
+          class="btn btn-copper btn-small"
+          type="button"
+          onclick="openProject(${Number(project.id)})"
+        >
+          👁️ تفاصيل المشروع
+        </button>
+
+        <button
+          class="btn btn-light btn-small"
+          type="button"
+          onclick="chooseProject(${Number(project.id)})"
+        >
+          📝 تقرير
+        </button>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+function renderProjects(){
+
+  const list =
+    $("projectsList");
+
+  const allList =
+    $("allProjectsList");
+
+  const select =
+    $("project_id");
+
+  const filter =
+    $("reportFilter");
+
+
+  if(!projects.length){
+
+    const empty =
+      '<div class="empty">مازال ما تسند حتى مشروع لحسابك.</div>';
+
+    list.innerHTML =
+      empty;
+
+    allList.innerHTML =
+      empty;
+
+    select.innerHTML =
+      '<option value="">لا توجد مشاريع متاحة</option>';
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    projects
+      .slice(0,4)
+      .map(projectCard)
+      .join("");
+
+
+  allList.innerHTML =
+    projects
+      .map(projectCard)
+      .join("");
+
 
   select.innerHTML =
     '<option value="">اختر المشروع</option>' +
-    projects.map(p => `<option value="${Number(p.id)}">${escapeHtml(p.name)}</option>`).join("");
+    projects
+      .map(
+        p =>
+          `<option value="${Number(p.id)}">
+            ${escapeHtml(p.name)}
+          </option>`
+      )
+      .join("");
 
-  const previous = filter.value;
+
+  const previous =
+    filter.value;
+
+
   filter.innerHTML =
     '<option value="">كل المشاريع</option>' +
-    projects.map(p => `<option value="${Number(p.id)}">${escapeHtml(p.name)}</option>`).join("");
-  filter.value = previous;
+    projects
+      .map(
+        p =>
+          `<option value="${Number(p.id)}">
+            ${escapeHtml(p.name)}
+          </option>`
+      )
+      .join("");
+
+
+  filter.value =
+    previous;
+
 }
+
+
+function renderAllProjects(){
+
+  $("allProjectsList").innerHTML =
+    projects.length
+    ? projects.map(projectCard).join("")
+    : '<div class="empty">لا توجد مشاريع.</div>';
+
+}
+
 
 function chooseProject(id){
-  $("project_id").value = String(id);
+
+  $("project_id").value =
+    String(id);
+
+  switchTab("reports");
+
   $("title").focus();
-  $("reportForm").scrollIntoView({behavior:"smooth",block:"start"});
-}
 
-function renderReports(){
-  const list = $("reportsList");
-  const filterId = $("reportFilter").value;
-  const visible = filterId
-    ? reports.filter(r => String(r.project_id) === String(filterId))
-    : reports;
-
-  if(!visible.length){
-    list.innerHTML = '<div class="empty">ما كاين حتى تقرير مسجل في هذا الاختيار.</div>';
-    return;
-  }
-
-  list.innerHTML = visible.map(report => `
-    <article class="report-card">
-      <h4>${escapeHtml(report.title || "تقرير يومي")}</h4>
-      <div class="project-meta">
-        🏗️ ${escapeHtml(report.project_name || "مشروع")}<br>
-        📅 ${escapeHtml(report.report_date || "—")}
-      </div>
-      <p>${escapeHtml(report.description || "")}</p>
-      ${report.quantity ? `<p><b>الكمية/التقدم:</b> ${escapeHtml(report.quantity)}</p>` : ""}
-      ${report.materials_used ? `<p><b>المواد:</b> ${escapeHtml(report.materials_used)}</p>` : ""}
-      ${report.problems ? `<p><b>العراقيل:</b> ${escapeHtml(report.problems)}</p>` : ""}
-      ${report.engineer_review ? `<p><b>ملاحظات المهندس:</b> ${escapeHtml(report.engineer_review)}</p>` : ""}
-      <span class="badge">${escapeHtml(report.status || "في الانتظار")}</span>
-    </article>
-  `).join("");
-}
-
-async function loadProjects(){
-  $("projectsList").innerHTML = '<div class="empty">جاري تحميل المشاريع...</div>';
-  const data = await api("/api/engineer/projects");
-  projects = Array.isArray(data.projects) ? data.projects : [];
-  $("projectCount").textContent = projects.length;
-  renderProjects();
-}
-
-async function loadReports(){
-  $("reportsList").innerHTML = '<div class="empty">جاري تحميل التقارير...</div>';
-  const data = await api("/api/engineer/reports");
-  reports = Array.isArray(data.reports) ? data.reports : [];
-  $("reportCount").textContent = reports.length;
-  $("todayCount").textContent =
-    reports.filter(r => String(r.report_date || "").slice(0,10) === localDate()).length;
-  renderReports();
-}
-
-async function loadAll(){
-  hideStatus();
-  try{
-    await Promise.all([loadProjects(), loadReports()]);
-  }catch(error){
-    $("projectsList").innerHTML =
-      `<div class="empty">${escapeHtml(error.message)}</div>`;
-    $("reportsList").innerHTML =
-      `<div class="empty">${escapeHtml(error.message)}</div>`;
-  }
-}
-
-$("reportForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  hideStatus();
-
-  const project_id = $("project_id").value;
-  const title = $("title").value.trim();
-  const description = $("description").value.trim();
-
-  if(!project_id || !title || !description){
-    showStatus("اختَر المشروع واكتب عنوان التقرير والأشغال المنجزة.", "error");
-    return;
-  }
-
-  const payload = {
-    project_id:Number(project_id),
-    report_date:$("report_date").value || localDate(),
-    title,
-    description,
-    quantity:$("quantity").value.trim(),
-    materials_used:$("materials_used").value.trim(),
-    problems:$("problems").value.trim(),
-    engineer_review:$("engineer_review").value.trim()
-  };
-
-  const button = $("submitBtn");
-  button.disabled = true;
-  button.textContent = "جاري حفظ التقرير...";
-
-  try{
-    const data = await api("/api/engineer/reports", {
-      method:"POST",
-      body:JSON.stringify(payload)
+  $("reportForm")
+    .scrollIntoView({
+      behavior:"smooth",
+      block:"start"
     });
 
-    showStatus(data.message || "تم تسجيل التقرير بنجاح.");
-    $("reportForm").reset();
-    $("report_date").value = localDate();
-    await loadReports();
+}
+
+
+/* =========================================================
+   LOAD PROJECTS
+========================================================= */
+
+async function loadProjects(){
+
+  $("projectsList").innerHTML =
+    '<div class="empty">جاري تحميل المشاريع...</div>';
+
+
+  try{
+
+    const data =
+      await api(
+        "/api/engineer/projects"
+      );
+
+
+    projects =
+      Array.isArray(data.projects)
+      ? data.projects
+      : [];
+
+
+    $("projectCount")
+      .textContent =
+      projects.length;
+
+
+    const total =
+      projects.reduce(
+        (sum,p) =>
+          sum +
+          projectProgress(p),
+        0
+      );
+
+
+    $("averageProgress")
+      .textContent =
+      projects.length
+      ? Math.round(
+          total / projects.length
+        ) + "%"
+      : "0%";
+
+
+    $("profileProjects")
+      .textContent =
+      projects.length;
+
+
+    renderProjects();
+
+
   }catch(error){
-    showStatus(error.message, "error");
-  }finally{
-    button.disabled = false;
-    button.textContent = "حفظ التقرير";
+
+    const message =
+      escapeHtml(
+        error.message
+      );
+
+
+    $("projectsList").innerHTML =
+      `<div class="empty">${message}</div>`;
+
+    $("allProjectsList").innerHTML =
+      `<div class="empty">${message}</div>`;
+
   }
-});
 
-$("reportFilter").addEventListener("change", renderReports);
-$("refreshBtn").addEventListener("click", loadAll);
-$("loadProjectsBtn").addEventListener("click", loadProjects);
-$("logoutBtn").addEventListener("click", () => {
-  localStorage.removeItem("dunya_token");
-  localStorage.removeItem("dunya_user");
-  location.href = "/login.html";
-});
+}
 
-$("report_date").value = localDate();
+
+/* =========================================================
+   PROJECT DETAILS
+========================================================= */
+
+async function openProject(id){
+
+  currentProjectId =
+    id;
+
+  $("projectModal")
+    .classList.add("show");
+
+
+  $("projectModalContent").innerHTML =
+    '<div class="empty">جاري تحميل تفاصيل المشروع...</div>';
+
+
+  try{
+
+    const data =
+      await api(
+        "/api/engineer/projects/" +
+        encodeURIComponent(id)
+      );
+
+
+    const project =
+      data.project ||
+      data;
+
+
+    $("modalProjectTitle")
+      .textContent =
+      project.name ||
+      "تفاصيل المشروع";
+
+
+    const progress =
+      projectProgress(
+        project
+      );
+
+
+    $("projectModalContent").innerHTML = `
+
+      <div class="profile-card">
+
+        <div class="avatar">
+          🏗️
+        </div>
+
+        <div>
+
+          <h3>
+            ${escapeHtml(
+              project.name ||
+              "مشروع"
+            )}
+          </h3>
+
+          <p>
+            ${escapeHtml(
+              project.location ||
+              "الموقع غير محدد"
+            )}
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="progress">
+
+        <span
+          style="width:${progress}%"
+        ></span>
+
+      </div>
+
+
+      <div class="project-meta">
+        نسبة التقدم:
+        <b>${progress}%</b>
+      </div>
+
+
+      <div class="detail-grid">
+
+        <div class="detail-item">
+          <small>الحالة</small>
+          <strong>
+            ${escapeHtml(
+              project.status ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <small>العميل</small>
+          <strong>
+            ${escapeHtml(
+              project.client_name ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <small>المهندس</small>
+          <strong>
+            ${escapeHtml(
+              project.assigned_engineer_name ||
+              project.engineer_name ||
+              currentUser?.full_name ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <small>تاريخ البداية</small>
+          <strong>
+            ${escapeHtml(
+              project.start_date ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <small>تاريخ النهاية</small>
+          <strong>
+            ${escapeHtml(
+              project.end_date ||
+              "—"
+            )}
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <small>الميزانية</small>
+          <strong>
+            ${escapeHtml(
+              project.budget ??
+              "—"
+            )}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <br>
+
+
+      <div class="notice">
+
+        🔐
+        هذه البيانات متاحة للمهندس حسب المشروع
+        المسند إليه فقط.
+
+      </div>
+
+    `;
+
+
+  }catch(error){
+
+    $("projectModalContent").innerHTML =
+      `<div class="empty">
+        ${escapeHtml(error.message)}
+      </div>`;
+
+  }
+
+}
+
+
+function closeProjectModal(){
+
+  $("projectModal")
+    .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   REPORTS
+========================================================= */
+
+function renderReports(){
+
+  const list =
+    $("reportsList");
+
+  const dashboard =
+    $("dashboardReports");
+
+  const filterId =
+    $("reportFilter").value;
+
+
+  const visible =
+    filterId
+    ? reports.filter(
+        r =>
+          String(r.project_id) ===
+          String(filterId)
+      )
+    : reports;
+
+
+  if(!visible.length){
+
+    const empty =
+      '<div class="empty">ما كاين حتى تقرير مسجل في هذا الاختيار.</div>';
+
+    list.innerHTML =
+      empty;
+
+    dashboard.innerHTML =
+      empty;
+
+    return;
+
+  }
+
+
+  const render =
+    report => `
+
+      <article class="report-card">
+
+        <h4>
+          ${escapeHtml(
+            report.title ||
+            "تقرير يومي"
+          )}
+        </h4>
+
+        <div class="project-meta">
+
+          🏗️
+          ${escapeHtml(
+            report.project_name ||
+            "مشروع"
+          )}
+
+          <br>
+
+          📅
+          ${escapeHtml(
+            report.report_date ||
+            "—"
+          )}
+
+        </div>
+
+        <p>
+          ${escapeHtml(
+            report.description ||
+            ""
+          )}
+        </p>
+
+        ${
+          report.quantity
+          ?
+          `<p>
+            <b>الكمية/التقدم:</b>
+            ${escapeHtml(
+              report.quantity
+            )}
+          </p>`
+          :
+          ""
+        }
+
+        ${
+          report.materials_used
+          ?
+          `<p>
+            <b>المواد:</b>
+            ${escapeHtml(
+              report.materials_used
+            )}
+          </p>`
+          :
+          ""
+        }
+
+        ${
+          report.problems
+          ?
+          `<p>
+            <b>العراقيل:</b>
+            ${escapeHtml(
+              report.problems
+            )}
+          </p>`
+          :
+          ""
+        }
+
+        ${
+          report.engineer_review
+          ?
+          `<p>
+            <b>ملاحظات المهندس:</b>
+            ${escapeHtml(
+              report.engineer_review
+            )}
+          </p>`
+          :
+          ""
+        }
+
+        <span class="badge">
+          ${escapeHtml(
+            report.status ||
+            "في الانتظار"
+          )}
+        </span>
+
+      </article>
+
+    `;
+
+
+  list.innerHTML =
+    visible.map(render).join("");
+
+
+  dashboard.innerHTML =
+    reports
+      .slice(0,3)
+      .map(render)
+      .join("");
+
+}
+
+
+async function loadReports(){
+
+  $("reportsList").innerHTML =
+    '<div class="empty">جاري تحميل التقارير...</div>';
+
+
+  try{
+
+    const data =
+      await api(
+        "/api/engineer/reports"
+      );
+
+
+    reports =
+      Array.isArray(data.reports)
+      ? data.reports
+      : [];
+
+
+    $("reportCount")
+      .textContent =
+      reports.length;
+
+
+    $("todayCount")
+      .textContent =
+      reports.filter(
+        r =>
+          String(
+            r.report_date || ""
+          ).slice(0,10) ===
+          localDate()
+      ).length;
+
+
+    $("profileReports")
+      .textContent =
+      reports.length;
+
+
+    renderReports();
+
+
+  }catch(error){
+
+    $("reportsList").innerHTML =
+      `<div class="empty">
+        ${escapeHtml(error.message)}
+      </div>`;
+
+    $("dashboardReports").innerHTML =
+      `<div class="empty">
+        ${escapeHtml(error.message)}
+      </div>`;
+
+  }
+
+}
+
+
+/* =========================================================
+   RESOURCES
+========================================================= */
+
+async function loadResources(){
+
+  const project =
+    $("project_id").value ||
+    currentProjectId ||
+    (projects[0]?.id);
+
+
+  if(!project){
+
+    $("resourcesStatus").className =
+      "status show warning";
+
+    $("resourcesStatus").textContent =
+      "لا يوجد مشروع مسند إلى حسابك لعرض الموارد.";
+
+    return;
+
+  }
+
+
+  $("resourcesStatus").className =
+    "status show";
+
+  $("resourcesStatus").textContent =
+    "جاري تحميل بيانات المشروع...";
+
+
+  const endpoints = [
+
+    {
+      url:
+        "/api/engineer/projects/" +
+        project +
+        "/workers",
+
+      target:
+        "workersList",
+
+      label:
+        "العمال"
+    },
+
+    {
+      url:
+        "/api/engineer/projects/" +
+        project +
+        "/materials",
+
+      target:
+        "materialsList",
+
+      label:
+        "المواد"
+    },
+
+    {
+      url:
+        "/api/engineer/projects/" +
+        project +
+        "/equipment",
+
+      target:
+        "equipmentList",
+
+      label:
+        "المعدات"
+    },
+
+    {
+      url:
+        "/api/engineer/projects/" +
+        project +
+        "/expenses",
+
+      target:
+        "expensesList",
+
+      label:
+        "المصاريف"
+    }
+
+  ];
+
+
+  await Promise.all(
+    endpoints.map(
+      async item => {
+
+        const box =
+          $(item.target);
+
+        try{
+
+          const data =
+            await api(
+              item.url
+            );
+
+
+          const rows =
+            data.items ||
+            data[item.target] ||
+            data[item.label] ||
+            data.rows ||
+            [];
+
+
+          if(
+            !Array.isArray(rows) ||
+            !rows.length
+          ){
+
+            box.innerHTML =
+              `<div class="empty">
+                لا توجد بيانات.
+              </div>`;
+
+            return;
+
+          }
+
+
+          box.innerHTML =
+            rows
+              .slice(0,10)
+              .map(
+                row => `
+
+                  <div class="data-card">
+
+                    <h4>
+                      ${escapeHtml(
+                        row.name ||
+                        row.worker_name ||
+                        row.material_name ||
+                        row.equipment_name ||
+                        row.description ||
+                        "بيان"
+                      )}
+                    </h4>
+
+                    <div class="project-meta">
+
+                      ${escapeHtml(
+                        row.status ||
+                        row.quantity ||
+                        row.amount ||
+                        row.date ||
+                        ""
+                      )}
+
+                    </div>
+
+                  </div>
+
+                `
+              )
+              .join("");
+
+
+        }catch(error){
+
+          box.innerHTML =
+            `<div class="empty">
+              البيانات غير متاحة حاليًا.
+            </div>`;
+
+        }
+
+      }
+    )
+  );
+
+
+  $("resourcesStatus").className =
+    "status show success";
+
+  $("resourcesStatus").textContent =
+    "تم تحميل البيانات المتاحة.";
+
+}
+
+
+/* =========================================================
+   SCHEDULE
+========================================================= */
+
+async function loadSchedule(){
+
+  const list =
+    $("scheduleList");
+
+
+  const project =
+    currentProjectId ||
+    projects[0]?.id;
+
+
+  if(!project){
+
+    list.innerHTML =
+      '<div class="empty">لا توجد مشاريع لعرض المواعيد.</div>';
+
+    return;
+
+  }
+
+
+  try{
+
+    const data =
+      await api(
+        "/api/engineer/projects/" +
+        project +
+        "/appointments"
+      );
+
+
+    const rows =
+      data.items ||
+      data.appointments ||
+      data.rows ||
+      [];
+
+
+    if(
+      !Array.isArray(rows) ||
+      !rows.length
+    ){
+
+      list.innerHTML =
+        '<div class="empty">لا توجد مواعيد مسجلة.</div>';
+
+      return;
+
+    }
+
+
+    list.innerHTML =
+      rows.map(
+        row => `
+
+          <div class="data-card">
+
+            <h4>
+              📅
+              ${escapeHtml(
+                row.title ||
+                row.subject ||
+                "موعد"
+              )}
+            </h4>
+
+            <div class="project-meta">
+
+              التاريخ:
+              ${escapeHtml(
+                row.date ||
+                row.appointment_date ||
+                "—"
+              )}
+
+              <br>
+
+              الوقت:
+              ${escapeHtml(
+                row.time ||
+                row.appointment_time ||
+                "—"
+              )}
+
+              <br>
+
+              ${escapeHtml(
+                row.description ||
+                row.notes ||
+                ""
+              )}
+
+            </div>
+
+          </div>
+
+        `
+      ).join("");
+
+
+  }catch(error){
+
+    list.innerHTML =
+      `<div class="empty">
+        بيانات المواعيد غير متاحة حاليًا.
+      </div>`;
+
+  }
+
+}
+
+
+/* =========================================================
+   DOCUMENTS
+========================================================= */
+
+async function loadDocuments(){
+
+  const list =
+    $("documentsList");
+
+
+  const project =
+    currentProjectId ||
+    projects[0]?.id;
+
+
+  if(!project){
+
+    list.innerHTML =
+      '<div class="empty">لا توجد مشاريع لعرض الوثائق.</div>';
+
+    return;
+
+  }
+
+
+  try{
+
+    const data =
+      await api(
+        "/api/engineer/projects/" +
+        project +
+        "/documents"
+      );
+
+
+    const rows =
+      data.items ||
+      data.documents ||
+      data.rows ||
+      [];
+
+
+    if(
+      !Array.isArray(rows) ||
+      !rows.length
+    ){
+
+      list.innerHTML =
+        '<div class="empty">لا توجد وثائق مرتبطة بالمشروع.</div>';
+
+      return;
+
+    }
+
+
+    list.innerHTML =
+      rows.map(
+        row => `
+
+          <div class="data-card">
+
+            <h4>
+              📄
+              ${escapeHtml(
+                row.name ||
+                row.title ||
+                "وثيقة"
+              )}
+            </h4>
+
+            <div class="project-meta">
+
+              ${escapeHtml(
+                row.type ||
+                row.document_type ||
+                ""
+              )}
+
+              <br>
+
+              ${escapeHtml(
+                row.created_at ||
+                row.date ||
+                ""
+              )}
+
+            </div>
+
+            ${
+              row.url
+              ?
+              `<br>
+               <a
+                 href="${escapeHtml(row.url)}"
+                 target="_blank"
+                 class="btn btn-light btn-small"
+               >
+                 فتح الوثيقة
+               </a>`
+              :
+              ""
+            }
+
+          </div>
+
+        `
+      ).join("");
+
+
+  }catch(error){
+
+    list.innerHTML =
+      '<div class="empty">الوثائق غير متاحة حاليًا.</div>';
+
+  }
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+async function loadNotifications(){
+
+  try{
+
+    const data =
+      await api(
+        "/api/engineer/notifications"
+      );
+
+
+    notifications =
+      Array.isArray(
+        data.notifications
+      )
+      ? data.notifications
+      : [];
+
+
+    const unread =
+      notifications.filter(
+        n =>
+          !n.read &&
+          !n.is_read
+      ).length;
+
+
+    $("notificationCount")
+      .textContent =
+      unread;
+
+
+    $("notificationCount")
+      .classList.toggle(
+        "show",
+        unread > 0
+      );
+
+
+    $("unreadCount")
+      .textContent =
+      unread;
+
+
+    renderNotifications();
+
+
+  }catch{
+
+    notifications = [];
+
+    $("notificationCount")
+      .classList.remove(
+        "show"
+      );
+
+    $("unreadCount")
+      .textContent =
+      "0";
+
+  }
+
+}
+
+
+function renderNotifications(){
+
+  const list =
+    $("notificationList");
+
+
+  if(!notifications.length){
+
+    list.innerHTML =
+      '<div class="empty">لا توجد إشعارات جديدة.</div>';
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    notifications.map(
+      n => `
+
+        <div class="notification ${
+          (!n.read && !n.is_read)
+          ? "unread"
+          : ""
+        }">
+
+          <strong>
+            ${escapeHtml(
+              n.title ||
+              "إشعار"
+            )}
+          </strong>
+
+          <p>
+            ${escapeHtml(
+              n.message ||
+              n.body ||
+              ""
+            )}
+          </p>
+
+          <small>
+            ${escapeHtml(
+              n.created_at ||
+              ""
+            )}
+          </small>
+
+        </div>
+
+      `
+    ).join("");
+
+}
+
+
+function openNotifications(){
+
+  $("notificationModal")
+    .classList.add("show");
+
+  loadNotifications();
+
+}
+
+
+function closeNotifications(){
+
+  $("notificationModal")
+    .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   REPORT FORM
+========================================================= */
+
+$("reportForm")
+.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+    hideStatus();
+
+
+    const project_id =
+      $("project_id").value;
+
+    const title =
+      $("title")
+        .value
+        .trim();
+
+    const description =
+      $("description")
+        .value
+        .trim();
+
+
+    if(
+      !project_id ||
+      !title ||
+      !description
+    ){
+
+      showStatus(
+        "اختَر المشروع واكتب عنوان التقرير والأشغال المنجزة.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    const payload = {
+
+      project_id:
+        Number(project_id),
+
+      report_date:
+        $("report_date").value ||
+        localDate(),
+
+      title,
+
+      description,
+
+      quantity:
+        $("quantity")
+          .value
+          .trim(),
+
+      materials_used:
+        $("materials_used")
+          .value
+          .trim(),
+
+      problems:
+        $("problems")
+          .value
+          .trim(),
+
+      engineer_review:
+        $("engineer_review")
+          .value
+          .trim()
+
+    };
+
+
+    const button =
+      $("submitBtn");
+
+
+    button.disabled =
+      true;
+
+    button.textContent =
+      "جاري حفظ التقرير...";
+
+
+    try{
+
+      const data =
+        await api(
+          "/api/engineer/reports",
+          {
+            method:"POST",
+            body:
+              JSON.stringify(
+                payload
+              )
+          }
+        );
+
+
+      showStatus(
+        data.message ||
+        "تم تسجيل التقرير بنجاح."
+      );
+
+
+      $("reportForm")
+        .reset();
+
+
+      $("report_date")
+        .value =
+        localDate();
+
+
+      await loadReports();
+
+
+    }catch(error){
+
+      showStatus(
+        error.message,
+        "error"
+      );
+
+    }finally{
+
+      button.disabled =
+        false;
+
+      button.textContent =
+        "حفظ التقرير";
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+$("reportFilter")
+.addEventListener(
+  "change",
+  renderReports
+);
+
+
+$("refreshBtn")
+.addEventListener(
+  "click",
+  loadAll
+);
+
+
+$("loadProjectsBtn")
+.addEventListener(
+  "click",
+  loadProjects
+);
+
+
+$("notificationBtn")
+.addEventListener(
+  "click",
+  openNotifications
+);
+
+
+$("logoutBtn")
+.addEventListener(
+  "click",
+  () => {
+
+    localStorage.removeItem(
+      "dunya_token"
+    );
+
+    localStorage.removeItem(
+      "dunya_user"
+    );
+
+    location.href =
+      "/login.html";
+
+  }
+);
+
+
+$("report_date")
+  .value =
+  localDate();
+
+/* =========================================================
+   ENGINEER - NOTIFICATIONS
+========================================================= */
+
+app.get(
+    "/api/engineer/notifications",
+    requireAuth,
+    requireRole("engineer"),
+    async (req, res) => {
+
+        try {
+
+            const result =
+                await pool.query(`
+
+                    SELECT
+
+                        n.*
+
+                    FROM notifications n
+
+                    LEFT JOIN project_engineers pe
+                        ON pe.project_id =
+                           n.project_id
+                        AND pe.engineer_id =
+                           $1
+
+                    WHERE
+
+                        (
+                            pe.engineer_id =
+                            $1
+                        )
+
+                        OR
+
+                        (
+                            n.recipient_name =
+                            $2
+                        )
+
+                    ORDER BY
+                        n.created_at DESC
+
+                    LIMIT 100
+
+                `, [
+
+                    req.user.id,
+
+                    req.user.full_name
+
+                ]);
+
+
+            res.json({
+
+                success: true,
+
+                notifications:
+                    result.rows
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "ENGINEER NOTIFICATIONS ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تحميل الإشعارات"
+
+            });
+
+        }
+
+    }
+);
+/* =========================================================
+   LOAD ALL
+========================================================= */
+
+async function loadAll(){
+
+  hideStatus();
+
+
+  await Promise.all([
+    loadProjects(),
+    loadReports(),
+    loadNotifications()
+  ]);
+
+}
+
+
+/* =========================================================
+   CLOSE MODALS ON BACKDROP
+========================================================= */
+
+$("projectModal")
+.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      $("projectModal")
+    ){
+
+      closeProjectModal();
+
+    }
+
+  }
+);
+
+
+$("notificationModal")
+.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      $("notificationModal")
+    ){
+
+      closeNotifications();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
 
 if(requireEngineer()){
+
   loadAll();
+
 }
+
 </script>
+
 </body>
 </html>
