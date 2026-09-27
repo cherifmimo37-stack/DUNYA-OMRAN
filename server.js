@@ -1612,7 +1612,126 @@ function requireRole(...roles) {
         next();
     };
    }
+/* =========================================================
+   ENGINEER PROJECT PERMISSIONS
+========================================================= */
 
+async function engineerOwnsProject(
+    engineerId,
+    projectId
+) {
+
+    const result =
+        await pool.query(
+            `
+            SELECT 1
+            FROM project_engineers
+            WHERE
+                project_id = $1
+                AND engineer_id = $2
+            LIMIT 1
+            `,
+            [
+                engineerId,
+                projectId
+            ]
+        );
+
+    return result.rowCount > 0;
+}
+
+
+async function requireEngineerProject(
+    req,
+    res,
+    next
+) {
+
+    try {
+
+        if (
+            !req.user ||
+            req.user.role !== "engineer"
+        ) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "هذه العملية خاصة بالمهندس"
+
+            });
+        }
+
+
+        const projectId =
+            Number(req.params.id);
+
+
+        if (
+            !Number.isInteger(projectId) ||
+            projectId <= 0
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "معرف المشروع غير صالح"
+
+            });
+        }
+
+
+        const allowed =
+            await engineerOwnsProject(
+                req.user.id,
+                projectId
+            );
+
+
+        if (!allowed) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "هذا المشروع غير مسند إليك"
+
+            });
+        }
+
+
+        req.engineerProjectId =
+            projectId;
+
+
+        next();
+
+
+    } catch (error) {
+
+        console.error(
+            "ENGINEER PROJECT PERMISSION ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "تعذر التحقق من صلاحية المشروع"
+
+        });
+
+    }
+
+}
 /* =========================================================
    LOGIN
 ========================================================= */
