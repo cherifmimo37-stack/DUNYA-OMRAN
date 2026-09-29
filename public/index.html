@@ -1894,7 +1894,378 @@ async function loadDashboard() {
 
 }
 
+/* =========================================================
+   ENGINEERS MANAGEMENT
+========================================================= */
 
+function showEngineers(){
+
+    if(
+        !currentUser ||
+        currentUser.role !== "admin"
+    ){
+
+        alert(
+            "هذه الصفحة متاحة للأدمن فقط"
+        );
+
+        return;
+    }
+
+    const modal =
+        document.getElementById(
+            "engineersModal"
+        );
+
+    if(!modal){
+        return;
+    }
+
+    modal.style.display = "block";
+
+    loadEngineers();
+
+}
+
+
+
+function closeEngineers(){
+
+    const modal =
+        document.getElementById(
+            "engineersModal"
+        );
+
+    if(modal){
+
+        modal.style.display =
+            "none";
+
+    }
+
+}
+
+
+
+async function loadEngineers(){
+
+    const container =
+        document.getElementById(
+            "engineersList"
+        );
+
+    if(!container){
+        return;
+    }
+
+    const token =
+        getToken();
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/engineers",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "تعذر تحميل المهندسين"
+            );
+
+        }
+
+
+        const engineers =
+            Array.isArray(
+                data.engineers
+            )
+                ? data.engineers
+                : [];
+
+
+        if(!engineers.length){
+
+            container.innerHTML = `
+                <div
+                    style="
+                        text-align:center;
+                        padding:25px;
+                        color:var(--stone);
+                    "
+                >
+                    لا توجد حسابات مهندسين حاليًا
+                </div>
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            engineers.map(
+                engineer => `
+
+                    <div
+                        style="
+                            background:white;
+                            border:1px solid var(--border);
+                            border-radius:12px;
+                            padding:14px;
+                            margin-bottom:10px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                color:var(--petroleum);
+                                font-weight:800;
+                            "
+                        >
+                            👷 ${escapeHTML(
+                                engineer.full_name ||
+                                "بدون اسم"
+                            )}
+                        </div>
+
+                        <div
+                            style="
+                                color:var(--stone);
+                                font-size:12px;
+                                margin-top:4px;
+                            "
+                        >
+                            @${escapeHTML(
+                                engineer.username ||
+                                ""
+                            )}
+                        </div>
+
+                        <div
+                            style="
+                                margin-top:6px;
+                                font-size:11px;
+                                font-weight:700;
+                            "
+                        >
+                            ${
+                                engineer.active
+                                    ? "🟢 مفعل"
+                                    : "🔴 غير مفعل"
+                            }
+                        </div>
+
+                    </div>
+
+                `
+            ).join("");
+
+
+    }catch(error){
+
+        console.error(
+            "LOAD ENGINEERS ERROR:",
+            error
+        );
+
+        container.innerHTML = `
+            <div
+                style="
+                    text-align:center;
+                    padding:20px;
+                    color:var(--danger);
+                "
+            >
+                ${escapeHTML(
+                    error.message ||
+                    "تعذر تحميل المهندسين"
+                )}
+            </div>
+        `;
+
+    }
+
+}
+
+
+
+async function createEngineer(){
+
+    const fullName =
+        document
+            .getElementById(
+                "engineerFullName"
+            )
+            .value
+            .trim();
+
+
+    const username =
+        document
+            .getElementById(
+                "engineerUsername"
+            )
+            .value
+            .trim();
+
+
+    const password =
+        document
+            .getElementById(
+                "engineerPassword"
+            )
+            .value;
+
+
+    if(!fullName){
+
+        alert(
+            "اكتب اسم المهندس"
+        );
+
+        return;
+    }
+
+
+    if(!username){
+
+        alert(
+            "اكتب اسم المستخدم"
+        );
+
+        return;
+    }
+
+
+    if(
+        !password ||
+        password.length < 8
+    ){
+
+        alert(
+            "كلمة المرور يجب أن تكون 8 أحرف على الأقل"
+        );
+
+        return;
+    }
+
+
+    const token =
+        getToken();
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/engineers",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            "Bearer " + token
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            username:
+                                username,
+
+                            password:
+                                password,
+
+                            full_name:
+                                fullName
+
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "تعذر إنشاء حساب المهندس"
+            );
+
+        }
+
+
+        alert(
+            "✅ تم إنشاء حساب المهندس بنجاح"
+        );
+
+
+        document
+            .getElementById(
+                "engineerFullName"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "engineerUsername"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "engineerPassword"
+            )
+            .value = "";
+
+
+        await loadEngineers();
+
+
+    }catch(error){
+
+        console.error(
+            "CREATE ENGINEER ERROR:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "تعذر إنشاء حساب المهندس"
+        );
+
+    }
+
+}
 /* =========================================================
    NAVIGATION
 ========================================================= */
