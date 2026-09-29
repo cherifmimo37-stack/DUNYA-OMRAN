@@ -2240,7 +2240,468 @@ app.get(
     }
 );
 
+/* =========================================================
+   ENGINEER ACCOUNTS
+========================================================= */
 
+/* GET ACTIVE ENGINEERS
+   يستعملها الأدمن وقائمة اختيار المهندس في المشاريع
+========================================================= */
+
+app.get(
+    "/api/engineers",
+    requireAuth,
+    requireRole("admin"),
+    async (req, res) => {
+
+        try {
+
+            const result =
+                await pool.query(`
+
+                    SELECT
+                        id,
+                        username,
+                        full_name,
+                        role,
+                        active,
+                        last_login,
+                        created_at
+
+                    FROM users
+
+                    WHERE role = 'engineer'
+
+                    ORDER BY
+                        active DESC,
+                        full_name ASC
+
+                `);
+
+            res.json({
+
+                success: true,
+
+                engineers:
+                    result.rows
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "GET ENGINEERS ERROR:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تحميل المهندسين"
+
+            });
+
+        }
+
+    }
+);
+
+
+/* CREATE ENGINEER ACCOUNT
+========================================================= */
+
+app.post(
+    "/api/engineers",
+    requireAuth,
+    requireRole("admin"),
+    async (req, res) => {
+
+        try {
+
+            const {
+                username,
+                password,
+                full_name
+            } = req.body;
+
+            const cleanUsername =
+                cleanText(username);
+
+            const cleanFullName =
+                cleanText(full_name);
+
+            if (
+                !cleanUsername ||
+                !password ||
+                !cleanFullName
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "اسم المستخدم وكلمة المرور واسم المهندس مطلوبة"
+
+                });
+
+            }
+
+            if (
+                String(password).length < 8
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "كلمة المرور يجب أن تكون 8 أحرف على الأقل"
+
+                });
+
+            }
+
+            const existing =
+                await pool.query(`
+
+                    SELECT id
+
+                    FROM users
+
+                    WHERE LOWER(username) =
+                          LOWER($1)
+
+                    LIMIT 1
+
+                `, [
+                    cleanUsername
+                ]);
+
+            if (existing.rows.length) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    message:
+                        "اسم المستخدم موجود مسبقاً"
+
+                });
+
+            }
+
+            const passwordHash =
+                await hashPassword(
+                    String(password)
+                );
+
+            const result =
+                await pool.query(`
+
+                    INSERT INTO users (
+
+                        username,
+                        password_hash,
+                        full_name,
+                        role,
+                        active
+
+                    )
+
+                    VALUES (
+                        $1,
+                        $2,
+                        $3,
+                        'engineer',
+                        TRUE
+                    )
+
+                    RETURNING
+                        id,
+                        username,
+                        full_name,
+                        role,
+                        active,
+                        created_at
+
+                `, [
+
+                    cleanUsername,
+
+                    passwordHash,
+
+                    cleanFullName
+
+                ]);
+
+            const engineer =
+                result.rows[0];
+
+            await logAction(
+                "إنشاء حساب مهندس",
+                "user",
+                engineer.id,
+                engineer.full_name
+            );
+
+            res.status(201).json({
+
+                success: true,
+
+                message:
+                    "تم إنشاء حساب المهندس بنجاح",
+
+                engineer
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "CREATE ENGINEER ERROR:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر إنشاء حساب المهندس"
+
+            });
+
+        }
+
+    }
+);
+
+
+/* UPDATE ENGINEER ACCOUNT
+========================================================= */
+
+app.put(
+    "/api/engineers/:id",
+    requireAuth,
+    requireRole("admin"),
+    async (req, res) => {
+
+        try {
+
+            const engineerId =
+                integerValue(
+                    req.params.id
+                );
+
+            if (!engineerId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم المهندس غير صحيح"
+
+                });
+
+            }
+
+            const {
+                username,
+                password,
+                full_name,
+                active
+            } = req.body;
+
+            const existing =
+                await pool.query(`
+
+                    SELECT *
+
+                    FROM users
+
+                    WHERE id = $1
+                      AND role = 'engineer'
+
+                    LIMIT 1
+
+                `, [
+                    engineerId
+                ]);
+
+            if (!existing.rows.length) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "حساب المهندس غير موجود"
+
+                });
+
+            }
+
+            const engineer =
+                existing.rows[0];
+
+            const newUsername =
+                cleanText(username) ||
+                engineer.username;
+
+            const newFullName =
+                cleanText(full_name) ||
+                engineer.full_name;
+
+            let passwordHash =
+                engineer.password_hash;
+
+            if (
+                password &&
+                String(password).length > 0
+            ) {
+
+                if (
+                    String(password).length < 8
+                ) {
+
+                    return res.status(400).json({
+
+                        success: false,
+
+                        message:
+                            "كلمة المرور يجب أن تكون 8 أحرف على الأقل"
+
+                    });
+
+                }
+
+                passwordHash =
+                    await hashPassword(
+                        String(password)
+                    );
+
+            }
+
+            const duplicate =
+                await pool.query(`
+
+                    SELECT id
+
+                    FROM users
+
+                    WHERE LOWER(username) =
+                          LOWER($1)
+
+                      AND id <> $2
+
+                    LIMIT 1
+
+                `, [
+
+                    newUsername,
+
+                    engineerId
+
+                ]);
+
+            if (duplicate.rows.length) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    message:
+                        "اسم المستخدم مستعمل من حساب آخر"
+
+                });
+
+            }
+
+            const activeValue =
+                typeof active === "boolean"
+                    ? active
+                    : engineer.active;
+
+            const result =
+                await pool.query(`
+
+                    UPDATE users
+
+                    SET
+                        username = $1,
+                        password_hash = $2,
+                        full_name = $3,
+                        active = $4
+
+                    WHERE id = $5
+                      AND role = 'engineer'
+
+                    RETURNING
+                        id,
+                        username,
+                        full_name,
+                        role,
+                        active,
+                        last_login,
+                        created_at
+
+                `, [
+
+                    newUsername,
+
+                    passwordHash,
+
+                    newFullName,
+
+                    activeValue,
+
+                    engineerId
+
+                ]);
+
+            await logAction(
+                "تعديل حساب مهندس",
+                "user",
+                engineerId,
+                newFullName
+            );
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "تم تعديل حساب المهندس",
+
+                engineer:
+                    result.rows[0]
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "UPDATE ENGINEER ERROR:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تعديل حساب المهندس"
+
+            });
+
+        }
+
+    }
+);
 /* =========================================================
    ENGINEER - CREATE DAILY REPORT
 ========================================================= */
