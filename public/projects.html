@@ -1075,15 +1075,19 @@ button{
 
                     <div class="form-group">
 
-                        <label>
-                            المهندس
-                        </label>
+    <label>
+        المهندس المسؤول
+    </label>
 
-                        <input
-                            id="engineer_name"
-                            placeholder="اسم المهندس">
+    <select id="engineer_id">
 
-                    </div>
+        <option value="">
+            اختر المهندس
+        </option>
+
+    </select>
+
+</div>
 
 
                     <div class="form-group">
@@ -1228,6 +1232,7 @@ button{
 ========================================================= */
 
 let allProjects = [];
+let allEngineers = [];
 
 
 /* =========================================================
@@ -1251,14 +1256,18 @@ function escapeHTML(value){
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
+
 }
 
 
 function formatMoney(value){
 
-    const number = Number(value || 0);
+    const number =
+        Number(value || 0);
 
-    return number.toLocaleString("ar-DZ") + " دج";
+    return number.toLocaleString("ar-DZ") +
+        " دج";
+
 }
 
 
@@ -1270,10 +1279,17 @@ function formatDate(value){
 
     try{
 
-        const date = new Date(value);
+        const date =
+            new Date(value);
 
-        if(Number.isNaN(date.getTime())){
+        if(
+            Number.isNaN(
+                date.getTime()
+            )
+        ){
+
             return escapeHTML(value);
+
         }
 
         return date.toLocaleDateString(
@@ -1294,16 +1310,142 @@ function formatDate(value){
 }
 
 
+/* =========================================================
+   AUTH
+========================================================= */
+
+function getAuthToken(){
+
+    const possibleKeys = [
+
+        "authToken",
+        "token",
+        "accessToken",
+        "dunyaToken",
+        "dunya_auth_token",
+        "auth_token"
+
+    ];
+
+
+    for(
+        const key of possibleKeys
+    ){
+
+        const value =
+            localStorage.getItem(key);
+
+        if(value){
+
+            return value;
+
+        }
+
+    }
+
+
+    /*
+       محاولة البحث عن Token داخل
+       البيانات المخزنة باسم user/session
+    */
+
+    const possibleObjects = [
+
+        "user",
+        "currentUser",
+        "authUser",
+        "session"
+
+    ];
+
+
+    for(
+        const key of possibleObjects
+    ){
+
+        try{
+
+            const value =
+                localStorage.getItem(key);
+
+            if(!value){
+                continue;
+            }
+
+            const object =
+                JSON.parse(value);
+
+            if(
+                object &&
+                object.token
+            ){
+
+                return object.token;
+
+            }
+
+            if(
+                object &&
+                object.accessToken
+            ){
+
+                return object.accessToken;
+
+            }
+
+        }catch(error){
+
+            /*
+               تجاهل البيانات غير JSON
+            */
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+function getAuthHeaders(){
+
+    const headers = {};
+
+
+    const token =
+        getAuthToken();
+
+
+    if(token){
+
+        headers.Authorization =
+            "Bearer " + token;
+
+    }
+
+
+    return headers;
+
+}
+
+
 function showToast(message){
 
-    const toast = $("toast");
+    const toast =
+        $("toast");
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
     toast.classList.add("show");
 
+
     setTimeout(()=>{
+
         toast.classList.remove("show");
+
     },2500);
 
 }
@@ -1316,7 +1458,8 @@ function showToast(message){
 function getStatusInfo(status){
 
     const value =
-        String(status || "").toLowerCase();
+        String(status || "")
+            .toLowerCase();
 
 
     if(
@@ -1326,8 +1469,11 @@ function getStatusInfo(status){
     ){
 
         return {
+
             text:"مكتمل",
+
             className:"completed"
+
         };
 
     }
@@ -1340,8 +1486,11 @@ function getStatusInfo(status){
     ){
 
         return {
+
             text:"قيد الانتظار",
+
             className:"pending"
+
         };
 
     }
@@ -1353,16 +1502,22 @@ function getStatusInfo(status){
     ){
 
         return {
+
             text:"ملغى",
+
             className:"cancelled"
+
         };
 
     }
 
 
     return {
+
         text:"نشط",
+
         className:"active"
+
     };
 
 }
@@ -1383,26 +1538,29 @@ function updateStats(){
     let completed = 0;
 
 
-    allProjects.forEach(project=>{
+    allProjects.forEach(
+        project=>{
 
-        const status =
-            getStatusInfo(project.status)
-                .className;
+            const status =
+                getStatusInfo(
+                    project.status
+                ).className;
 
 
-        if(status === "active"){
-            active++;
+            if(status === "active"){
+                active++;
+            }
+
+            if(status === "pending"){
+                pending++;
+            }
+
+            if(status === "completed"){
+                completed++;
+            }
+
         }
-
-        if(status === "pending"){
-            pending++;
-        }
-
-        if(status === "completed"){
-            completed++;
-        }
-
-    });
+    );
 
 
     $("activeProjects").textContent =
@@ -1413,6 +1571,137 @@ function updateStats(){
 
     $("completedProjects").textContent =
         completed;
+
+}
+
+
+/* =========================================================
+   LOAD ENGINEERS
+========================================================= */
+
+async function loadEngineers(){
+
+    const select =
+        $("engineer_id");
+
+
+    if(!select){
+        return;
+    }
+
+
+    select.innerHTML = `
+        <option value="">
+            جاري تحميل المهندسين...
+        </option>
+    `;
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/engineers",
+                {
+                    method:"GET",
+                    headers:getAuthHeaders()
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "تعذر تحميل المهندسين."
+            );
+
+        }
+
+
+        allEngineers =
+            Array.isArray(data.engineers)
+                ? data.engineers
+                : [];
+
+
+        const activeEngineers =
+            allEngineers.filter(
+                engineer =>
+                    engineer.active === true
+            );
+
+
+        if(!activeEngineers.length){
+
+            select.innerHTML = `
+                <option value="">
+                    لا يوجد مهندسون مفعلون
+                </option>
+            `;
+
+            return;
+
+        }
+
+
+        select.innerHTML = `
+            <option value="">
+                اختر المهندس المسؤول
+            </option>
+        `;
+
+
+        activeEngineers.forEach(
+            engineer=>{
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    engineer.id;
+
+
+                option.textContent =
+                    engineer.full_name +
+                    " — @" +
+                    engineer.username;
+
+
+                select.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "LOAD ENGINEERS ERROR:",
+            error
+        );
+
+
+        select.innerHTML = `
+            <option value="">
+                تعذر تحميل المهندسين
+            </option>
+        `;
+
+        showToast(
+            "تعذر تحميل قائمة المهندسين"
+        );
+
+    }
 
 }
 
@@ -1443,7 +1732,9 @@ async function loadProjects(){
     try{
 
         const response =
-            await fetch("/api/projects");
+            await fetch(
+                "/api/projects"
+            );
 
 
         if(!response.ok){
@@ -1461,7 +1752,8 @@ async function loadProjects(){
 
         if(Array.isArray(data)){
 
-            allProjects = data;
+            allProjects =
+                data;
 
         }else if(
             data &&
@@ -1555,57 +1847,69 @@ function filterProjects(){
 
 
     const filtered =
-        allProjects.filter(project=>{
+        allProjects.filter(
+            project=>{
 
-            const searchable = [
+                const searchable = [
 
-                project.name,
-                project.location,
-                project.client_name,
-                project.engineer_name,
-                project.notes
+                    project.name,
 
-            ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
+                    project.location,
 
+                    project.client_name,
 
-            const matchesSearch =
-                !search ||
-                searchable.includes(search);
+                    project.engineer_name,
 
+                    project.assigned_engineer_full_name,
 
-            let matchesStatus = true;
+                    project.assigned_engineer_username,
 
+                    project.notes
 
-            if(status !== "all"){
-
-                const projectStatus =
-                    getStatusInfo(
-                        project.status
-                    ).className;
+                ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
 
 
-                matchesStatus =
-                    projectStatus === status;
+                const matchesSearch =
+                    !search ||
+                    searchable.includes(search);
+
+
+                let matchesStatus = true;
+
+
+                if(status !== "all"){
+
+                    const projectStatus =
+                        getStatusInfo(
+                            project.status
+                        ).className;
+
+
+                    matchesStatus =
+                        projectStatus === status;
+
+                }
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
 
             }
-
-
-            return (
-                matchesSearch &&
-                matchesStatus
-            );
-
-        });
+        );
 
 
     $("resultsCount").textContent =
         filtered.length;
 
 
-    renderProjects(filtered);
+    renderProjects(
+        filtered
+    );
 
 }
 
@@ -1641,191 +1945,243 @@ function renderProjects(projects){
         `;
 
         return;
+
     }
 
 
     let html = "";
 
 
-    projects.forEach(project=>{
+    projects.forEach(
+        project=>{
 
-        const statusInfo =
-            getStatusInfo(project.status);
+            const statusInfo =
+                getStatusInfo(
+                    project.status
+                );
 
 
-        const progress =
-            Math.max(
-                0,
-                Math.min(
-                    100,
-                    Number(
-                        project.progress || 0
+            const progress =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        Number(
+                            project.progress || 0
+                        )
                     )
-                )
-            );
+                );
 
 
-        html += `
-            <article
-                class="project-card"
-                onclick="openProject(${Number(project.id)})">
+            const engineerName =
+                project.assigned_engineer_full_name ||
+                project.engineer_name ||
+                "غير معين";
 
-                <div class="card-top">
 
-                    <div class="card-top-content">
+            const engineerUsername =
+                project.assigned_engineer_username
+                    ? "@" +
+                      project.assigned_engineer_username
+                    : "";
 
-                        <div class="project-name-row">
 
-                            <div class="project-name">
-                                ${escapeHTML(
-                                    project.name ||
-                                    "مشروع بدون اسم"
-                                )}
+            html += `
+
+                <article
+                    class="project-card"
+                    onclick="openProject(${Number(project.id)})">
+
+                    <div class="card-top">
+
+                        <div class="card-top-content">
+
+                            <div class="project-name-row">
+
+                                <div class="project-name">
+                                    ${escapeHTML(
+                                        project.name ||
+                                        "مشروع بدون اسم"
+                                    )}
+                                </div>
+
+                                <span
+                                    class="status ${statusInfo.className}">
+                                    ${statusInfo.text}
+                                </span>
+
                             </div>
+
+
+                            <div class="location">
+
+                                📍 ${escapeHTML(
+                                    project.location ||
+                                    "الموقع غير محدد"
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <div class="info-row">
+
+                            <span class="info-label">
+                                صاحب المشروع
+                            </span>
+
+                            <span class="info-value">
+
+                                ${escapeHTML(
+                                    project.client_name ||
+                                    project.client_display_name ||
+                                    "—"
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span class="info-label">
+                                المهندس
+                            </span>
 
                             <span
-                                class="status ${statusInfo.className}">
-                                ${statusInfo.text}
+                                class="info-value"
+                                title="${escapeHTML(
+                                    engineerName
+                                )}">
+
+                                ${escapeHTML(
+                                    engineerName
+                                )}
+
+                                ${
+                                    engineerUsername
+                                        ? " " +
+                                          escapeHTML(
+                                              engineerUsername
+                                          )
+                                        : ""
+                                }
+
                             </span>
 
                         </div>
 
-                        <div class="location">
-                            📍 ${escapeHTML(
-                                project.location ||
-                                "الموقع غير محدد"
-                            )}
-                        </div>
 
-                    </div>
+                        <div class="info-row">
 
-                </div>
-
-
-                <div class="card-body">
-
-                    <div class="info-row">
-
-                        <span class="info-label">
-                            صاحب المشروع
-                        </span>
-
-                        <span class="info-value">
-                            ${escapeHTML(
-                                project.client_name ||
-                                "—"
-                            )}
-                        </span>
-
-                    </div>
-
-
-                    <div class="info-row">
-
-                        <span class="info-label">
-                            المهندس
-                        </span>
-
-                        <span class="info-value">
-                            ${escapeHTML(
-                                project.engineer_name ||
-                                "—"
-                            )}
-                        </span>
-
-                    </div>
-
-
-                    <div class="info-row">
-
-                        <span class="info-label">
-                            الميزانية
-                        </span>
-
-                        <span class="info-value">
-                            ${
-                                project.budget !== null &&
-                                project.budget !== undefined &&
-                                project.budget !== ""
-                                    ? formatMoney(
-                                        project.budget
-                                    )
-                                    : "—"
-                            }
-                        </span>
-
-                    </div>
-
-
-                    <div class="info-row">
-
-                        <span class="info-label">
-                            المدة
-                        </span>
-
-                        <span class="info-value">
-
-                            ${formatDate(
-                                project.start_date
-                            )}
-
-                            →
-
-                            ${formatDate(
-                                project.end_date
-                            )}
-
-                        </span>
-
-                    </div>
-
-
-                    <div class="progress-wrap">
-
-                        <div class="progress-head">
-
-                            <span>
-                                نسبة الإنجاز
+                            <span class="info-label">
+                                الميزانية
                             </span>
 
-                            <span class="progress-percent">
-                                ${progress}%
+                            <span class="info-value">
+
+                                ${
+                                    project.budget !== null &&
+                                    project.budget !== undefined &&
+                                    project.budget !== ""
+                                        ? formatMoney(
+                                            project.budget
+                                        )
+                                        : "—"
+                                }
+
                             </span>
 
                         </div>
 
-                        <div class="progress">
 
-                            <div
-                                class="progress-bar"
-                                style="width:${progress}%">
+                        <div class="info-row">
+
+                            <span class="info-label">
+                                المدة
+                            </span>
+
+                            <span class="info-value">
+
+                                ${formatDate(
+                                    project.start_date
+                                )}
+
+                                →
+
+                                ${formatDate(
+                                    project.end_date
+                                )}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress-wrap">
+
+                            <div class="progress-head">
+
+                                <span>
+                                    نسبة الإنجاز
+                                </span>
+
+                                <span
+                                    class="progress-percent">
+
+                                    ${progress}%
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress">
+
+                                <div
+                                    class="progress-bar"
+                                    style="width:${progress}%">
+                                </div>
+
                             </div>
 
                         </div>
 
+
+                        <div class="card-footer">
+
+                            <span class="project-id">
+                                مشروع #${Number(project.id)}
+                            </span>
+
+
+                            <button
+                                class="view-btn"
+                                onclick="
+                                    event.stopPropagation();
+                                    openProject(${Number(project.id)})
+                                ">
+
+                                عرض المشروع →
+
+                            </button>
+
+                        </div>
+
                     </div>
 
+                </article>
 
-                    <div class="card-footer">
+            `;
 
-                        <span class="project-id">
-                            مشروع #${Number(project.id)}
-                        </span>
-
-                        <button
-                            class="view-btn"
-                            onclick="event.stopPropagation();openProject(${Number(project.id)})">
-                            عرض المشروع →
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </article>
-        `;
-
-    });
+        }
+    );
 
 
     grid.innerHTML =
@@ -1851,11 +2207,6 @@ function openProject(id){
     }
 
 
-    /*
-       صفحة تفاصيل المشروع الموجودة
-       في المشروع الحالي.
-    */
-
     window.location.href =
         "/project.html?id=" +
         encodeURIComponent(id);
@@ -1873,11 +2224,17 @@ function openModal(){
         .classList.add("show");
 
 
-    setTimeout(()=>{
+    loadEngineers();
 
-        $("name").focus();
 
-    },100);
+    setTimeout(
+        ()=>{
+
+            $("name").focus();
+
+        },
+        100
+    );
 
 }
 
@@ -1895,7 +2252,9 @@ $("projectModal")
         "click",
         function(event){
 
-            if(event.target === this){
+            if(
+                event.target === this
+            ){
 
                 closeModal();
 
@@ -1924,6 +2283,10 @@ async function createProject(event){
         "جاري الحفظ...";
 
 
+    const engineerId =
+        $("engineer_id").value;
+
+
     const payload = {
 
         name:
@@ -1935,8 +2298,13 @@ async function createProject(event){
         client_name:
             $("client_name").value.trim(),
 
+        /*
+           نخلي engineer_name كذلك
+           للتوافق مع الحقل القديم
+        */
+
         engineer_name:
-            $("engineer_name").value.trim(),
+            "",
 
         budget:
             $("budget").value
@@ -1983,9 +2351,30 @@ async function createProject(event){
     }
 
 
+    if(!engineerId){
+
+        showToast(
+            "اختر المهندس المسؤول عن المشروع"
+        );
+
+        saveBtn.disabled = false;
+
+        saveBtn.textContent =
+            "حفظ المشروع";
+
+        return;
+
+    }
+
+
     try{
 
-        const response =
+        /* =================================================
+           STEP 1
+           CREATE PROJECT
+        ================================================= */
+
+        const createResponse =
             await fetch(
                 "/api/projects",
                 {
@@ -1993,31 +2382,107 @@ async function createProject(event){
 
                     headers:{
                         "Content-Type":
-                            "application/json"
+                            "application/json",
+
+                        ...getAuthHeaders()
+
                     },
 
                     body:
-                        JSON.stringify(payload)
+                        JSON.stringify(
+                            payload
+                        )
+
                 }
             );
 
 
-        const data =
-            await response.json();
+        const createData =
+            await createResponse.json();
 
 
-        if(!response.ok){
+        if(!createResponse.ok){
 
             throw new Error(
-                data.message ||
+                createData.message ||
                 "تعذر إنشاء المشروع."
             );
 
         }
 
 
+        /*
+           استخراج رقم المشروع الجديد
+        */
+
+        const projectId =
+            createData.project?.id ||
+            createData.id ||
+            createData.project_id;
+
+
+        if(!projectId){
+
+            throw new Error(
+                "تم إنشاء المشروع لكن لم يتم إرجاع رقم المشروع."
+            );
+
+        }
+
+
+        /* =================================================
+           STEP 2
+           ASSIGN ENGINEER ACCOUNT
+        ================================================= */
+
+        const assignResponse =
+            await fetch(
+                "/api/projects/" +
+                encodeURIComponent(
+                    projectId
+                ) +
+                "/engineer",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+
+                        ...getAuthHeaders()
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            engineer_id:
+                                Number(
+                                    engineerId
+                                )
+
+                        })
+
+                }
+            );
+
+
+        const assignData =
+            await assignResponse.json();
+
+
+        if(!assignResponse.ok){
+
+            throw new Error(
+                assignData.message ||
+                "تم إنشاء المشروع لكن تعذر تعيين المهندس."
+            );
+
+        }
+
+
         showToast(
-            "تم إنشاء المشروع بنجاح ✅"
+            "تم إنشاء المشروع وتعيين المهندس بنجاح ✅"
         );
 
 
@@ -2028,7 +2493,9 @@ async function createProject(event){
             .reset();
 
 
-        $("progress").value = 0;
+        $("progress").value =
+            0;
+
 
         $("status").value =
             "active";
@@ -2053,7 +2520,8 @@ async function createProject(event){
 
     }finally{
 
-        saveBtn.disabled = false;
+        saveBtn.disabled =
+            false;
 
         saveBtn.textContent =
             "حفظ المشروع";
@@ -2083,7 +2551,9 @@ document.addEventListener(
     "keydown",
     function(event){
 
-        if(event.key === "Escape"){
+        if(
+            event.key === "Escape"
+        ){
 
             closeModal();
 
@@ -2132,9 +2602,9 @@ let autoRefreshTimer =
 
 document.addEventListener(
     "DOMContentLoaded",
-    function(){
+    async function(){
 
-        loadProjects();
+        await loadProjects();
 
     }
 );
