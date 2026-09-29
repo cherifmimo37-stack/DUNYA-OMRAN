@@ -3776,11 +3776,17 @@ app.put("/api/projects/:id", async (req, res) => {
    ASSIGN ENGINEER TO PROJECT
 ========================================================= */
 
+/* =========================================================
+   ASSIGN ENGINEER TO PROJECT
+========================================================= */
+
 app.post(
     "/api/projects/:id/engineer",
     requireAuth,
     requireRole("admin"),
     async (req, res) => {
+
+        const client = await pool.connect();
 
         try {
 
@@ -3800,7 +3806,10 @@ app.post(
                         "المشروع أو المهندس غير صحيح"
 
                 });
+
             }
+
+            await client.query("BEGIN");
 
 
             /* -------------------------------------------------
@@ -3808,9 +3817,11 @@ app.post(
             ------------------------------------------------- */
 
             const projectResult =
-                await pool.query(
+                await client.query(
                     `
-                    SELECT id, name
+                    SELECT
+                        id,
+                        name
                     FROM projects
                     WHERE id = $1
                     LIMIT 1
@@ -3818,10 +3829,9 @@ app.post(
                     [projectId]
                 );
 
+            if (!projectResult.rows.length) {
 
-            if (
-                projectResult.rows.length === 0
-            ) {
+                await client.query("ROLLBACK");
 
                 return res.status(404).json({
 
@@ -3831,15 +3841,16 @@ app.post(
                         "المشروع غير موجود"
 
                 });
+
             }
 
 
             /* -------------------------------------------------
-               CHECK ENGINEER
+               CHECK ENGINEER ACCOUNT
             ------------------------------------------------- */
 
             const engineerResult =
-                await pool.query(
+                await client.query(
                     `
                     SELECT
                         id,
@@ -3859,10 +3870,9 @@ app.post(
                     [engineerId]
                 );
 
+            if (!engineerResult.rows.length) {
 
-            if (
-                engineerResult.rows.length === 0
-            ) {
+                await client.query("ROLLBACK");
 
                 return res.status(404).json({
 
@@ -3872,12 +3882,16 @@ app.post(
                         "حساب المهندس غير موجود"
 
                 });
+
             }
 
+            const engineer =
+                engineerResult.rows[0];
 
-            if (
-                !engineerResult.rows[0].active
-            ) {
+
+            if (!engineer.active) {
+
+                await client.query("ROLLBACK");
 
                 return res.status(400).json({
 
@@ -3887,14 +3901,29 @@ app.post(
                         "حساب المهندس غير مفعل"
 
                 });
+
             }
 
 
             /* -------------------------------------------------
-               ASSIGN ENGINEER
+               REMOVE OLD ENGINEER ASSIGNMENTS
             ------------------------------------------------- */
 
-            await pool.query(
+            await client.query(
+                `
+                DELETE FROM project_engineers
+
+                WHERE project_id = $1
+                `,
+                [projectId]
+            );
+
+
+            /* -------------------------------------------------
+               ASSIGN NEW ENGINEER
+            ------------------------------------------------- */
+
+            await client.query(
                 `
                 INSERT INTO project_engineers
                 (
@@ -3909,28 +3938,21 @@ app.post(
                     $2,
                     $3
                 )
-
-                ON CONFLICT
-                (
-                    project_id,
-                    engineer_id
-                )
-
-                DO NOTHING
                 `,
                 [
                     projectId,
-                    engineerId,
+                    engineer.id,
                     req.user.id
                 ]
             );
 
 
             /* -------------------------------------------------
-               UPDATE PROJECT ENGINEER NAME
+               UPDATE LEGACY ENGINEER NAME
+               نحافظ على engineer_name للمشاريع القديمة
             ------------------------------------------------- */
 
-            await pool.query(
+            await client.query(
                 `
                 UPDATE projects
 
@@ -3941,17 +3963,20 @@ app.post(
                 WHERE id = $2
                 `,
                 [
-                    engineerResult.rows[0].full_name,
+                    engineer.full_name,
                     projectId
                 ]
             );
+
+
+            await client.query("COMMIT");
 
 
             await logAction(
                 "تعيين مهندس",
                 "project",
                 projectId,
-                engineerResult.rows[0].full_name
+                engineer.full_name
             );
 
 
@@ -3968,19 +3993,30 @@ app.post(
                 engineer: {
 
                     id:
-                        engineerResult.rows[0].id,
+                        engineer.id,
 
                     username:
-                        engineerResult.rows[0].username,
+                        engineer.username,
 
                     full_name:
-                        engineerResult.rows[0].full_name
+                        engineer.full_name
 
                 }
 
             });
 
         } catch (error) {
+
+            try {
+                await client.query("ROLLBACK");
+            } catch (rollbackError) {
+
+                console.error(
+                    "ROLLBACK ERROR:",
+                    rollbackError
+                );
+
+            }
 
             console.error(
                 "ASSIGN ENGINEER ERROR:",
@@ -3996,7 +4032,12 @@ app.post(
 
             });
 
+        } finally {
+
+            client.release();
+
         }
+
     }
 );
 /* =========================================================
