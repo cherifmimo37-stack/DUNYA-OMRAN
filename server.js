@@ -3424,12 +3424,30 @@ app.get("/api/projects", async (req, res) => {
 
         let sql = `
             SELECT
-                p.*,
-                c.name AS client_display_name
-            FROM projects p
-            LEFT JOIN clients c
-                ON c.id = p.client_id
-            WHERE COALESCE(p.archived,FALSE) = FALSE
+    p.*,
+
+    c.name AS client_display_name,
+
+    pe.engineer_id AS assigned_engineer_id,
+
+    u.username AS assigned_engineer_username,
+
+    u.full_name AS assigned_engineer_full_name,
+
+    u.active AS assigned_engineer_active
+
+FROM projects p
+
+LEFT JOIN clients c
+    ON c.id = p.client_id
+
+LEFT JOIN project_engineers pe
+    ON pe.project_id = p.id
+
+LEFT JOIN users u
+    ON u.id = pe.engineer_id
+
+WHERE COALESCE(p.archived,FALSE) = FALSE
         `;
 
         const params = [];
