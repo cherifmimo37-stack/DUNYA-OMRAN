@@ -5803,7 +5803,29 @@ function renderReports(
         $("reportsContainer");
 
 
-    if(!reports.length){
+    /*
+       إذا قسم التقارير غير موجود
+       في الصفحة، ما نوقفوش تحميل المشروع.
+    */
+
+    if(!container){
+
+        console.warn(
+            "⚠️ reportsContainer غير موجود في project.html"
+        );
+
+        return;
+
+    }
+
+
+    const reportList =
+        Array.isArray(reports)
+            ? reports
+            : [];
+
+
+    if(!reportList.length){
 
         container.innerHTML =
             `<div class="empty">
@@ -5818,7 +5840,7 @@ function renderReports(
     let html = "";
 
 
-    reports.forEach(
+    reportList.forEach(
         report=>{
 
             html += `
@@ -5869,6 +5891,9 @@ function renderReports(
 }
 
 
+/* =========================================================
+   APPOINTMENTS
+========================================================= */
 /* =========================================================
    APPOINTMENTS
 ========================================================= */
