@@ -5611,17 +5611,46 @@ app.put("/api/materials/:id", async (req, res) => {
 });
 
 /* =========================================================
+   PROJECT STOCK / WAREHOUSE SYSTEM
+   نظام مخزن المشروع
+========================================================= */
+
+
+/* =========================================================
    STOCK MOVEMENTS - GET
+   جلب حركات مخزن مشروع محدد
 ========================================================= */
 
 app.get(
     "/api/stock-movements",
+    requireAuth,
     async (req, res) => {
 
         try {
 
+            const projectId =
+                integerValue(
+                    req.query.project_id
+                );
+
             const materialId =
-                integerValue(req.query.material_id);
+                integerValue(
+                    req.query.material_id
+                );
+
+            if (!projectId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم المشروع مطلوب"
+
+                });
+
+            }
+
 
             let sql = `
 
@@ -5630,37 +5659,55 @@ app.get(
                     sm.*,
 
                     m.name AS material_name,
+
                     m.unit,
+
+                    m.minimum_stock,
 
                     p.name AS project_name
 
                 FROM stock_movements sm
 
-                JOIN materials m
+                INNER JOIN materials m
                     ON m.id = sm.material_id
 
-                LEFT JOIN projects p
+                INNER JOIN projects p
                     ON p.id = sm.project_id
 
-                WHERE 1=1
+                WHERE
+                    sm.project_id = $1
 
             `;
 
-            const params = [];
+
+            const params = [
+                projectId
+            ];
+
 
             if (materialId) {
 
-                params.push(materialId);
+                params.push(
+                    materialId
+                );
 
                 sql += `
-                    AND sm.material_id = $1
+
+                    AND sm.material_id = $2
+
                 `;
 
             }
 
+
             sql += `
-                ORDER BY sm.movement_date DESC
+
+                ORDER BY
+                    sm.movement_date DESC,
+                    sm.id DESC
+
             `;
+
 
             const result =
                 await pool.query(
@@ -5668,28 +5715,34 @@ app.get(
                     params
                 );
 
+
             res.json({
 
                 success: true,
+
+                project_id:
+                    projectId,
 
                 movements:
                     result.rows
 
             });
 
+
         } catch (error) {
 
             console.error(
-                "GET STOCK ERROR:",
+                "GET PROJECT STOCK ERROR:",
                 error
             );
+
 
             res.status(500).json({
 
                 success: false,
 
                 message:
-                    "تعذر تحميل حركة المخزون"
+                    "تعذر تحميل مخزن المشروع"
 
             });
 
@@ -5698,43 +5751,455 @@ app.get(
     }
 );
 
+
+/* =========================================================
+   STOCK BALANCE
+   الرصيد الحالي لكل مادة داخل المشروع
+========================================================= */
+
+app.get(
+    "/api/stock-balance",
+    requireAuth,
+    async (req, res) => {
+
+        try {
+
+            const projectId =
+                integerValue(
+                    req.query.project_id
+                );
+
+
+            if (!projectId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم المشروع مطلوب"
+
+                });
+
+            }
+
+
+            const result =
+                await pool.query(`
+
+                    SELECT
+
+                        m.id
+                            AS material_id,
+
+                        m.name
+                            AS material_name,
+
+                        m.unit,
+
+                        m.minimum_stock,
+
+                        COALESCE(
+                            SUM(
+                                CASE
+
+                                    WHEN LOWER(
+                                        sm.movement_type
+                                    ) IN (
+                                        'in',
+                                        'دخل',
+                                        'دخول',
+                                        'شراء',
+                                        'إضافة'
+                                    )
+
+                                    THEN sm.quantity
+
+                                    ELSE 0
+
+                                END
+                            ),
+                            0
+                        ) AS total_in,
+
+
+                        COALESCE(
+                            SUM(
+                                CASE
+
+                                    WHEN LOWER(
+                                        sm.movement_type
+                                    ) IN (
+                                        'out',
+                                        'خرج',
+                                        'خروج',
+                                        'استهلاك',
+                                        'استعمال',
+                                        'استعمالات'
+                                    )
+
+                                    THEN sm.quantity
+
+                                    ELSE 0
+
+                                END
+                            ),
+                            0
+                        ) AS total_out,
+
+
+                        COALESCE(
+                            SUM(
+                                CASE
+
+                                    WHEN LOWER(
+                                        sm.movement_type
+                                    ) IN (
+                                        'in',
+                                        'دخل',
+                                        'دخول',
+                                        'شراء',
+                                        'إضافة'
+                                    )
+
+                                    THEN sm.quantity
+
+                                    WHEN LOWER(
+                                        sm.movement_type
+                                    ) IN (
+                                        'out',
+                                        'خرج',
+                                        'خروج',
+                                        'استهلاك',
+                                        'استعمال',
+                                        'استعمالات'
+                                    )
+
+                                    THEN -sm.quantity
+
+                                    ELSE 0
+
+                                END
+                            ),
+                            0
+                        ) AS current_stock,
+
+
+                        COALESCE(
+                            SUM(
+                                CASE
+
+                                    WHEN LOWER(
+                                        sm.movement_type
+                                    ) IN (
+                                        'in',
+                                        'دخل',
+                                        'دخول',
+                                        'شراء',
+                                        'إضافة'
+                                    )
+
+                                    THEN
+                                        sm.quantity *
+                                        COALESCE(
+                                            sm.unit_price,
+                                            0
+                                        )
+
+                                    ELSE 0
+
+                                END
+                            ),
+                            0
+                        ) AS total_in_value,
+
+
+                        MAX(
+                            CASE
+
+                                WHEN LOWER(
+                                    sm.movement_type
+                                ) IN (
+                                    'in',
+                                    'دخل',
+                                    'دخول',
+                                    'شراء',
+                                    'إضافة'
+                                )
+
+                                THEN sm.unit_price
+
+                                ELSE 0
+
+                            END
+                        ) AS last_unit_price,
+
+
+                        MAX(
+                            sm.movement_date
+                        ) AS last_movement_date
+
+
+                    FROM materials m
+
+                    INNER JOIN stock_movements sm
+                        ON sm.material_id = m.id
+
+                    WHERE
+                        sm.project_id = $1
+
+                    GROUP BY
+                        m.id,
+                        m.name,
+                        m.unit,
+                        m.minimum_stock
+
+                    ORDER BY
+                        m.name ASC
+
+                `, [
+                    projectId
+                ]);
+
+
+            const balances =
+                result.rows.map(
+                    item => {
+
+                        const totalIn =
+                            Number(
+                                item.total_in || 0
+                            );
+
+                        const totalOut =
+                            Number(
+                                item.total_out || 0
+                            );
+
+                        const currentStock =
+                            Number(
+                                item.current_stock || 0
+                            );
+
+                        const minimum =
+                            Number(
+                                item.minimum_stock || 0
+                            );
+
+                        const lastPrice =
+                            Number(
+                                item.last_unit_price || 0
+                            );
+
+
+                        return {
+
+                            ...item,
+
+                            total_in:
+                                totalIn,
+
+                            total_out:
+                                totalOut,
+
+                            current_stock:
+                                currentStock,
+
+                            minimum_stock:
+                                minimum,
+
+                            last_unit_price:
+                                lastPrice,
+
+                            current_value:
+                                currentStock *
+                                lastPrice,
+
+                            low_stock:
+                                minimum > 0 &&
+                                currentStock <= minimum,
+
+                            empty_stock:
+                                currentStock <= 0
+
+                        };
+
+                    }
+                );
+
+
+            res.json({
+
+                success: true,
+
+                project_id:
+                    projectId,
+
+                balances
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "GET STOCK BALANCE ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر حساب رصيد مخزن المشروع"
+
+            });
+
+        }
+
+    }
+);
+
+
 /* =========================================================
    CREATE STOCK MOVEMENT
+   إضافة دخول أو خروج
 ========================================================= */
 
 app.post(
     "/api/stock-movements",
+    requireAuth,
     async (req, res) => {
 
         const client =
             await pool.connect();
 
+
         try {
 
             const {
+
                 project_id,
+
                 material_id,
+
                 movement_type,
+
                 quantity,
+
                 unit_price,
+
                 supplier,
+
                 notes,
+
                 movement_date
+
             } = req.body;
 
-            const materialId =
-                integerValue(material_id);
 
             const projectId =
-                integerValue(project_id);
+                integerValue(
+                    project_id
+                );
+
+            const materialId =
+                integerValue(
+                    material_id
+                );
 
             const qty =
-                numberValue(quantity);
+                numberValue(
+                    quantity
+                );
+
+            const type =
+                cleanText(
+                    movement_type
+                ).toLowerCase();
+
+
+            const incomingTypes = [
+
+                "in",
+                "دخل",
+                "دخول",
+                "شراء",
+                "إضافة"
+
+            ];
+
+
+            const outgoingTypes = [
+
+                "out",
+                "خرج",
+                "خروج",
+                "استهلاك",
+                "استعمال",
+                "استعمالات"
+
+            ];
+
+
+            const isIncoming =
+                incomingTypes.includes(
+                    type
+                );
+
+            const isOutgoing =
+                outgoingTypes.includes(
+                    type
+                );
+
+
+            if (!projectId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم المشروع مطلوب"
+
+                });
+
+            }
+
+
+            if (!materialId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "المادة مطلوبة"
+
+                });
+
+            }
+
+
+            if (qty <= 0) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "الكمية يجب أن تكون أكبر من صفر"
+
+                });
+
+            }
+
 
             if (
-                !materialId ||
-                qty <= 0 ||
-                !cleanText(movement_type)
+                !isIncoming &&
+                !isOutgoing
             ) {
 
                 return res.status(400).json({
@@ -5742,13 +6207,200 @@ app.post(
                     success: false,
 
                     message:
-                        "المادة ونوع الحركة والكمية مطلوبة"
+                        "نوع حركة المخزن غير صحيح"
 
                 });
 
             }
 
-            await client.query("BEGIN");
+
+            await client.query(
+                "BEGIN"
+            );
+
+
+            /* -------------------------------------------------
+               التأكد من المشروع
+            ------------------------------------------------- */
+
+            const projectCheck =
+                await client.query(`
+
+                    SELECT
+                        id,
+                        name
+
+                    FROM projects
+
+                    WHERE id = $1
+
+                    LIMIT 1
+
+                `, [
+                    projectId
+                ]);
+
+
+            if (
+                !projectCheck.rows.length
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "المشروع غير موجود"
+
+                });
+
+            }
+
+
+            /* -------------------------------------------------
+               التأكد من المادة
+            ------------------------------------------------- */
+
+            const materialCheck =
+                await client.query(`
+
+                    SELECT
+                        id,
+                        name,
+                        unit,
+                        minimum_stock
+
+                    FROM materials
+
+                    WHERE id = $1
+
+                    LIMIT 1
+
+                `, [
+                    materialId
+                ]);
+
+
+            if (
+                !materialCheck.rows.length
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "المادة غير موجودة"
+
+                });
+
+            }
+
+
+            /* -------------------------------------------------
+               حساب الرصيد الحالي قبل الخروج
+            ------------------------------------------------- */
+
+            const balanceResult =
+                await client.query(`
+
+                    SELECT
+
+                        COALESCE(
+                            SUM(
+                                CASE
+
+                                    WHEN LOWER(
+                                        movement_type
+                                    ) IN (
+                                        'in',
+                                        'دخل',
+                                        'دخول',
+                                        'شراء',
+                                        'إضافة'
+                                    )
+
+                                    THEN quantity
+
+                                    WHEN LOWER(
+                                        movement_type
+                                    ) IN (
+                                        'out',
+                                        'خرج',
+                                        'خروج',
+                                        'استهلاك',
+                                        'استعمال',
+                                        'استعمالات'
+                                    )
+
+                                    THEN -quantity
+
+                                    ELSE 0
+
+                                END
+                            ),
+                            0
+                        ) AS current_stock
+
+                    FROM stock_movements
+
+                    WHERE
+                        project_id = $1
+
+                        AND material_id = $2
+
+                `, [
+                    projectId,
+                    materialId
+                ]);
+
+
+            const currentStock =
+                Number(
+                    balanceResult.rows[0]
+                        ?.current_stock || 0
+                );
+
+
+            /* -------------------------------------------------
+               منع خروج كمية أكبر من الرصيد
+            ------------------------------------------------- */
+
+            if (
+                isOutgoing &&
+                qty > currentStock
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        `الرصيد الحالي للمادة هو ${currentStock}، لا يمكن إخراج ${qty}`,
+
+                    current_stock:
+                        currentStock
+
+                });
+
+            }
+
+
+            /* -------------------------------------------------
+               إدخال الحركة
+            ------------------------------------------------- */
 
             const result =
                 await client.query(`
@@ -5756,19 +6408,37 @@ app.post(
                     INSERT INTO stock_movements (
 
                         project_id,
+
                         material_id,
+
                         movement_type,
+
                         quantity,
+
                         unit_price,
+
                         supplier,
+
                         notes,
+
                         movement_date
 
                     )
 
                     VALUES (
-                        $1,$2,$3,$4,$5,$6,$7,
-                        COALESCE($8,CURRENT_TIMESTAMP)
+
+                        $1,
+                        $2,
+                        $3,
+                        $4,
+                        $5,
+                        $6,
+                        $7,
+                        COALESCE(
+                            $8,
+                            CURRENT_TIMESTAMP
+                        )
+
                     )
 
                     RETURNING *
@@ -5779,46 +6449,73 @@ app.post(
 
                     materialId,
 
-                    cleanText(movement_type),
+                    type,
 
                     qty,
 
-                    numberValue(unit_price),
+                    Math.max(
+                        0,
+                        numberValue(
+                            unit_price
+                        )
+                    ),
 
-                    cleanText(supplier),
+                    cleanText(
+                        supplier
+                    ),
 
-                    cleanText(notes),
+                    cleanText(
+                        notes
+                    ),
 
                     movement_date || null
 
                 ]);
 
-            await client.query("COMMIT");
+
+            await client.query(
+                "COMMIT"
+            );
+
 
             await logAction(
-                "حركة مخزون",
+
+                "إضافة حركة مخزن",
+
                 "stock",
+
                 result.rows[0].id,
-                `material:${materialId} quantity:${qty}`
+
+                `project:${projectId} material:${materialId} quantity:${qty} type:${type}`
+
             );
+
 
             res.status(201).json({
 
                 success: true,
+
+                message:
+                    "تم تسجيل حركة المخزن بنجاح",
 
                 movement:
                     result.rows[0]
 
             });
 
+
         } catch (error) {
 
-            await client.query("ROLLBACK");
+            await client.query(
+                "ROLLBACK"
+            );
+
 
             console.error(
                 "CREATE STOCK ERROR:",
                 error
             );
+
 
             res.status(500).json({
 
@@ -5828,6 +6525,572 @@ app.post(
                     "تعذر تسجيل حركة المخزون"
 
             });
+
+
+        } finally {
+
+            client.release();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   UPDATE STOCK MOVEMENT
+   تعديل حركة مخزن
+========================================================= */
+
+app.put(
+    "/api/stock-movements/:id",
+    requireAuth,
+    async (req, res) => {
+
+        const client =
+            await pool.connect();
+
+
+        try {
+
+            const movementId =
+                integerValue(
+                    req.params.id
+                );
+
+
+            if (!movementId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم حركة المخزن غير صحيح"
+
+                });
+
+            }
+
+
+            const {
+
+                project_id,
+
+                material_id,
+
+                movement_type,
+
+                quantity,
+
+                unit_price,
+
+                supplier,
+
+                notes,
+
+                movement_date
+
+            } = req.body;
+
+
+            const projectId =
+                integerValue(
+                    project_id
+                );
+
+            const materialId =
+                integerValue(
+                    material_id
+                );
+
+            const qty =
+                numberValue(
+                    quantity
+                );
+
+            const type =
+                cleanText(
+                    movement_type
+                ).toLowerCase();
+
+
+            const incomingTypes = [
+
+                "in",
+                "دخل",
+                "دخول",
+                "شراء",
+                "إضافة"
+
+            ];
+
+
+            const outgoingTypes = [
+
+                "out",
+                "خرج",
+                "خروج",
+                "استهلاك",
+                "استعمال",
+                "استعمالات"
+
+            ];
+
+
+            const isIncoming =
+                incomingTypes.includes(
+                    type
+                );
+
+            const isOutgoing =
+                outgoingTypes.includes(
+                    type
+                );
+
+
+            if (
+                !projectId ||
+                !materialId ||
+                qty <= 0 ||
+                (!isIncoming &&
+                 !isOutgoing)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "بيانات حركة المخزن غير مكتملة أو غير صحيحة"
+
+                });
+
+            }
+
+
+            await client.query(
+                "BEGIN"
+            );
+
+
+            /* -------------------------------------------------
+               الحركة القديمة
+            ------------------------------------------------- */
+
+            const oldResult =
+                await client.query(`
+
+                    SELECT *
+
+                    FROM stock_movements
+
+                    WHERE id = $1
+
+                    FOR UPDATE
+
+                `, [
+                    movementId
+                ]);
+
+
+            if (
+                !oldResult.rows.length
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "حركة المخزن غير موجودة"
+
+                });
+
+            }
+
+
+            /* -------------------------------------------------
+               حساب الرصيد بدون الحركة القديمة
+            ------------------------------------------------- */
+
+            const balanceResult =
+                await client.query(`
+
+                    SELECT
+
+                        COALESCE(
+                            SUM(
+                                CASE
+
+                                    WHEN LOWER(
+                                        movement_type
+                                    ) IN (
+                                        'in',
+                                        'دخل',
+                                        'دخول',
+                                        'شراء',
+                                        'إضافة'
+                                    )
+
+                                    THEN quantity
+
+                                    WHEN LOWER(
+                                        movement_type
+                                    ) IN (
+                                        'out',
+                                        'خرج',
+                                        'خروج',
+                                        'استهلاك',
+                                        'استعمال',
+                                        'استعمالات'
+                                    )
+
+                                    THEN -quantity
+
+                                    ELSE 0
+
+                                END
+                            ),
+                            0
+                        ) AS current_stock
+
+                    FROM stock_movements
+
+                    WHERE
+                        project_id = $1
+
+                        AND material_id = $2
+
+                        AND id <> $3
+
+                `, [
+
+                    projectId,
+
+                    materialId,
+
+                    movementId
+
+                ]);
+
+
+            const currentStock =
+                Number(
+                    balanceResult.rows[0]
+                        ?.current_stock || 0
+                );
+
+
+            if (
+                isOutgoing &&
+                qty > currentStock
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        `الرصيد المتاح بعد استثناء الحركة القديمة هو ${currentStock}`,
+
+                    current_stock:
+                        currentStock
+
+                });
+
+            }
+
+
+            /* -------------------------------------------------
+               تعديل الحركة
+            ------------------------------------------------- */
+
+            const result =
+                await client.query(`
+
+                    UPDATE stock_movements
+
+                    SET
+
+                        project_id =
+                            $1,
+
+                        material_id =
+                            $2,
+
+                        movement_type =
+                            $3,
+
+                        quantity =
+                            $4,
+
+                        unit_price =
+                            $5,
+
+                        supplier =
+                            $6,
+
+                        notes =
+                            $7,
+
+                        movement_date =
+                            COALESCE(
+                                $8,
+                                movement_date
+                            )
+
+                    WHERE
+                        id = $9
+
+                    RETURNING *
+
+                `, [
+
+                    projectId,
+
+                    materialId,
+
+                    type,
+
+                    qty,
+
+                    Math.max(
+                        0,
+                        numberValue(
+                            unit_price
+                        )
+                    ),
+
+                    cleanText(
+                        supplier
+                    ),
+
+                    cleanText(
+                        notes
+                    ),
+
+                    movement_date || null,
+
+                    movementId
+
+                ]);
+
+
+            await client.query(
+                "COMMIT"
+            );
+
+
+            await logAction(
+
+                "تعديل حركة مخزن",
+
+                "stock",
+
+                movementId,
+
+                `project:${projectId} material:${materialId} quantity:${qty}`
+
+            );
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "تم تعديل حركة المخزن",
+
+                movement:
+                    result.rows[0]
+
+            });
+
+
+        } catch (error) {
+
+            await client.query(
+                "ROLLBACK"
+            );
+
+
+            console.error(
+                "UPDATE STOCK ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر تعديل حركة المخزون"
+
+            });
+
+
+        } finally {
+
+            client.release();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DELETE STOCK MOVEMENT
+   حذف حركة مخزن
+========================================================= */
+
+app.delete(
+    "/api/stock-movements/:id",
+    requireAuth,
+    async (req, res) => {
+
+        const client =
+            await pool.connect();
+
+
+        try {
+
+            const movementId =
+                integerValue(
+                    req.params.id
+                );
+
+
+            if (!movementId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "رقم حركة المخزن غير صحيح"
+
+                });
+
+            }
+
+
+            await client.query(
+                "BEGIN"
+            );
+
+
+            const existing =
+                await client.query(`
+
+                    SELECT *
+
+                    FROM stock_movements
+
+                    WHERE id = $1
+
+                    FOR UPDATE
+
+                `, [
+                    movementId
+                ]);
+
+
+            if (
+                !existing.rows.length
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "حركة المخزن غير موجودة"
+
+                });
+
+            }
+
+
+            const movement =
+                existing.rows[0];
+
+
+            await client.query(`
+
+                DELETE FROM stock_movements
+
+                WHERE id = $1
+
+            `, [
+                movementId
+            ]);
+
+
+            await client.query(
+                "COMMIT"
+            );
+
+
+            await logAction(
+
+                "حذف حركة مخزن",
+
+                "stock",
+
+                movementId,
+
+                `project:${movement.project_id} material:${movement.material_id} quantity:${movement.quantity}`
+
+            );
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "تم حذف حركة المخزن بنجاح"
+
+            });
+
+
+        } catch (error) {
+
+            await client.query(
+                "ROLLBACK"
+            );
+
+
+            console.error(
+                "DELETE STOCK ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "تعذر حذف حركة المخزون"
+
+            });
+
 
         } finally {
 
