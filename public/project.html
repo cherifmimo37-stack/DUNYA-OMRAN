@@ -2577,71 +2577,187 @@ tr:last-child td{
         </section>
 
 
-        <!-- ATTENDANCE + STOCK -->
+        <!-- ATTENDANCE -->
 
-        <section class="section grid-2">
+<section class="section">
 
-            <div class="card">
+    <div class="card">
 
-                <div class="card-head">
+        <div class="card-head">
 
-                    <h3>🕘 الحضور والغياب</h3>
+            <h3>🕘 الحضور والغياب</h3>
 
-                </div>
+        </div>
+
+        <div
+            id="attendanceContainer"
+            class="card-body"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<!-- PROJECT WAREHOUSE -->
+
+<section class="section">
+
+    <div class="card">
+
+        <div class="card-head">
+
+            <div>
+
+                <h3>📦 مخزن المشروع</h3>
 
                 <div
-                    id="attendanceContainer"
-                    class="card-body"
-                ></div>
+                    style="
+                        margin-top:5px;
+                        color:#718086;
+                        font-size:11px;
+                    "
+                >
+                    متابعة دخول وخروج المواد والرصيد الحالي
+                </div>
 
             </div>
 
 
-            <div class="card">
+            <button
+                class="btn btn-green"
+                onclick="openStockModal()"
+            >
+                + حركة مخزن
+            </button>
 
-                <div class="card-head">
-
-                    <h3>📦 حركات المخزن</h3>
-
-                </div>
-
-                <div
-                    id="stockContainer"
-                    class="card-body"
-                ></div>
-
-            </div>
-
-        </section>
+        </div>
 
 
-        <!-- REPORTS -->
+        <!-- WAREHOUSE SUMMARY -->
 
-        <section class="section">
+        <div
+            id="warehouseSummary"
+            style="
+                display:grid;
+                grid-template-columns:
+                    repeat(4,minmax(0,1fr));
+                gap:12px;
+                padding:20px 20px 0;
+            "
+        ></div>
 
-            <div class="card">
 
-                <div class="card-head">
+        <!-- SEARCH -->
 
-                    <h3>📋 التقارير اليومية</h3>
+        <div
+            style="
+                display:grid;
+                grid-template-columns:
+                    1.5fr 1fr;
+                gap:12px;
+                padding:20px;
+                padding-bottom:10px;
+            "
+        >
 
-                    <button
-                        class="btn btn-green"
-                        onclick="openReportModal()"
-                    >
-                        + تقرير
-                    </button>
+            <input
+                id="warehouseSearch"
+                type="text"
+                placeholder="🔎 ابحث عن مادة..."
+                oninput="filterWarehouse()"
+                style="
+                    width:100%;
+                    padding:12px;
+                    border:1px solid #d9e1e3;
+                    border-radius:10px;
+                    outline:none;
+                "
+            >
 
-                </div>
 
-                <div
-                    id="reportsContainer"
-                    class="card-body"
-                ></div>
+            <select
+                id="warehouseFilter"
+                onchange="filterWarehouse()"
+                style="
+                    width:100%;
+                    padding:12px;
+                    border:1px solid #d9e1e3;
+                    border-radius:10px;
+                    background:white;
+                    outline:none;
+                "
+            >
 
-            </div>
+                <option value="all">
+                    كل الحركات
+                </option>
 
-        </section>
+                <option value="in">
+                    📥 دخول
+                </option>
+
+                <option value="out">
+                    📤 خروج
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- CURRENT BALANCE -->
+
+        <div
+            style="
+                padding:0 20px 20px;
+            "
+        >
+
+            <h4
+                style="
+                    margin:0 0 12px;
+                    color:#123B4A;
+                "
+            >
+                📊 الرصيد الحالي
+            </h4>
+
+
+            <div
+                id="warehouseBalanceContainer"
+            ></div>
+
+        </div>
+
+
+        <!-- MOVEMENTS -->
+
+        <div
+            style="
+                padding:0 20px 20px;
+            "
+        >
+
+            <h4
+                style="
+                    margin:0 0 12px;
+                    color:#123B4A;
+                "
+            >
+                📜 سجل الحركات
+            </h4>
+
+
+            <div
+                id="stockContainer"
+            ></div>
+
+        </div>
+
+    </div>
+
+</section>
 
 
         <!-- APPOINTMENTS + MEETINGS -->
@@ -3088,7 +3204,207 @@ tr:last-child td{
 
 </div>
 
+<!-- STOCK MOVEMENT -->
 
+<div
+    id="stockModal"
+    class="modal-overlay"
+>
+
+    <div class="modal">
+
+        <div class="modal-head">
+
+            <h3 id="stockModalTitle">
+                📦 إضافة حركة مخزن
+            </h3>
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closeModal('stockModal')"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="stockForm">
+
+            <div class="modal-body">
+
+                <div class="form-grid">
+
+
+                    <!-- MATERIAL -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            المادة
+                        </label>
+
+                        <select
+                            id="stockMaterial"
+                            required
+                        >
+
+                            <option value="">
+                                اختر المادة
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TYPE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            نوع الحركة
+                        </label>
+
+                        <select
+                            id="stockMovementType"
+                            required
+                        >
+
+                            <option value="in">
+                                📥 دخول للمخزن
+                            </option>
+
+                            <option value="out">
+                                📤 خروج / استهلاك
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            الكمية
+                        </label>
+
+                        <input
+                            id="stockQuantity"
+                            type="number"
+                            min="0.001"
+                            step="0.001"
+                            required
+                            placeholder="مثال: 50"
+                        >
+
+                    </div>
+
+
+                    <!-- PRICE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            سعر الوحدة بالدينار
+                        </label>
+
+                        <input
+                            id="stockUnitPrice"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            placeholder="مثال: 850"
+                        >
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            التاريخ
+                        </label>
+
+                        <input
+                            id="stockMovementDate"
+                            type="date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SUPPLIER -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            المورد
+                        </label>
+
+                        <input
+                            id="stockSupplier"
+                            type="text"
+                            placeholder="اسم المورد"
+                        >
+
+                    </div>
+
+
+                    <!-- NOTES -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            ملاحظات
+                        </label>
+
+                        <textarea
+                            id="stockNotes"
+                            rows="3"
+                            placeholder="مثال: وصلت الشحنة كاملة..."
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-dark"
+                    onclick="closeModal('stockModal')"
+                >
+                    إلغاء
+                </button>
+
+
+                <button
+                    class="btn btn-green"
+                    type="submit"
+                >
+                    💾 حفظ الحركة
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 <!-- EXPENSE -->
 
 <div
@@ -3829,6 +4145,50 @@ function pickArray(
 }
 
 
+function getAuthToken(){
+
+    const possibleKeys = [
+
+        "dunya_token",
+
+        "authToken",
+
+        "token",
+
+        "accessToken",
+
+        "dunyaToken",
+
+        "dunya_auth_token",
+
+        "auth_token"
+
+    ];
+
+
+    for(
+        const key of possibleKeys
+    ){
+
+        const value =
+            localStorage.getItem(
+                key
+            );
+
+        if(value){
+
+            return value;
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
 async function safeFetch(
     url,
     options={}
@@ -3836,13 +4196,38 @@ async function safeFetch(
 
     try{
 
+        const token =
+            getAuthToken();
+
+
+        const headers = {
+
+            ...(options.headers || {})
+
+        };
+
+
+        if(token){
+
+            headers.Authorization =
+                "Bearer " +
+                token;
+
+        }
+
+
         const response =
             await fetch(
                 url,
-                options
+                {
+                    ...options,
+                    headers
+                }
             );
 
+
         let data = {};
+
 
         try{
 
@@ -3855,23 +4240,34 @@ async function safeFetch(
 
         }
 
+
         return {
+
             ok:
                 response.ok &&
                 (
                     data.success !== false
                 ),
+
             response,
+
             data
+
         };
+
 
     }catch(error){
 
         return {
+
             ok:false,
+
             response:null,
+
             data:{},
+
             error
+
         };
 
     }
@@ -4015,6 +4411,9 @@ function getStatusInfo(
 }
 
 
+/* =========================================================
+   LOAD PROJECT
+========================================================= */
 /* =========================================================
    LOAD PROJECT
 ========================================================= */
